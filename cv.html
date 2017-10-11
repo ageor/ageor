@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+        <style type="text/css">
+            * {
+                font-family: 'Open Sans', sans-serif;
+                font-size: 18px;
+            }
+
+            body {
+                background-color: #ddd;
+            }
+
+            hr {
+                width: 90%;
+            }
+
+            .page {
+                width: 800px;
+                margin: auto;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            table {
+                padding-bottom: 30px;
+            }
+
+            table tr td {
+                vertical-align: top;
+            }
+
+            table tr td:first-child {
+                text-align: right;
+                font-weight: 300;
+                padding-right: 20px;
+            }
+
+            table tr td.primary {
+                width: 220px;
+                font-size: 22px;
+                font-weight: 400;
+                padding-top: 30px;
+            }
+
+            table tr td.heavy {
+                font-weight: 400;
+                padding-right: 30px;
+                padding-top: 20px;
+            }
+
+            .notice {
+                color: steelblue;
+                padding: 20px;
+                text-align: center;
+            }
+
+            @media print {
+                * {
+                    font-size: 14px;
+                }
+
+                body {
+                    background-color: white;
+                }
+
+                .page {
+                    width: 100%;
+                    box-shadow: none;
+                    padding: 10px;
+                }
+
+                table tr td.primary {
+                    width: 140px;
+                    font-size: 18px;
+                    padding-top: 16px;
+                }
+
+                table tr td.heavy {
+                    padding-top: 10px;
+                }
+
+                hr {
+                    display: none;
+                }
+
+                table {
+                    padding-bottom: 0px;
+                }
+
+                .notice {
+                    display: none;
+                }
+
+                .manual-page-break {
+                    margin-top: 20px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <table>
+                <tr>
+                    <td class="primary">Personal</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>Anton Veselinov Georgiev</td>
+                </tr>
+                <tr>
+                    <td>Mobile</td>
+                    <td>+359 887 64 18 96</td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td>anton.v.georgiev@gmail.com</td>
+                </tr>
+            </table>
+            <hr>
+            <table>
+                <tr>
+                    <td class="primary">Education</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2010 - 2013</td>
+                    <td>Technical University of Sofia<br>studied Computer Systems and Technologies</td>
+                </tr>
+                <tr>
+                    <td>2005 - 2010</td>
+                    <td>Technological School of Electronic Systems<br>Graduated as “Software developer”</td>
+                </tr>
+            </table>
+            <hr>
+            <table>
+                <tr>
+                    <td class="primary">Work Experience</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="heavy">Chobolabs</td>
+                    <td></td>
+                </tr>
+                    <td>When</td>
+                    <td>September 2015 - October 2017</td>
+                </tr>
+                <tr>
+                    <td>Responsibilities</td>
+                    <td>Design and development of gameplay features and systems. Implementation and rigging of UI, both in-game and menus. Implementation and support for development tools.</td>
+                </tr>
+
+                <tr>
+                    <td class="heavy">Setelis Labs</td>
+                    <td></td>
+                </tr>
+                    <td>When</td>
+                    <td>August 2014 - September 2015</td>
+                </tr>
+                <tr>
+                    <td>Responsibilities</td>
+                    <td>
+                        Design, development and support of various software products fit to customer specifications ranging from isolated systems to full sack solutions.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="heavy">Gameloft</td>
+                    <td></td>
+                </tr>
+                    <td>When</td>
+                    <td>January 2013 - July 2014</td>
+                </tr>
+                <tr>
+                    <td>Responsibilities</td>
+                    <td>
+                        Developing video games for mobile platforms. Implementing social features, gameplay logic, multiplayer, resource management as well as scripting artificial intelligence, developing and maintaining in-house development tools. Optimizing game performance and maintaining stability.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="heavy">Cosmote Bulgaria</td>
+                    <td></td>
+                </tr>
+                    <td>When</td>
+                    <td>May 2012 - January 2013</td>
+                </tr>
+                <tr>
+                    <td>Responsibilities</td>
+                    <td>
+                        Performing web based application design and development. Ensuring optimal reliability and performance. Performing end-to-end tests of the software systems.
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <table>
+                <tr>
+                    <td class="primary">Projects</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Mayhem</td>
+                    <td>A 2D team multiplayer action game set in a post-apocalyptic future. My contributions include UI, AI, gameplay, physics, some work on the engine, in-house tools and others.</td>
+                </tr>
+                <tr>
+                    <td>Order and Chaos Duels</td>
+                    <td>A free trading card game set in a magical fantasy universe that features online mulitplayer battles (PvP). I have worked on online saves and synchronization, restricting access to players prone to using exploits and hacks, multiplayer seasons and various social features.</td>
+                </tr>
+            </table>
+            <hr>
+            <table class="manual-page-break">
+                <tr>
+                    <td class="primary">Languages</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Bulgarian</td>
+                    <td>Native tongue</td>
+                </tr>
+                <tr>
+                    <td>English</td>
+                    <td>Advanced level in speaking and writing</td>
+                </tr>
+                <tr>
+                    <td class="primary">Skills</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Programming</td>
+                    <td>Proficiency in C, C++, C#, TypeScript, JavaScript and Python. While not really programming I know a lot about HTML and CSS.</td>
+                </tr>
+                <tr>
+                    <td>Platforms</td>
+                    <td>All versions of Windows since XP, a dozen Linux distributions and I can move the mouse in OS X.</td>
+                </tr>
+                <tr>
+                    <td>Driving licence</td>
+                    <td>Category B vehicle in the EU.</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="notice">Because I know CSS, printing this page will be much more ink efficient than you think.</div>
+    </body>
+</html>
