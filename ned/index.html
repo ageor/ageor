@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <link rel="stylesheet" type="text/css" href="fire.css">
+        <script type="text/javascript" src="three.js"></script>
+        <script type="text/javascript" src="orbit_controls.js"></script>
+        <script type="text/javascript" src="harmonic.js"></script>
+        <script type="text/javascript" src="reflectors.js"></script>
+        <script type="text/javascript" src="laser.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="untitled.js"></script>
+        <script type="text/javascript" src="finale.js"></script>
+    </head>
+    <body>
+        <div id="gate" class="gate">
+            <table>
+                <tr>
+                    <td data-rune="riddle" id="riddle_rune">T</td>
+                    <td data-rune="torch" id="torch_rune">H</td>
+                    <td data-rune="maze" id="maze_rune">E</td>
+                </tr>
+                <tr>
+                    <td data-rune="math" id="math_rune">D</td>
+                    <td data-rune="harmonic" id="harmonic_rune">A</td>
+                    <td data-rune="reflection" id="reflection_rune">Y</td>
+                </tr>
+            </table>
+        </div>
+        <div id="riddle" class="riddle open">
+            <div class="title">The Riddle</div>
+            What marks the beginning of an <span class="e">e</span>ra, but the end of an ag<span class="e">e</span>?
+            <br>
+            The start of <span class="e">e</span>verything, the conclusion of all els<span class="e">e</span>.
+            <table>
+                <tr>
+                    <td>N</td>
+                    <td>E</td>
+                    <td>D</td>
+                </tr>
+                <tr>
+                    <td><div class="button"></div></td>
+                    <td id="the_e"><div class="button"></div></td>
+                    <td><div class="button"></div></td>
+                </tr>
+            </table>
+            <div class="tutorial">Hint: Click on the runes!</div>
+        </div>
+        <div id="torch" class="torches">
+            <div class="title">The Bonfires</div>
+            <table>
+                <tr>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="button">
+                            <div class="fire">
+                                <div class="fire-left">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-main">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-right">
+                                    <div class="main-fire"></div>
+                                    <div class="particle-fire"></div>
+                                </div>
+                                <div class="fire-bottom">
+                                    <div class="main-fire"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="maze" class="maze">
+            <div class="title">The Maze</div>
+        </div>
+        <div id="math" class="math">
+            <div class="title">The Pyramid</div>
+        </div>
+        <div id="harmonic" class="harmonics">
+            <div id="harmonic_container"></div>
+            <table class="left-side">
+                <tr>
+                    <td id="harmonic_1_visual" class="harmonic">
+                        <div style="width: 100%;">
+                            <div></div>
+                        </div>
+                    </td>
+                    <td id="harmonic_2_visual" class="harmonic">
+                        <div style="width: 80%;">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </td>
+                    <td id="harmonic_3_visual" class="harmonic">
+                        <div style="width: 70%;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="harmonic_1"><div class="button"></div></td>
+                    <td id="harmonic_2"><div class="button"></div></td>
+                    <td id="harmonic_3"><div class="button"></div></td>
+                </tr>
+            </table>
+            <table class="right-side">
+                <tr>
+                    <td id="harmonic_4_visual" class="harmonic">
+                        <div style="width: 60%;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </td>
+                    <td id="harmonic_5_visual" class="harmonic">
+                        <div style="width: 50%;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </td>
+                    <td id="harmonic_6_visual" class="harmonic">
+                        <div style="width: 35%;">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="harmonic_4"><div class="button"></div></td>
+                    <td id="harmonic_5"><div class="button"></div></td>
+                    <td id="harmonic_6"><div class="button"></div></td>
+                </tr>
+            </table>
+            <div class="title">The Ring of Harmony</div>
+        </div>
+        <div id="reflection" class="reflectors">
+            <div id="reflector_container"></div>
+            <table>
+                <tr>
+                    <td style="color: #ffcc99">D</td>
+                    <td style="color: #ff99ff">A</td>
+                    <td style="color: #99ffcc">B</td>
+                    <td style="color: #66aacc">O</td>
+                    <td>I</td>
+                </tr>
+                <tr>
+                    <td id="sphere_1"><div class="button"></div></td>
+                    <td id="sphere_2"><div class="button"></div></td>
+                    <td id="sphere_3"><div class="button"></div></td>
+                    <td id="sphere_4"><div class="button"></div></td>
+                    <td id="lasers"><div class="button"></div></td>
+                </tr>
+            </table>
+            <div class="title">The Chamber of Reflections</div>
+        </div>
+        <div id="welcome" class="welcome">
+            <div id="spinner" class="spinner-container">
+                <div class="spinner">
+                    <div class="spinner">
+                        <div class="spinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="message" class="message">
+                <div>
+                    Your path has led you to darkness.
+                    <br>
+                    And in that darkness lies your goal.
+                    <br>
+                    The ancient runes. Their meaning beyond your comprehension.
+                    <br>
+                    Long forgotten cyphers of knowledge immesurable.
+                    <br>
+                    <br>
+                    <br>
+                    Begin
+                    <br>
+                    <div id="begin_quest" class="button"></div>
+                </div>
+            </div>
+        </div>
+        <div id="finale" class="finale"></div>
+    </body>
+</html>
