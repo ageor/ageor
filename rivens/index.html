@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script type="text/javascript" src="data/data.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="multi-input.js"></script>
+        <style>
+            @font-face {
+                font-family: Exo2;
+                src: url(fonts/Exo2-VariableFont_wght.ttf);
+            }
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+
+            * {
+                font-family: Exo2;
+                box-sizing: border-box;
+            }
+
+            .flex {
+                display: flex;
+            }
+
+            body {
+                background-image: radial-gradient(circle at calc(100% - 20px) 20px, #b997a9, #b79dce);
+                padding: 20px;
+                height: 100%;
+            }
+
+            .graph {
+                max-height: 500px;
+                position: relative;
+                background-color: white;
+                border-radius: 6px;
+                margin-right: 10px;
+                box-shadow: 6px 8px 0px 0px rgba(0, 0, 0, 0.2);
+            }
+
+            .download-status {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                background-color: black;
+                color: white;
+                text-align: center;
+                font-size: 20px;
+                padding: 10px;
+                border-radius: 6px;
+            }
+
+            .filters {
+                margin-left: 10px;
+                padding: 20px;
+                flex-grow: 1;
+                background-image: radial-gradient(circle at 20px 20px, #885e75, #4b3652);
+                border-radius: 6px;
+                box-shadow: 6px 8px 0px 0px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .filters .label {
+                font-variation-settings: 'wght' 225;
+                font-size: 30px;
+                color: white;
+            }
+
+            .filters .weapon-select .label {
+                margin-right: 20px;
+                margin-top: 4px;
+            }
+
+            .filters multi-input {
+                background-color: white;
+                border-radius: 4px;
+                flex-grow: 1;
+                --multi-input-item-bg-color: #885e75;
+                --multi-input-item-border: none;
+                --multi-input-color: white;
+            }
+
+            .filters .header {
+                font-variation-settings: 'wght' 200;
+                margin-bottom: 20px;
+                font-size: 42px;
+                text-align: center;
+                color: white;
+            }
+
+            .filters #filter {
+                background-color: white;
+                border: none;
+                margin-left: auto;
+                margin-top: auto;
+                font-size: 30px;
+                padding: 10px 30px 12px 30px;
+                border-radius: 4px;
+            }
+
+            .filters .date-select {
+                margin-top: 10px;
+            }
+
+            .filters .date-select .label {
+                margin-top: 8px;
+            }
+
+            .filters .date-select .label.from {
+                margin-right: 61px;
+            }
+
+            .filters .date-select .label.to {
+                margin-left: auto;
+                margin-right: 20px;
+            }
+
+            .filters .picker {
+                display: flex;
+            }
+
+            .filters .picker select {
+                background-color: white;
+                border: 0;
+                font-size: 22px;
+                padding: 5px 10px 6px 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .filters .picker select:nth-child(even) {
+                border-bottom-right-radius: 4px;
+                border-top-right-radius: 4px;
+            }
+
+            .filters .picker select:nth-child(odd) {
+                border-bottom-left-radius: 4px;
+                border-top-left-radius: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex">
+            <div class="graph">
+                <div class="download-status"></div>
+            </div>
+            <div class="filters">
+                <div class="header">Filters</div>
+                <div class="weapon-select flex">
+                    <div class="label">Weapon</div>
+                    <multi-input id="weapon_select">
+                        <input list="weapons">
+                        <datalist id="weapons"></datalist>
+                    </multi-input>
+                </div>
+                <div class="date-select flex">
+                    <div class="label from">From</div>
+                    <div class="picker">
+                        <select id="from_month">
+                            <option value="0" selected>January</option>
+                            <option value="1">February</option>
+                            <option value="2">March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                        <select id="from_year">
+                            <option value="2019">2019</option>
+                            <option value="2020" selected>2020</option>
+                        </select>
+                    </div>
+                    <div class="label to">To</div>
+                    <div class="picker">
+                        <select id="to_month">
+                            <option value="0">January</option>
+                            <option value="1">February</option>
+                            <option value="2" selected>March</option>
+                            <option value="3">April</option>
+                            <option value="4">May</option>
+                            <option value="5">June</option>
+                            <option value="6">July</option>
+                            <option value="7">August</option>
+                            <option value="8">September</option>
+                            <option value="9">October</option>
+                            <option value="10">November</option>
+                            <option value="11">December</option>
+                        </select>
+                        <select id="to_year">
+                            <option value="2019">2019</option>
+                            <option value="2020" selected>2020</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="filter">Filter</button>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        const rivenData = {
+            pc: [],
+            sw: [],
+            xb: [],
+            ps: [],
+        };
+
+        function parseDate(str) {
+            let y = str.substr(0, 2),
+                m = str.substr(2, 2),
+                d = str.substr(4);
+
+                return new Date(`20${y}-${m}-${d}`);
+        }
+
+        function weekNum(d) {
+            // Copy date so don't modify original
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            // Set to nearest Thursday: current date + 4 - current day number
+            // Make Sunday's day number 7
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            // Get first day of year
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            // Calculate full weeks to nearest Thursday
+            var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+            // Return array of year and week number
+            return [d.getUTCFullYear(), weekNo];
+        }
+
+        let completed = 0;
+        const total = data.length;
+        document.querySelector(".graph .download-status").innerText = `Downloading: ${completed}/${total}`;
+
+        let files = {};
+
+        for (let i = 0; i < data.length; i++) {
+            let d = data[i];
+            let dateStr = d.substr(2, 6);
+            let date = parseDate(dateStr);
+
+            // First two datapoints are in the same week.
+            if (date.getTime() === new Date("2019-04-01").getTime()) date.setDate(0);
+
+            fetch(`data/${d}`).then(r => r.json()).then(r => {
+                files[d] = r;
+
+                completed++;
+                document.querySelector(".graph .download-status").innerText = `Downloading: ${completed}/${total}`;
+
+                if (completed == total) done();
+            });
+        }
+
+        function done() {
+            for (let fileName in files) {
+                let platform = fileName.substr(0, 2);
+                let dateStr = fileName.substr(2, 6);
+                let date = parseDate(dateStr);
+                let file = files[fileName];
+
+                for (let riven of file) {
+                    if (!riven.compatibility) continue;
+
+                    riven.compatibility += riven.rerolled ? '' : " (UNROLLED)";
+                    riven.date = date;
+                    rivenData[platform].push(riven);
+                }
+            }
+
+            document.querySelector(".graph").removeChild(document.querySelector(".graph .download-status"));
+            
+            sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+                .key(function(d) { return d.compatibility; })
+                .entries(rivenData.pc);
+            
+            for (let n of sumstat) {
+                n.values = n.values.sort((a, b) => b.date.getTime() - a.date.getTime());
+            }
+
+            initSelect();
+        }
+
+        let svg = null;
+        let x = null;
+        let y = null;
+        let xAxis = null;
+        let yAxis = null;
+        let sumstat = null;
+        let margin = { top: 40, right: 30, bottom: 80, left: 60 },
+            width = 800 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+        let mindate = new Date(2020,1),
+            maxdate = new Date(2020,3);
+        let t = d3.transition()
+            .duration(300);
+        
+        let lineArea = null;
+
+        init();
+
+        function updateXAxis(domain) {
+            x.domain(domain);
+            xAxis.transition(t).call(d3.axisBottom(x)
+                .tickFormat(d3.timeFormat("%b %Y W%W")))
+                .selectAll("text")
+                    .style("text-anchor", "end")
+                    .attr("dy", "-0.1em")
+                    .attr("dx", "-0.8em")
+                    .attr("transform", "rotate(-60)");
+        }
+
+        function updateYAxis(domain) {
+            y.domain(domain);
+            // yAxis.transition(t)
+            //     .call(d3.axisLeft(y));
+            yAxis.call(g => g.select(".domain").attr("stroke-opacity", 0))
+                .call(g => g.selectAll(".tick:first-of-type line").attr("stroke-opacity", 0))
+                .transition(t)
+                .call(d3.axisRight(y)
+                    .tickSize(width + margin.right)
+                    // .tickFormat(formatTick)
+                )
+                .call(g => g.selectAll(".tick:not(:first-of-type) line")
+                    .attr("stroke-opacity", 0.2)
+                    .attr("stroke-dasharray", "2,2"))
+                .call(g => g.selectAll(".tick text")
+                    .attr("x", 4)
+                    .attr("dy", "-4"))
+        }
+
+        function init() {
+            // append the svg object to the body of the page
+            svg = d3.select(".graph")
+                .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            
+            let clipArea = svg.append("clipPath")
+                .attr("id", "mask")
+                .style("pointer-events", "none")
+                    .append("rect")
+                    .attr("width", width)
+                    .attr("height", height);
+            
+            lineArea = svg.append("g")
+                .attr("clip-path", "url(#mask)");
+            
+            svg.append("g")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+            // Add X axis --> it is a date format
+            xAxis = svg.append("g")
+                .attr("transform", "translate(0," + height + ")");
+            x = d3.scaleTime().range([ 0, width ]);
+            
+            updateXAxis([ mindate, maxdate ]);
+    
+            // Add Y axis
+            y = d3.scaleLinear()
+                .range([ height, 0 ]);
+            yAxis = svg.append("g")
+                .attr("transform", `translate(${-30}, 0)`);
+            
+            updateYAxis([0, 200]);
+
+            sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
+                .key(function(d) { return d.compatibility; })
+                .entries([]);
+
+            initForm();
+
+            draw([]);
+        }
+
+        function initSelect() {
+            let select = document.querySelector("#weapon_select");
+            let datalist = select.querySelector("datalist");
+            for (let opt of sumstat) {
+                let option = document.createElement("option");
+                option.text = option.value = opt.key;
+    
+                datalist.appendChild(option);
+            }
+            select.init();
+        }
+        
+        function initForm() {
+            let fromM = document.querySelector("#from_month");
+            let fromY = document.querySelector("#from_year");
+            let toM = document.querySelector("#to_month");
+            let toY = document.querySelector("#to_year");
+    
+            let filterButton = document.querySelector(".filters #filter");
+            filterButton.onclick = function() {
+                mindate.setYear(fromY.value);
+                mindate.setMonth(fromM.value);
+                maxdate.setYear(toY.value);
+                maxdate.setMonth(+toM.value + 1);
+                
+                updateXAxis([ mindate, maxdate ])
+                
+                draw(document.querySelector("#weapon_select").getValues());
+            }
+        }
+
+        function line(data) {
+            return d3.line()
+                // .defined(function(d) {
+                //     return d.date.getTime() < maxdate.getTime() && d.date.getTime() > mindate.getTime();
+                // })
+                // .curve(d3.curveBasis)
+                .curve(d3.curveCatmullRomOpen)
+                .x(function(d) { return x(d.date); })
+                .y(function(d) { return y(+d.avg); })
+                (data.values)
+        }
+
+        function area(data) {
+            return d3.area()
+                .curve(d3.curveBasis)
+                .x(function(d) { return x(d.date) })
+                .y0(function(d) { return y(d.min) })
+                .y1(function(d) { return y(d.max) })
+                (data.values)
+        }
+        
+        function draw(rivenFilter) {
+            let color = d3.scaleOrdinal()
+                .domain(rivenFilter)
+                // .range(d3.schemeCategory10)
+                .range(['#e41a1c','#377eb8','#378234','#984ea3','#ff7f00','#000000','#a65628','#f781bf','#666666']);
+
+            let selectedData = sumstat.filter(d => rivenFilter.indexOf(d.key) != -1);
+            let lines = lineArea.selectAll(".line")
+                .data(selectedData);
+
+            let dots = svg.selectAll(".dot")
+                .data(rivenFilter);
+            dots.enter()
+                .append("circle")
+                .attr("class", "dot")
+                .attr("cx", 20)
+                .attr("cy", function (d, i) { return 12 + i * 25 })
+                .attr("r", 7)
+                .style("fill", function (d) { return color(d) });
+            dots.exit().remove();
+
+            // Add one dot in the legend for each name.
+            let labels = svg.selectAll(".label")
+                .data(rivenFilter);
+            labels.enter()
+                .append("text")
+                .attr("class", "label")
+                .attr("x", 34)
+                .attr("y", function (d, i) { return 12 + i * 25 })
+                .style("fill", function (d) { return color(d) })
+                .text(function (d) { return d })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle");
+            labels.exit().remove();
+            labels.text(function (d) { return d });
+
+            // TODO: limit to daterange
+            updateYAxis([ 0, d3.max(selectedData, (d) => d3.max(d.values, (d) => d.avg + 100)) || 200 ])
+
+            lines.exit()
+                .transition(t)
+                .style("stroke-opacity", 1e-6)
+                .remove();
+
+            lines.enter()
+                .append("path")
+                    .transition(t)
+                    .attr("class", "line")
+                    .attr("fill", "none")
+                    .attr("stroke", function(d) { return color(d.key) })
+                    .attr("stroke-width", 1.5)
+                    .attr("d", (d) => line(d));
+            lines.transition(t)
+                .attr("stroke", function(d) { return color(d.key) })
+                .attr("d", (d) => line(d));
+            
+            let showMinMax = false;
+            if (!showMinMax) return;
+
+            let confidence = lineArea.selectAll(".area")
+                .data(selectedData);
+            
+            confidence.exit()
+                .transition(t)
+                .style("fill-opacity", 1e-6)
+                .remove();
+            
+            confidence.enter()
+                .append("path")
+                    .transition(t)
+                    .attr("class", "area")
+                    .attr("fill", function(d) { return color(d.key) })
+                    .attr("fill-opacity", 0.3)
+                    .attr("stroke", "none")
+                    .attr("d", (d) => area(d));
+            
+            confidence.transition(t)
+                .attr("fill", function(d) { return color(d.key) })
+                .attr("d", (d) => area(d));
+        }
+    </script>
+</html>
