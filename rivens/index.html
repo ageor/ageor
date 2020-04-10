@@ -442,8 +442,6 @@
                 .range(['#e41a1c','#377eb8','#378234','#984ea3','#ff7f00','#000000','#a65628','#f781bf','#666666']);
 
             let selectedData = sumstat.filter(d => rivenFilter.indexOf(d.key) != -1);
-            let lines = lineArea.selectAll(".line")
-                .data(selectedData);
 
             let dots = svg.selectAll(".dot")
                 .data(rivenFilter);
@@ -473,6 +471,9 @@
 
             // TODO: limit to daterange
             updateYAxis([ 0, d3.max(selectedData, (d) => d3.max(d.values, (d) => d.avg + 100)) || 200 ])
+
+            let lines = lineArea.selectAll(".line")
+                .data(selectedData, d => d.key);
 
             lines.exit()
                 .transition(t)
