@@ -509,6 +509,7 @@
             let completed = 0;
             let total = platformData.length;
             dlStatus.querySelector(".text").innerText = `Downloading: ${completed}/${total}`;
+            dlStatus.querySelector(".bar").style.width = "0%";
 
             for (let i = 0; i < platformData.length; i++) {
                 let d = platformData[i];
@@ -523,6 +524,7 @@
 
                     completed++;
                     dlStatus.querySelector(".text").innerText = `Downloading: ${completed}/${total}`;
+                    dlStatus.querySelector(".bar").style.width = `${(completed / total) * 100}%`;
 
                     if (completed == total) done(platform);
                 });
