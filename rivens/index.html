@@ -24,6 +24,10 @@
                 display: flex;
             }
 
+            .content {
+                align-items: flex-start;
+            }
+
             body {
                 background-image: radial-gradient(circle at calc(100% - 20px) 20px, #b997a9, #b79dce);
                 padding: 20px;
@@ -40,16 +44,43 @@
             }
 
             .download-status {
+                display: none;
                 position: absolute;
-                top: 10px;
-                left: 10px;
-                right: 10px;
-                background-color: black;
-                color: white;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 100;
+                background-color: rgba(0, 0, 0, 0.6);
+                font-variation-settings: 'wght' 225;
+                color: black;
                 text-align: center;
-                font-size: 20px;
-                padding: 10px;
+                font-size: 40px;
+
+                justify-content: center;
+                align-items: center;
+            }
+
+            .download-status .progress {
+                position: relative;
+                background-color: white;
                 border-radius: 6px;
+                width: 600px;
+                height: 52px;
+                overflow: hidden;
+            }
+
+            .download-status .progress .text {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+            }
+
+            .download-status .progress .bar {
+                height: 100%;
+                width: 0%;
+                background-color: #e3caff;
             }
 
             .filters {
@@ -69,6 +100,10 @@
                 color: white;
             }
 
+            .filters .weapon-select {
+                margin-top: 10px;
+            }
+
             .filters .weapon-select .label {
                 margin-right: 20px;
                 margin-top: 4px;
@@ -81,6 +116,20 @@
                 --multi-input-item-bg-color: #885e75;
                 --multi-input-item-border: none;
                 --multi-input-color: white;
+            }
+
+            .filters multi-input[disabled]::before {
+                display: block;
+                content: 'Select a platform first.';
+                font-size: 20px;
+                margin-left: 12px;
+                margin-top: 6px;
+                opacity: 0.4;
+                font-variation-settings: 'wght' 200;
+            }
+
+            .filters multi-input[disabled] input {
+                pointer-events: none;
             }
 
             .filters .header {
@@ -99,6 +148,54 @@
                 font-size: 30px;
                 padding: 10px 30px 12px 30px;
                 border-radius: 4px;
+            }
+
+            .filters .platform-select .label {
+                margin-right: 16px;
+            }
+
+            .filters .platform-select .platform-options {
+                align-items: center;
+                padding-top: 4px;
+                justify-content: center;
+                flex-grow: 1;
+            }
+
+            .filters .platform-select input {
+                display: none;
+            }
+
+            .filters .platform-select label {
+                position: relative;
+                color: white;
+                font-size: 24px;
+                height: 30px;
+                padding-left: 36px;
+                margin-right: 40px;
+                font-variation-settings: 'wght' 225;
+            }
+
+            .filters .platform-select label::before {
+                left: 0;
+                top: calc(50% - 13px);
+                box-sizing: border-box;
+                position: absolute;
+                display: block;
+                content: ' ';
+                background-color: white;
+                border: 4px solid white;
+                width: 26px;
+                height: 26px;
+                border-radius: 13px;
+                opacity: 0.4;
+            }
+
+            .filters .platform-select input.downloaded + label::before {
+                opacity: 1;
+            }
+
+            .filters .platform-select input:checked + label::before {
+                background-image: radial-gradient(circle at 20px 20px, #885e75, #4b3652);
             }
 
             .filters .date-select {
@@ -143,18 +240,28 @@
         </style>
     </head>
     <body>
-        <div class="flex">
-            <div class="graph">
-                <div class="download-status"></div>
+        <div class="download-status flex">
+            <div class="progress">
+                <div class="bar"></div>
+                <div class="text"></div>
             </div>
+        </div>
+        <div class="flex content">
+            <div class="graph"></div>
             <div class="filters">
                 <div class="header">Filters</div>
-                <div class="weapon-select flex">
-                    <div class="label">Weapon</div>
-                    <multi-input id="weapon_select">
-                        <input list="weapons">
-                        <datalist id="weapons"></datalist>
-                    </multi-input>
+                <div class="platform-select flex">
+                    <div class="label platform">Platform</div>
+                    <div class="platform-options flex">
+                        <input type="radio" name="platform" value="pc" id="plf_pc">
+                        <label for="plf_pc">PC</label>
+                        <input type="radio" name="platform" value="ps" id="plf_ps">
+                        <label for="plf_ps">PS</label>
+                        <input type="radio" name="platform" value="xb" id="plf_xb">
+                        <label for="plf_xb">XBox</label>
+                        <input type="radio" name="platform" value="sw" id="plf_sw">
+                        <label for="plf_sw">Switch</label>
+                    </div>
                 </div>
                 <div class="date-select flex">
                     <div class="label from">From</div>
@@ -200,7 +307,13 @@
                         </select>
                     </div>
                 </div>
-                <button id="filter">Filter</button>
+                <div class="weapon-select flex">
+                    <div class="label">Weapon</div>
+                    <multi-input id="weapon_select" disabled>
+                        <input list="weapons">
+                        <datalist id="weapons"></datalist>
+                    </multi-input>
+                </div>
             </div>
         </div>
     </body>
@@ -234,33 +347,14 @@
             return [d.getUTCFullYear(), weekNo];
         }
 
-        let completed = 0;
-        const total = data.length;
-        document.querySelector(".graph .download-status").innerText = `Downloading: ${completed}/${total}`;
+        const dlStatus = document.querySelector(".download-status");
 
         let files = {};
 
-        for (let i = 0; i < data.length; i++) {
-            let d = data[i];
-            let dateStr = d.substr(2, 6);
-            let date = parseDate(dateStr);
-
-            // First two datapoints are in the same week.
-            if (date.getTime() === new Date("2019-04-01").getTime()) date.setDate(0);
-
-            fetch(`data/${d}`).then(r => r.json()).then(r => {
-                files[d] = r;
-
-                completed++;
-                document.querySelector(".graph .download-status").innerText = `Downloading: ${completed}/${total}`;
-
-                if (completed == total) done();
-            });
-        }
-
-        function done() {
+        function done(platform) {
             for (let fileName in files) {
-                let platform = fileName.substr(0, 2);
+                if (!fileName.startsWith(platform)) continue;
+
                 let dateStr = fileName.substr(2, 6);
                 let date = parseDate(dateStr);
                 let file = files[fileName];
@@ -274,17 +368,24 @@
                 }
             }
 
-            document.querySelector(".graph").removeChild(document.querySelector(".graph .download-status"));
-            
+            document.querySelector(".download-status").style.display = "none";
+            document.querySelector("#weapon_select").removeAttribute("disabled");
+
+            selectPlatform(platform);
+        }
+
+        function selectPlatform(platform) {
             sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
                 .key(function(d) { return d.compatibility; })
-                .entries(rivenData.pc);
+                .entries(rivenData[platform]);
             
             for (let n of sumstat) {
                 n.values = n.values.sort((a, b) => b.date.getTime() - a.date.getTime());
             }
 
-            initSelect();
+            initWeaponSelect();
+
+            draw(document.querySelector("#weapon_select").getValues());
         }
 
         let svg = null;
@@ -302,6 +403,7 @@
             .duration(300);
         
         let lineArea = null;
+        let selectedPlatform = "pc";
 
         init();
 
@@ -363,29 +465,31 @@
             xAxis = svg.append("g")
                 .attr("transform", "translate(0," + height + ")");
             x = d3.scaleTime().range([ 0, width ]);
-            
-            updateXAxis([ mindate, maxdate ]);
-    
+
             // Add Y axis
             y = d3.scaleLinear()
                 .range([ height, 0 ]);
             yAxis = svg.append("g")
                 .attr("transform", `translate(${-30}, 0)`);
             
-            updateYAxis([0, 200]);
-
             sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
                 .key(function(d) { return d.compatibility; })
                 .entries([]);
 
             initForm();
+            initPlatformSelect();
+
+            updateXAxis([ mindate, maxdate ]);
+            updateYAxis([0, 200]);
 
             draw([]);
         }
 
-        function initSelect() {
+        function initWeaponSelect() {
             let select = document.querySelector("#weapon_select");
             let datalist = select.querySelector("datalist");
+            datalist.innerHTML = "";
+
             for (let opt of sumstat) {
                 let option = document.createElement("option");
                 option.text = option.value = opt.key;
@@ -393,6 +497,56 @@
                 datalist.appendChild(option);
             }
             select.init();
+
+            select.addEventListener("alter", function(e) {
+                draw(e.detail.values);
+            });
+        }
+
+        function download(platform) {
+            let platformData = data.filter(d => d.startsWith(platform));
+
+            let completed = 0;
+            let total = platformData.length;
+            dlStatus.querySelector(".text").innerText = `Downloading: ${completed}/${total}`;
+
+            for (let i = 0; i < platformData.length; i++) {
+                let d = platformData[i];
+                let dateStr = d.substr(2, 6);
+                let date = parseDate(dateStr);
+
+                // First two datapoints are in the same week.
+                if (date.getTime() === new Date("2019-04-01").getTime()) date.setDate(0);
+
+                fetch(`data/${d}`).then(r => r.json()).then(r => {
+                    files[d] = r;
+
+                    completed++;
+                    dlStatus.querySelector(".text").innerText = `Downloading: ${completed}/${total}`;
+
+                    if (completed == total) done(platform);
+                });
+            }
+
+            document.querySelector(".download-status").style.display = "flex";
+            document.querySelector(`input[name='platform'][value='${platform}']`).classList.add("downloaded");
+        }
+
+        function initPlatformSelect() {
+            const radios = document.querySelectorAll("input[name='platform']");
+            for (let r of radios) {
+                r.addEventListener("change", function() {
+                    const plf = this.value;
+
+                    document.querySelector("#weapon_select").clear();
+
+                    if (rivenData[plf].length == 0) {
+                        download(plf);
+                    } else {
+                        selectPlatform(plf);
+                    }
+                });
+            }
         }
         
         function initForm() {
@@ -401,17 +555,25 @@
             let toM = document.querySelector("#to_month");
             let toY = document.querySelector("#to_year");
     
-            let filterButton = document.querySelector(".filters #filter");
-            filterButton.onclick = function() {
+            function reDate() {
                 mindate.setYear(fromY.value);
                 mindate.setMonth(fromM.value);
                 maxdate.setYear(toY.value);
                 maxdate.setMonth(+toM.value + 1);
-                
-                updateXAxis([ mindate, maxdate ])
-                
-                draw(document.querySelector("#weapon_select").getValues());
             }
+
+            function reFilter() {
+                reDate();
+                updateXAxis([ mindate, maxdate ]);
+                draw(document.querySelector("#weapon_select").getValues())
+            }
+
+            fromM.addEventListener("change", reFilter);
+            fromY.addEventListener("change", reFilter);
+            toM.addEventListener("change", reFilter);
+            toY.addEventListener("change", reFilter);
+
+            reDate();
         }
 
         function line(data) {
@@ -434,11 +596,27 @@
                 .y1(function(d) { return y(d.max) })
                 (data.values)
         }
-        
+
+        function yDomain(selectedData) {
+            const min = 0;
+            let max = d3.max(selectedData, function(d) {
+                return d3.max(d.values, function(d) {
+                    const a = d.avg;
+                    if (d.date.getTime() >= mindate.getTime() && d.date.getTime() <= maxdate.getTime())
+                        return d.avg + 100;
+
+                    return 0;
+                });
+            }) || 100;
+
+            max = ((max / 100) | 0) * 100 + 100;
+
+            return [min, max];
+        }
+
         function draw(rivenFilter) {
             let color = d3.scaleOrdinal()
                 .domain(rivenFilter)
-                // .range(d3.schemeCategory10)
                 .range(['#e41a1c','#377eb8','#378234','#984ea3','#ff7f00','#000000','#a65628','#f781bf','#666666']);
 
             let selectedData = sumstat.filter(d => rivenFilter.indexOf(d.key) != -1);
@@ -461,7 +639,7 @@
                 .append("text")
                 .attr("class", "label")
                 .attr("x", 34)
-                .attr("y", function (d, i) { return 12 + i * 25 })
+                .attr("y", function (d, i) { return 14 + i * 25 })
                 .style("fill", function (d) { return color(d) })
                 .text(function (d) { return d })
                 .attr("text-anchor", "left")
@@ -469,8 +647,7 @@
             labels.exit().remove();
             labels.text(function (d) { return d });
 
-            // TODO: limit to daterange
-            updateYAxis([ 0, d3.max(selectedData, (d) => d3.max(d.values, (d) => d.avg + 100)) || 200 ])
+            updateYAxis(yDomain(selectedData))
 
             let lines = lineArea.selectAll(".line")
                 .data(selectedData, d => d.key);

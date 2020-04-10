@@ -14,6 +14,7 @@ class MultiInput extends HTMLElement {
                     padding: 5px;
                     display: flex;
                     flex-wrap: wrap;
+                    border: 0;
                 }
                 /* NB use of pointer-events to only allow events from the × icon */
                 ::slotted(div.item) {
@@ -31,7 +32,7 @@ class MultiInput extends HTMLElement {
                     white-space: pre;
                 }
                 /* NB pointer-events: none above */
-                    ::slotted(div.item:hover) {
+                ::slotted(div.item:hover) {
                     background-color: #333;
                 }
                 ::slotted(input) {
@@ -102,6 +103,11 @@ class MultiInput extends HTMLElement {
             this._allowedValues =
                 this._allowedValues.filter((item) => item !== value);
         }
+
+        this.dispatchEvent(new CustomEvent("alter", {
+            detail: { values: this.getValues() },
+            bubbles: false,
+        }));
     }
 
     // Called when the × icon is tapped/clicked or
@@ -119,6 +125,11 @@ class MultiInput extends HTMLElement {
             this._datalist.insertBefore(option, this._datalist.firstChild);
             this._allowedValues.push(value);
         }
+
+        this.dispatchEvent(new CustomEvent("alter", {
+            detail: { values: this.getValues() },
+            bubbles: false,
+        }));
     }
 
     // Avoid stray text remaining in the input element that's not in a div.item.
@@ -159,6 +170,18 @@ class MultiInput extends HTMLElement {
             values.push(item.textContent);
         }
         return values;
+    }
+
+    clear() {
+        const items = this.querySelectorAll('.item');
+        for (const item of items) {
+            item.remove();
+        }
+
+        this.dispatchEvent(new CustomEvent("alter", {
+            detail: { values: [] },
+            bubbles: false,
+        }));
     }
 }
 
