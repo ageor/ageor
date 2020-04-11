@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title></title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <style>
+            @font-face {
+                font-family: Exo2;
+                src: url(../fonts/Exo2-VariableFont_wght.ttf);
+            }
+
+            * {
+                font-family: Exo2;
+                font-variation-settings: "wght" 200;
+                box-sizing: border-box;
+            }
+
+            body, html {
+                padding: 0;
+                margin: 0;
+                height: 100%;
+            }
+
+            .container {
+                background-image: radial-gradient(circle at 20px 20px, #5e6588, #393652);
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .category {
+                font-size: 32px;
+                color: white;
+                margin-top: 8%;
+            }
+
+            .question {
+                text-align: center;
+                font-size: 58px;
+                padding: 10px 100px;
+                color: white;
+            }
+
+            .answers {
+                margin-top: 40px;
+            }
+
+            .answer {
+                font-variation-settings: "wght" 300;
+                text-align: center;
+                color: #393652;
+                font-size: 40px;
+                margin: 20px;
+                padding: 10px 60px 14px 60px;
+                background-color: white;
+                border-radius: 60px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="category"></div>
+            <div class="question"></div>
+            <div class="answers"></div>
+        </div>
+    </body>
+    <script>
+        let questionSet = null;
+        let currentIdx = 0;
+
+        const t = d3.transition().duration(300).ease(d3.easeQuadOut);
+
+        let answers = d3.select(".answers");
+        function hideAnswers() {
+            let promiseQuestion = d3.select(".question")
+                .transition(t)
+                .delay(1400)
+                .style("opacity", 0)
+                .transition()
+                .duration(200)
+                .end();
+
+            let promiseCategory = d3.select(".category")
+                .transition(t)
+                .delay(1300)
+                .style("opacity", 0)
+                .end();
+
+            let promiseAnswers = answers
+                .selectAll(".answer")
+                .transition(t)
+                .delay((d, i) => 1000 + i * 100)
+                .style("opacity", 0)
+                .style("transform", "translate(30px, 0px)")
+                .end();
+            
+            Promise.all([promiseQuestion, promiseAnswers]).then(function() {
+                nextQuestion();
+            });
+        }
+
+        function questionsReceived(data) {
+            currentIdx = 0;
+            questionSet = data.results;
+            nextQuestion();
+        }
+
+        function shuffle(a) {
+            var j, x, i;
+            for (i = a.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = a[i];
+                a[i] = a[j];
+                a[j] = x;
+            }
+            return a;
+        }
+
+        let areaElement = document.createElement("textarea");
+        function decodeHtml(html) {
+            areaElement.innerHTML = html;
+
+            return areaElement.value;
+        }
+
+        function nextQuestion() {
+            let question = questionSet[currentIdx++];
+
+            if (!question) {
+                getQuestions()
+            } else {
+                let answers = question.incorrect_answers;
+                answers.push(question.correct_answer);
+                showQuestionData(decodeHtml(question.category), decodeHtml(question.question));
+                showAnswers(shuffle(answers), question.correct_answer);
+            }
+
+        }
+
+        function getQuestions() {
+            fetch("https://opentdb.com/api.php?amount=50").then(r => r.json()).then(questionsReceived);
+        }
+
+        function showQuestionData(category, question) {
+            let cat = d3.select(".category")
+                .text(category)
+                .style("opacity", 0)
+                .transition(t)
+                .style("opacity", 1);
+            let q = d3.select(".question")
+                .text(question)
+                .style("opacity", 0)
+                .transition(t)
+                .style("opacity", 1);
+        }
+
+        function showAnswers(data, correct) {
+            let a = answers
+                .selectAll(".answer")
+                .data(data);
+            a.enter()
+                .append("div")
+                .attr("class", "answer")
+                .style("opacity", 0)
+                .merge(a)
+                    .style("transform", "translate(0px, 30px)")
+                    .style("color", null)
+                    .style("background-color", null)
+                    .text(d => decodeHtml(d))
+                    .attr("correct", d => d == correct)
+                    .on("click", function() {
+                        d3.select(this)
+                            .style("color", "white")
+                            .style("background-color", d => d == correct ? "green" : "red");
+                        d3.select(".answer[correct='true']")
+                            .style("color", "white")
+                            .style("background-color", "green");
+                        hideAnswers();
+                    })
+                    .transition(t)
+                    .delay((d, i) => 300 + i * 100)
+                    .style("opacity", 1)
+                    .style("transform", "translate(0px, 0px)");
+        }
+
+        getQuestions();
+    </script>
+</html>
