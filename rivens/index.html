@@ -13,6 +13,7 @@
             html, body {
                 margin: 0;
                 padding: 0;
+                height: 100%;
             }
 
             * {
@@ -29,9 +30,9 @@
             }
 
             body {
-                background-image: radial-gradient(circle at calc(100% - 20px) 20px, #b997a9, #b79dce);
+                /* background-image: radial-gradient(circle at calc(100% - 20px) 20px, #b997a9, #b79dce); */
+                background-image: radial-gradient(circle at 20px 20px, #885e75, #4b3652);
                 padding: 20px;
-                height: 100%;
             }
 
             .graph {
@@ -68,6 +69,7 @@
                 width: 600px;
                 height: 52px;
                 overflow: hidden;
+                box-shadow: 6px 8px 0px 0px rgba(0, 0, 0, 0.2);
             }
 
             .download-status .progress .text {
@@ -87,9 +89,9 @@
                 margin-left: 10px;
                 padding: 20px;
                 flex-grow: 1;
-                background-image: radial-gradient(circle at 20px 20px, #885e75, #4b3652);
+                /* background-image: radial-gradient(circle at 20px 20px, #885e75, #4b3652);
                 border-radius: 6px;
-                box-shadow: 6px 8px 0px 0px rgba(0, 0, 0, 0.2);
+                box-shadow: 6px 8px 0px 0px rgba(0, 0, 0, 0.2); */
                 display: flex;
                 flex-direction: column;
             }
@@ -199,7 +201,7 @@
             }
 
             .filters .date-select {
-                margin-top: 10px;
+                margin-top: 20px;
             }
 
             .filters .date-select .label {
@@ -249,7 +251,7 @@
         <div class="flex content">
             <div class="graph"></div>
             <div class="filters">
-                <div class="header">Filters</div>
+                <div class="header">Filter</div>
                 <div class="platform-select flex">
                     <div class="label platform">Platform</div>
                     <div class="platform-options flex">
@@ -403,7 +405,8 @@
             .duration(300);
         
         let lineArea = null;
-        let selectedPlatform = "pc";
+        let legendContainer = null;
+        let legend = null;
 
         init();
 
@@ -420,8 +423,6 @@
 
         function updateYAxis(domain) {
             y.domain(domain);
-            // yAxis.transition(t)
-            //     .call(d3.axisLeft(y));
             yAxis.call(g => g.select(".domain").attr("stroke-opacity", 0))
                 .call(g => g.selectAll(".tick:first-of-type line").attr("stroke-opacity", 0))
                 .transition(t)
@@ -453,9 +454,6 @@
                     .attr("width", width)
                     .attr("height", height);
             
-            lineArea = svg.append("g")
-                .attr("clip-path", "url(#mask)");
-            
             svg.append("g")
                 .attr("width", width)
                 .attr("height", height)
@@ -472,6 +470,12 @@
             yAxis = svg.append("g")
                 .attr("transform", `translate(${-30}, 0)`);
             
+            lineArea = svg.append("g")
+                .attr("clip-path", "url(#mask)");
+
+            legend = svg.append("g")
+                .attr("class", "legend");
+
             sumstat = d3.nest() // nest function allows to group the calculation per level of a factor
                 .key(function(d) { return d.compatibility; })
                 .entries([]);
@@ -583,8 +587,7 @@
                 // .defined(function(d) {
                 //     return d.date.getTime() < maxdate.getTime() && d.date.getTime() > mindate.getTime();
                 // })
-                // .curve(d3.curveBasis)
-                .curve(d3.curveCatmullRomOpen)
+                .curve(d3.curveCatmullRom)
                 .x(function(d) { return x(d.date); })
                 .y(function(d) { return y(+d.avg); })
                 (data.values)
@@ -623,31 +626,50 @@
 
             let selectedData = sumstat.filter(d => rivenFilter.indexOf(d.key) != -1);
 
-            let dots = svg.selectAll(".dot")
-                .data(rivenFilter);
+            let dots = legend.selectAll(".dot")
+                .data(rivenFilter, d => d);
             dots.enter()
                 .append("circle")
                 .attr("class", "dot")
                 .attr("cx", 20)
                 .attr("cy", function (d, i) { return 12 + i * 25 })
                 .attr("r", 7)
-                .style("fill", function (d) { return color(d) });
-            dots.exit().remove();
+                .style("fill", color)
+                .style("fill-opacity", 1e-6)
+                .merge(dots)
+                    .transition(t)
+                    .style("fill", color)
+                    .style("fill-opacity", 1)
+                    .attr("cy", function (d, i) { return 12 + i * 25 });
+            dots.exit()
+                .transition(t)
+                .style("fill-opacity", 1e-6)
+                .attr("cx", 0)
+                .remove();
 
             // Add one dot in the legend for each name.
-            let labels = svg.selectAll(".label")
-                .data(rivenFilter);
+            let labels = legend.selectAll(".label")
+                .data(rivenFilter, d => d);
             labels.enter()
                 .append("text")
                 .attr("class", "label")
                 .attr("x", 34)
                 .attr("y", function (d, i) { return 14 + i * 25 })
-                .style("fill", function (d) { return color(d) })
-                .text(function (d) { return d })
+                .style("fill", color)
+                .style("fill-opacity", 1e-6)
                 .attr("text-anchor", "left")
-                .style("alignment-baseline", "middle");
-            labels.exit().remove();
-            labels.text(function (d) { return d });
+                .style("alignment-baseline", "middle")
+                .merge(labels)
+                    .text(d => d)
+                    .transition(t)
+                    .style("fill-opacity", 1)
+                    .attr("y", function (d, i) { return 14 + i * 25 })
+                    .style("fill", color);
+            labels.exit()
+                .transition(t)
+                .attr("x", 14)
+                .style("opacity", 1e-6)
+                .remove();
 
             updateYAxis(yDomain(selectedData))
 
@@ -661,16 +683,59 @@
 
             lines.enter()
                 .append("path")
-                    .transition(t)
                     .attr("class", "line")
                     .attr("fill", "none")
                     .attr("stroke", function(d) { return color(d.key) })
                     .attr("stroke-width", 1.5)
-                    .attr("d", (d) => line(d));
-            lines.transition(t)
-                .attr("stroke", function(d) { return color(d.key) })
-                .attr("d", (d) => line(d));
+                    .style("stroke-opacity", 1e-6)
+                    .merge(lines)
+                        .transition(t)
+                        .style("stroke-opacity", 1)
+                        .attr("stroke", function(d) { return color(d.key) })
+                        .attr("d", line);
+
+            let detail = lineArea.selectAll(".detail")
+                .data(selectedData, d => d.key);
+            detail.exit()
+                .transition(t)
+                .style("opacity", 0)
+                .remove();
+            detail = detail.enter()
+                .append("g")
+                    .attr("class", "detail")
+                    .merge(detail);
+
+            let detailDots = detail.selectAll("circle")
+                .data(d => d.values);
+            detailDots = detailDots.enter()
+                .append("circle")
+                .style("fill-opacity", 1e-6)
+                .attr("fill", d => color(d.compatibility))
+                .attr("r", 1e-6)
+                .attr("cx", function(d) { return x(d.date); })
+                .attr("cy", function(d) { return y(d.avg); })
+                .merge(detailDots)
+                    .transition(t)
+                    .attr("r", 3)
+                    .style("fill-opacity", 1)
+                    .attr("cx", function(d) { return x(d.date); })
+                    .attr("cy", function(d) { return y(d.avg); })
+                    .attr("fill", d => color(d.compatibility));
             
+                    // .on("mouseover", function(d) {
+                    //     div.transition()
+                    //         .duration(200)
+                    //         .style("opacity", .9);
+                    //     div.html(formatTime(d.date) + "<br/>"  + d.close)
+                    //         .style("left", (d3.event.pageX) + "px")
+                    //         .style("top", (d3.event.pageY - 28) + "px");
+                    //     })
+                    // .on("mouseout", function(d) {
+                    //     div.transition()
+                    //         .duration(500)
+                    //         .style("opacity", 0);
+                    // });
+
             let showMinMax = false;
             if (!showMinMax) return;
 
