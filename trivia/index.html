@@ -21,6 +21,10 @@
                 height: 100%;
             }
 
+            .transition * {
+                pointer-events: none;
+            }
+
             .container {
                 background-image: radial-gradient(circle at 20px 20px, #5e6588, #393652);
                 width: 100%;
@@ -33,7 +37,7 @@
             .category {
                 font-size: 32px;
                 color: white;
-                margin-top: 8%;
+                margin-top: 6%;
             }
 
             .question {
@@ -44,7 +48,7 @@
             }
 
             .answers {
-                margin-top: 40px;
+                margin-top: 10px;
             }
 
             .answer {
@@ -157,11 +161,12 @@
                 .style("opacity", 1);
         }
 
-        function showAnswers(data, correct) {
+        async function showAnswers(data, correct) {
             let a = answers
                 .selectAll(".answer")
                 .data(data);
-            a.enter()
+
+            await a.enter()
                 .append("div")
                 .attr("class", "answer")
                 .style("opacity", 0)
@@ -178,12 +183,18 @@
                         d3.select(".answer[correct='true']")
                             .style("color", "white")
                             .style("background-color", "green");
+
+                        document.querySelector(".container").classList.add("transition");
+
                         hideAnswers();
                     })
                     .transition(t)
                     .delay((d, i) => 300 + i * 100)
                     .style("opacity", 1)
-                    .style("transform", "translate(0px, 0px)");
+                    .style("transform", "translate(0px, 0px)")
+                    .end();
+
+            document.querySelector(".container").classList.remove("transition");
         }
 
         getQuestions();
