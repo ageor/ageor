@@ -7,6 +7,7 @@
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
+        <div id="debug">Debug</div>
         <div class="container theme-a">
             <div class="score nopoint">
                 <div class="points">0</div>
@@ -14,4 +15,16 @@
             </div>
         </div>
     </body>
+    <script>
+        let dbg = document.getElementById("debug");
+
+        function debugTarget(e) {
+            dbg.innerText = e.srcElement.tagName + "   " + e.srcElement.classList.value;
+        }
+
+        // dbg.innerText = window.devicePixelRatio;
+
+        window.addEventListener("touchstart", debugTarget);
+        window.addEventListener("mousedown", debugTarget);
+    </script>
 </html>

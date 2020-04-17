@@ -1,5 +1,6 @@
 let gridSize = 9;
-let cellSize = 50;
+// let cellSize = 50;
+let cellSize = (window.innerWidth / 300 | 0) * 10 * window.devicePixelRatio;
 let padding = 30;
 
 let svg = null;
@@ -381,7 +382,7 @@ function drawElement(elementIdx, slot) {
     drag(svg.selectAll(".element"), element);
 }
 
-async function checkFilled() {
+function checkFilled() {
     let clearRows = [];
     for (let y = 0; y < gridSize; y++) {
         if (checkRow(y)) clearRows.push(y);
