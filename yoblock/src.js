@@ -1,7 +1,12 @@
+let scaling = window.devicePixelRatio;
 let gridSize = 9;
-// let cellSize = 50;
-let cellSize = (window.innerWidth / 300 | 0) * 10 * window.devicePixelRatio;
-let padding = 30;
+
+while (50 * scaling * 12 > window.innerWidth - 40) {
+    scaling -= 0.1;
+}
+
+let cellSize = 50 * scaling;
+let padding = 30 * scaling;
 
 let svg = null;
 let cells = null;
@@ -137,17 +142,26 @@ const color = d3.scaleOrdinal()
         'var(--fig-18)',
     ]);
 
+let margins = {
+    t: 10 * scaling,
+    b: 10 * scaling,
+    l: 10 * scaling,
+    r: 10 * scaling,
+};
+
 let b = {
-    m: { t: 10, b: 10, l: 10, r: 10 },
+    m: margins,
     w: gridSize * cellSize,
     h: gridSize * cellSize,
 };
 
 let d = {
-    m: { t: 10, b: 10, l: 10, r: 10 },
-    w: cellSize * 12 + 20,
+    m: margins,
+    w: cellSize * 12 + margins.l + margins.r,
     h: cellSize * 4,
 }
+
+let roundRadius = 6 * scaling;
 
 let hdiff = (d.w - b.w) / 2;
 
@@ -168,8 +182,8 @@ function buildGrid() {
         .attr("x", hdiff)
         .attr("width", b.w + b.m.l + b.m.r)
         .attr("height", b.h + b.m.b + b.m.l)
-        .attr("rx", 6)
-        .attr("ry", 6)
+        .attr("rx", roundRadius)
+        .attr("ry", roundRadius)
         .attr("fill", "#8f4f00")
         .attr("fill", "#000")
         .style("fill-opacity", 0.9);
@@ -207,8 +221,8 @@ function buildGrid() {
 
 function drawRect(e) {
     e.append("rect")
-        .attr("rx", 6)
-        .attr("ry", 6)
+        .attr("rx", roundRadius)
+        .attr("ry", roundRadius)
         .attr("stroke", "black")
         .attr("stroke-width", 1)
         .style("stroke-opacity", 1)
@@ -270,8 +284,8 @@ function buildDash() {
         .append("rect")
         .attr("width", d.w + d.m.l + d.m.r)
         .attr("height", d.h + d.m.t + d.m.b)
-        .attr("rx", 6)
-        .attr("ry", 6)
+        .attr("rx", roundRadius)
+        .attr("ry", roundRadius)
         .attr("fill", "#000")
         .style("fill-opacity", 0.9);
 }
@@ -290,19 +304,22 @@ function drawElement(elementIdx, slot) {
     let element = elements[elementIdx];
     let ew = element[0].length * cellSize;
     let eh = element.length * cellSize;
-    let x = 
-        10
+    let x =
+        + margins.l
         + (cellSize * 4 - ew) / 2
-        + 10 * slot
+        + margins.l * slot
         + slot * 4 * cellSize;
     
     let y =
-        10
+        + b.m.t
+        + b.h
+        + padding
         + (cellSize * 4 - eh) / 2;
 
-    let e = d3.select(".dash")
-        .append("g")
+    let e = svg.append("g")
         .attr("class", "element")
+        .attr("data-x", x)
+        .attr("data-y", y)
         .attr("transform", `translate(${x}, ${y})`)
         .attr("fill", d => color(elementIdx + 1))
         .attr("data-elem", elementIdx);
@@ -325,8 +342,8 @@ function drawElement(elementIdx, slot) {
                 // .attr("y", 1)
                 .attr("width", cellSize)
                 .attr("height", cellSize)
-                .attr("rx", 6)
-                .attr("ry", 6)
+                .attr("rx", roundRadius)
+                .attr("ry", roundRadius)
                 .style("fill-opacity", 0)
                 .transition(t)
                 .style("fill-opacity", d => !!d && 1 || 0)
@@ -336,28 +353,31 @@ function drawElement(elementIdx, slot) {
         let o = {
             x: 0,
             y: 0,
-        };
+        }
 
         function dragstarted() {
-            o.x = this.transform.baseVal[0].matrix.e;
-            o.y = this.transform.baseVal[0].matrix.f;
+            const parent = this.parentElement;
+            parent.removeChild(this);
+            parent.appendChild(this);
+            o.x = +this.dataset.x;
+            o.y = +this.dataset.y;
             // d3.select(this).raise().attr("stroke", "black");
         }
 
         function dragged() {
             let s = d3.event.subject;
-            let x = o.x + d3.event.x - s.x;
-            let y = o.y + d3.event.y - s.y;
+            o.x = +this.dataset.x + d3.event.x - s.x;
+            o.y = +this.dataset.y + d3.event.y - s.y;
 
             d3.select(this)
-                .attr("transform", `translate(${x}, ${y})`)
+                .attr("transform", `translate(${o.x}, ${o.y})`)
         }
 
         function dragended() {
-            let ex = this.transform.baseVal[0].matrix.e;
-            let ey = this.transform.baseVal[0].matrix.f;
+            let ex = o.x;
+            let ey = o.y;
             let gx = Math.round((ex - b.m.l - hdiff) / cellSize);
-            let gy = Math.round((ey + padding + b.h) / cellSize);
+            let gy = Math.round((ey - b.m.t) / cellSize);
 
             let success = applyToGrid(this.dataset.elem, gx, gy);
             if (success) {
@@ -369,7 +389,7 @@ function drawElement(elementIdx, slot) {
 
             d3.select(this)
                 .transition(t)
-                .attr("transform", `translate(${o.x}, ${o.y})`)
+                .attr("transform", `translate(${this.dataset.x}, ${this.dataset.y})`)
                 .on("end", yespoint);
         }
 
@@ -396,7 +416,7 @@ function checkFilled() {
     clear(clearRows, clearCols);
 
     let total = clearRows.length + clearCols.length;
-    score += total * cellSize * total;
+    score += total * total * 50;
 
     const points = d3.select(".score .points");
     points.text(score);
@@ -514,7 +534,7 @@ buildGrid();
 buildDash();
 
 function randomElems() {
-    d3.selectAll(".dash .element").remove();
+    d3.selectAll(".element").remove();
 
     let indices = [];
 
