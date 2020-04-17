@@ -1,0 +1,124 @@
+@font-face {
+    font-family: Exo2;
+    src: url(../fonts/Exo2-VariableFont_wght.ttf);
+}
+
+* {
+    font-family: Exo2;
+    font-variation-settings: "wght" 200;
+    box-sizing: border-box;
+}
+
+body, html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.theme-zero {
+    --dark-cell-bg: #ee9e42;
+    --light-cell-bg: #eb8d2b; 
+    --grad-a: #ffa950;
+    --grad-b: #de7b00;
+    --fig-0: #e41a1c;
+    --fig-1: #d92662;
+    --fig-2: #377eb8; 
+    --fig-3: #3794b8;
+    --fig-4: #377eb8;
+    --fig-5: #3794b8;
+    --fig-6: #377eb8;
+    --fig-7: #3794b8;
+    --fig-8: #377eb8;
+    --fig-9: #3794b8;
+    --fig-10: #378234;
+    --fig-11: #378234;
+    --fig-12: #378234;
+    --fig-13: #378234;
+    --fig-14: #a65628;
+    --fig-15: #a65628;
+    --fig-16: #a65628;
+    --fig-17: #a65628;
+    --fig-18: #984ea3;
+}
+
+.theme-a {
+    --dark-cell-bg: #566b79;
+    --light-cell-bg: #b2b4b7;
+    --grad-a: #a4a9ab;
+    --grad-b: #607779;
+    --fig-0: #2082bf;
+    --fig-1: #419bd4;
+    --fig-2: #c515f9;
+    --fig-3: #ea89d4;
+    --fig-4: #f558ed;
+    --fig-5: #b83794;
+    --fig-6: #c779bc;
+    --fig-7: #bf5cef;
+    --fig-8: #a637b8;
+    --fig-9: #b97acc;
+    --fig-10: #51e69a;
+    --fig-11: #59b586;
+    --fig-12: #90f9bf;
+    --fig-13: #50d2a8;
+    --fig-14: #f7e48c;
+    --fig-15: #feffaa;
+    --fig-16: #f9d189;
+    --fig-17: #fbee92;
+    --fig-18: #fb6059;
+}
+
+.container {
+    background-image:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.1) 30%, transparent 30%),
+        linear-gradient(70deg, rgba(255, 255, 255, 0.1) 22%, transparent 22%),
+        linear-gradient(-110deg, rgba(255, 255, 255, 0.1) 32%, transparent 32%),
+        radial-gradient(circle at 50% 20%, var(--grad-a), var(--grad-b));
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score {
+    margin-bottom: 10px;
+    margin-top: -20px;
+    background-color: white;
+    padding: 0 10px 4px 10px;
+    line-height: 40px;
+    border-radius: 6px;
+    height: 44px;
+    position: relative;
+    overflow: hidden;
+}
+
+.score .points {
+    font-size: 40px;
+    opacity: 1;
+    text-align: center;
+}
+
+.score .message {
+    white-space: pre;
+    font-size: 30px;
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.nopoint {
+    pointer-events: none;
+}
+
+.dark-cell-bg {
+    /* fill: #d8a369ad; */
+    /* fill: #9a774c; */
+    fill: var(--dark-cell-bg);
+}
+
+.light-cell-bg {
+    /* fill: #d8bd80; */
+    fill: var(--light-cell-bg);
+}
