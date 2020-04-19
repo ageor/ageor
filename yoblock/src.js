@@ -161,7 +161,32 @@ let d = {
     h: cellSize * 4,
 }
 
-let roundRadius = 6 * scaling;
+let themes = {
+    chill: {
+        themeClass: "theme-a",
+        bigRadius: 6 * scaling,
+        smallRadius: 0,
+        cellBackgrounds: {
+            margin: 0,
+            strokeWidth: 0,
+        },
+        elementRadius: 6 * scaling,
+    },
+    forest: {
+        themeClass: "theme-forest-candy",
+        bigRadius: 8 * scaling,
+        smallRadius: 2 * scaling,
+        cellBackgrounds: {
+            margin: 2 * scaling,
+            strokeWidth: 1 * scaling,
+        },
+        elementRadius: 4 * scaling,
+    }
+}
+
+let themeNames = Object.keys(themes);
+let themeIdx = 0;
+let theme = themes.chill;
 
 let hdiff = (d.w - b.w) / 2;
 
@@ -179,12 +204,13 @@ function buildGrid() {
 
     // background
     svg.append("rect")
+        .attr("class", "board-bg")
         .attr("x", hdiff)
         .attr("width", b.w + b.m.l + b.m.r)
         .attr("height", b.h + b.m.b + b.m.l)
-        .attr("rx", roundRadius)
-        .attr("ry", roundRadius)
-        .attr("fill", "#8f4f00")
+        .attr("rx", theme.bigRadius)
+        .attr("ry", theme.bigRadius)
+        // .attr("fill", "#8f4f00")
         .attr("fill", "#000")
         .style("fill-opacity", 0.9);
     
@@ -193,18 +219,23 @@ function buildGrid() {
         .attr("transform", "translate(" + (hdiff + b.m.l) + ", " + b.m.l + ")")
         
     // cellBackgrounds
-    board.selectAll(".cell")
+    board.selectAll(".cell-bg")
         .data(grid)
         .enter()
         .append("rect")
-            .attr("transform", (d, i) => `translate(${(i % gridSize) * cellSize}, ${((i / gridSize) | 0) * cellSize})`)
-            .attr("width", cellSize + "px")
-            .attr("height", cellSize + "px")
+            .attr("data-x", (d, i) => i % gridSize)
+            .attr("data-y", (d, i) => (i / gridSize) | 0)
+            // .attr("transform", function() {
+            //     return `translate(${+this.dataset.x * cellSize}, ${+this.dataset.y * cellSize})`
+            // })
+            // .attr("width", cellSize)
+            // .attr("height", cellSize)
+            .attr("stroke", "var(--cell-stroke)")
+            .style("stroke-opacity", 1)
+
             .style("fill-opacity", 1)
             .attr("class", (d, i) => (i % 2) ? "light-cell-bg" : "dark-cell-bg")
-            // .attr("stroke", "white")
-            // .attr("stroke-width", 1.5)
-            // .style("stroke-opacity", 0.5);
+            .classed("cell-bg", true)
     
     // cells
     board.selectAll(".cell")
@@ -217,12 +248,44 @@ function buildGrid() {
             .attr("class", "elem")
     
     redrawCells(grid);
+
+    applyTheme("chill");
+}
+
+function applyTheme(name) {
+    if (!themes[name]) return;
+
+    theme = themes[name];
+    themeIdx = themeNames.indexOf(name);
+
+    d3.select(".container").attr("class", "container " + theme.themeClass);
+
+    svg.select(".board-bg")
+        .attr("rx", theme.bigRadius)
+        .attr("ry", theme.bigRadius)
+
+    svg.select(".dash rect")
+        .attr("rx", theme.bigRadius)
+        .attr("ry", theme.bigRadius)
+
+    let cbg = theme.cellBackgrounds;
+    d3.selectAll(".cell-bg")
+        .attr("transform", function() {
+            return `translate(${+this.dataset.x * cellSize + cbg.margin}, ${+this.dataset.y * cellSize + cbg.margin})`
+        })
+        .attr("width", cellSize - cbg.margin * 2)
+        .attr("height", cellSize - cbg.margin * 2)
+        .attr("rx", cbg.margin)
+        .attr("ry", cbg.margin)
+        .attr("stroke-width", cbg.strokeWidth)
+        .attr("stroke", "var(--cell-stroke)")
+        .style("stroke-opacity", 1)
 }
 
 function drawRect(e) {
     e.append("rect")
-        .attr("rx", roundRadius)
-        .attr("ry", roundRadius)
+        .attr("rx", theme.elementRadius)
+        .attr("ry", theme.elementRadius)
         .attr("stroke", "black")
         .attr("stroke-width", 1)
         .style("stroke-opacity", 1)
@@ -236,7 +299,7 @@ function drawRect(e) {
 function redrawCells(grid) {
     let deletion = false;
 
-    let elements = d3.select(".board")
+    d3.select(".board")
         .selectAll(".cell")
         .data(grid)
         .select(".elem")
@@ -251,14 +314,15 @@ function redrawCells(grid) {
                 d3.select(this)
                     .select("rect")
                     .transition(t)
-                    .attr("height", cellSize - 10)
-                    .attr("width", cellSize - 10)
-                    .attr("x", 5)
-                    .attr("y", 5)
+                    .ease(d3.easeCubicOut)
+                    .attr("height", cellSize - 10 * scaling)
+                    .attr("width", cellSize - 10 * scaling)
+                    .attr("x", 5 * scaling)
+                    .attr("y", 5 * scaling)
                     .transition()
                     .duration(160)
-                    .delay(100)
-                    .ease(d3.easeCubicOut)
+                    // .delay(100)
+                    .ease(d3.easeBackIn.overshoot(1.5))
                     .style("fill-opacity", 0)
                     .attr("stroke-width", 0)
                     .attr("height", 0)
@@ -273,7 +337,7 @@ function redrawCells(grid) {
 
     if (deletion) {
         nopoint();
-        d3.transition().duration(560).on("end", yespoint);
+        d3.transition().duration(460).on("end", yespoint);
     }
 }
 
@@ -284,8 +348,8 @@ function buildDash() {
         .append("rect")
         .attr("width", d.w + d.m.l + d.m.r)
         .attr("height", d.h + d.m.t + d.m.b)
-        .attr("rx", roundRadius)
-        .attr("ry", roundRadius)
+        .attr("rx", theme.bigRadius)
+        .attr("ry", theme.bigRadius)
         .attr("fill", "#000")
         .style("fill-opacity", 0.9);
 }
@@ -302,27 +366,31 @@ function yespoint() {
 
 function drawElement(elementIdx, slot) {
     let element = elements[elementIdx];
+    let slotSize = 4 * cellSize;
+    let sx = margins.l + (margins.l + slotSize) * slot;
+    let sy = b.m.t + b.h + padding;
     let ew = element[0].length * cellSize;
     let eh = element.length * cellSize;
-    let x =
-        + margins.l
-        + (cellSize * 4 - ew) / 2
-        + margins.l * slot
-        + slot * 4 * cellSize;
-    
-    let y =
-        + b.m.t
-        + b.h
-        + padding
-        + (cellSize * 4 - eh) / 2;
+    let ex = (cellSize * 4 - ew) / 2;
+    let ey = (cellSize * 4 - eh) / 2;
 
-    let e = svg.append("g")
+    let s = svg.append("g")
         .attr("class", "element")
-        .attr("data-x", x)
-        .attr("data-y", y)
-        .attr("transform", `translate(${x}, ${y})`)
+        .attr("data-x", sx)
+        .attr("data-y", sy)
+        .attr("data-ex", ex)
+        .attr("data-ey", ey)
+        .attr("transform", `translate(${sx}, ${sy})`)
         .attr("fill", d => color(elementIdx + 1))
-        .attr("data-elem", elementIdx);
+        .attr("data-elem", elementIdx)
+
+    s.append("rect")
+        .attr("width", slotSize)
+        .attr("height", slotSize)
+        .style("fill-opacity", 0)
+
+    let e = s.append("g")
+        .attr("transform", `translate(${ex}, ${ey})`);
     
     e.selectAll(".row")
         .data(element)
@@ -337,17 +405,21 @@ function drawElement(elementIdx, slot) {
                 .attr("class", "cell")
                 .attr("stroke", "black")
                 .attr("stroke-width", 1)
-                .style("stroke-opacity", 0)
-                .attr("x", (d, i) => i * cellSize)
-                // .attr("y", 1)
-                .attr("width", cellSize)
-                .attr("height", cellSize)
-                .attr("rx", roundRadius)
-                .attr("ry", roundRadius)
-                .style("fill-opacity", 0)
-                .transition(t)
+                .attr("x", (d, i) => i * cellSize + cellSize / 2)
+                .attr("y", (d, i) => cellSize / 2)
+                .attr("width", 0)
+                .attr("height", 0)
+                .attr("rx", theme.elementRadius)
+                .attr("ry", theme.elementRadius)
                 .style("fill-opacity", d => !!d && 1 || 0)
                 .style("stroke-opacity", d => !!d && 1 || 0)
+                .transition(t)
+                .ease(d3.easeCircleInOut)
+                .delay((d, i) => i * 60 + slot * 100)
+                .attr("x", (d, i) => i * cellSize)
+                .attr("y", 0)
+                .attr("width", cellSize)
+                .attr("height", cellSize)
     
     function drag(e, element) {
         let o = {
@@ -361,7 +433,8 @@ function drawElement(elementIdx, slot) {
             parent.appendChild(this);
             o.x = +this.dataset.x;
             o.y = +this.dataset.y;
-            // d3.select(this).raise().attr("stroke", "black");
+            // console.log(d3.event, o);
+            // d3.select(this).style("fill-opacity", 0);
         }
 
         function dragged() {
@@ -369,13 +442,18 @@ function drawElement(elementIdx, slot) {
             o.x = +this.dataset.x + d3.event.x - s.x;
             o.y = +this.dataset.y + d3.event.y - s.y;
 
+            let ex = +this.dataset.ex + o.x;
+            let ey = +this.dataset.ey + o.y;
+            let gx = Math.round((ex - b.m.l - hdiff) / cellSize);
+            let gy = Math.round((ey - b.m.t) / cellSize);
+
             d3.select(this)
                 .attr("transform", `translate(${o.x}, ${o.y})`)
         }
 
         function dragended() {
-            let ex = o.x;
-            let ey = o.y;
+            let ex = +this.dataset.ex + o.x;
+            let ey = +this.dataset.ey + o.y;
             let gx = Math.round((ex - b.m.l - hdiff) / cellSize);
             let gy = Math.round((ey - b.m.t) / cellSize);
 
@@ -389,6 +467,7 @@ function drawElement(elementIdx, slot) {
 
             d3.select(this)
                 .transition(t)
+                .ease(d3.easeBackOut.overshoot(1.7))
                 .attr("transform", `translate(${this.dataset.x}, ${this.dataset.y})`)
                 .on("end", yespoint);
         }
@@ -563,3 +642,7 @@ function warn() {
 }
 
 setTimeout(warn, hourMS);
+
+document.querySelector(".score").onclick = function() {
+    applyTheme(themeNames[(themeIdx + 1) % themeNames.length]);
+}

@@ -68,6 +68,33 @@ body, html {
     --fig-18: #fb6059;
 }
 
+.theme-forest-candy {
+    --dark-cell-bg: #0f1f0a;
+    --light-cell-bg: #142707;
+    --cell-stroke: #30471f;
+    --grad-a: #392d1b;
+    --grad-b: #572b10;
+    --fig-0: #009dff;
+    --fig-1: #0051e9;
+    --fig-2: #ff2600;
+    --fig-3: #ff002b;
+    --fig-4: #ff3c00;
+    --fig-5: #ff5500;
+    --fig-6: #ff0000;
+    --fig-7: #ff002b;
+    --fig-8: #ff1e00;
+    --fig-9: #ff1414;
+    --fig-10: #10ff00;
+    --fig-11: #00ff08;
+    --fig-12: #27ff00;
+    --fig-13: #1cff00;
+    --fig-14: #fffb00;
+    --fig-15: #fbff00;
+    --fig-16: #ffee00;
+    --fig-17: #ffe100;
+    --fig-18: #001aff;
+}
+
 .container {
     background-image:
         linear-gradient(120deg, rgba(255, 255, 255, 0.1) 30%, transparent 30%),
@@ -83,7 +110,6 @@ body, html {
 }
 
 .score {
-    pointer-events: none;
     margin-bottom: 10px;
     margin-top: -20px;
     background-color: white;
@@ -93,6 +119,9 @@ body, html {
     height: 44px;
     position: relative;
     overflow: hidden;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 .nopoint {
