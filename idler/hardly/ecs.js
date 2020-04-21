@@ -45,7 +45,7 @@ function system_idx(arr, item) {
 }
 
 // Components
-const comCache = new Map();
+const _comCache = new Map();
 
 function destroyComponent(c) { 
     c.recycled = true;
@@ -53,7 +53,7 @@ function destroyComponent(c) {
 
 // Register a component by passing the constructor
 function registerComponent(com) {
-    if (comCache.has(com.name)) {
+    if (_comCache.has(com.name)) {
         err(`registerComponent: component ${com.name} already exist`);
 
         return;
@@ -61,7 +61,7 @@ function registerComponent(com) {
 
     com.prototype.recycled = false;
 
-    comCache.set(com.name, {
+    _comCache.set(com.name, {
         object: com,
         cache: new Array(),
     });
@@ -71,7 +71,7 @@ function registerComponent(com) {
 
 // Create a registered component by its name
 function createComponent(comName) {
-    let comInfo = comCache.get(comName);
+    let comInfo = _comCache.get(comName);
     if (!comInfo) {
         err(`createComponent: component not found ${com}`);
         
@@ -230,9 +230,9 @@ class Query {
 }
 
 // ECS
-let systemCount = 0; // Used to create an Order ID for Systems when added to an ECS
-let entityCount = 0;
-const queryOutCache = new Array();
+let _systemCount = 0; // Used to create an Order ID for Systems when added to an ECS
+let _entityCount = 0;
+const _queryOutCache = new Array();
 
 class ECS {
     constructor() {
@@ -249,7 +249,7 @@ class ECS {
     createEntity(comList = null, eName = null) {
         let i, e;
 
-        if (!eName) eName = `Entity ${entityCount++}`;
+        if (!eName) eName = `Entity ${_entityCount++}`;
 
         for (i = 0; i < this.entities.length; i++) {
             if (this.entities[i].meta.recycled) {
@@ -259,7 +259,7 @@ class ECS {
                 e.meta.recycled = false;
                 e.meta.name = eName;
                 e.meta.active = true;
-                e.meta.id = entityCount;
+                e.meta.id = _entityCount;
                 
                 break;
             }
@@ -306,7 +306,7 @@ class ECS {
 
         this.systems.add({
             system: sys,
-            order: ++systemCount,
+            order: ++_systemCount,
             name: sys.constructor.name,
             query: comList,
             queryName: queryName,
@@ -405,7 +405,7 @@ class ECS {
             cFind = 0,
             e, c;
 
-        queryOutCache.length = 0;
+        _queryOutCache.length = 0;
 
         for (e of this.entities) {
             if (!e.meta.active) continue;
@@ -417,10 +417,10 @@ class ECS {
                 else cFind++;
             }
 
-            if (cFind == cLen) queryOutCache.push(e);
+            if (cFind == cLen) _queryOutCache.push(e);
         }
 
-        return queryOutCache;
+        return _queryOutCache;
     }
 }
 
