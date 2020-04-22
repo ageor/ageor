@@ -1,11 +1,11 @@
-const Components = [];
+const Components = ["text_set.js"];
 
-const Systems = ["time_system.js"];
+const Systems = ["localization_system.js","time_system.js"];
 
-const Prototypes = [];
+const Prototypes = ["locale/en.json"];
 
 const Assets = [];
 
-const Importers = [];
+const Importers = ["importers/json_importer.js"];
 
 export { Components, Systems, Prototypes, Assets, Importers };

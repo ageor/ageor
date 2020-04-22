@@ -1,0 +1,11 @@
+{
+    "name": "English",
+    "components": {
+        "TextSet": {
+            "language": "en",
+            "texts": {
+                "play": "Play!"
+            }
+        }
+    }
+}

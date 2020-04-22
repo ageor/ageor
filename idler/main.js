@@ -6,8 +6,11 @@ export default async function init() {
     await hardly.init();
 
     hardly.addSystem("Time", 1);
+    hardly.addSystem("Localization", 2);
 
     hardly.initSystems();
+
+    hardly.load("locale/en");
 
     window.dbg = hardly;
 
