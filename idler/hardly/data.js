@@ -1,8 +1,8 @@
-const Components = ["text_set.js"];
+const Components = ["biome.js","text_set.js"];
 
-const Systems = ["localization_system.js","time_system.js"];
+const Systems = ["biome_system.js","localization_system.js","time_system.js"];
 
-const Prototypes = ["locale/en.json"];
+const Prototypes = ["biomes/west_town.json","locale/en.json"];
 
 const Assets = [];
 

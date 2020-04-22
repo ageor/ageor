@@ -8,9 +8,12 @@ export default async function init() {
     hardly.addSystem("Time", 1);
     hardly.addSystem("Localization", 2);
 
+    hardly.addSystem("Biome", 50);
+
     hardly.initSystems();
 
     hardly.load("locale/en");
+    hardly.load("biomes/west_town");
 
     window.dbg = hardly;
 

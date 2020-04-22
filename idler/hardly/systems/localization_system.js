@@ -21,6 +21,6 @@ export default class LocalizationSystem {
     }
 
     removed(e) {
-        err(`LocalizationSystem: Removed language ${e.TextSet.language}`);
+        err(`LocalizationSystem: Removed language ${e.meta.name}`);
     }
 };
