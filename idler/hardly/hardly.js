@@ -5,8 +5,8 @@ import { Components, Systems, Prototypes, Assets, Importers } from "./data.js";
 // Components and Systems are imports and need ./ prefixed
 const _componentsPrefix = "./components/";
 const _systemsPrefix = "./systems/";
-const _protoPrefix = "prototype/";
-const _assetsPrefix = "assets/";
+const _protoPrefix = "hardly/prototype/";
+const _assetsPrefix = "hardly/assets/";
 
 const _ecs = new ECS();
 const _debug = true;
@@ -125,6 +125,7 @@ export default class Hardly {
 
         this.ECS = _ecs;
         this.Importers = _importers;
+        this.PrototypeData = _prototypeData;
     }
 
     async init() {
@@ -167,7 +168,7 @@ export default class Hardly {
         }
 
         let objectData = _prototypeData[prototypeName];
-        let entity = this.ecs.createEntity(Object.keys(objectData.components), objectData.name);
+        let entity = _ecs.createEntity(Object.keys(objectData.components), objectData.name);
 
         let componentName, componentData, component, property;
 

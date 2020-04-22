@@ -116,7 +116,7 @@ class Entity {
         for (let c in this) {
             if (c == "meta" || c == "ecs") continue;
 
-            this.ecs.query_flush(c);
+            this.ecs.flushQuery(c);
         }
     }
 
@@ -132,7 +132,7 @@ class Entity {
 
         e[c.constructor.name] = c;
 
-        e.ecs.query_flush(c.constructor.name);
+        e.ecs.flushQuery(c.constructor.name);
         
         return this;
     }
@@ -265,15 +265,13 @@ class ECS {
             }
         }
 
-        if (!e) e = this.addEntity(new Entity(eName));
+        if (!e) this.entities.push(e = new Entity(eName));
 
         e.ecs = this;
 
         if (comList) {
             Entity.addComponentFromList(e, comList);
         }
-
-        this.entities.push(e);
 
         return e;
     }
@@ -328,7 +326,9 @@ class ECS {
                 s.system.entities = q.results;
             }
 
-            s.system.init();
+            if (s.system.init) {
+                s.system.init();
+            }
         }
 
         this.updateQueries();
@@ -339,7 +339,9 @@ class ECS {
     update() {
         let s;
         for (s of this.systems) {
-            s.system.update();
+            if (s.system.init) {
+                s.system.update();
+            }
         }
 
         this.updateQueries();
