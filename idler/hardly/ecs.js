@@ -73,7 +73,7 @@ function registerComponent(com) {
 function createComponent(comName) {
     let comInfo = _comCache.get(comName);
     if (!comInfo) {
-        err(`createComponent: component not found ${com}`);
+        err(`createComponent: component not found ${comName}`);
         
         return null;
     }

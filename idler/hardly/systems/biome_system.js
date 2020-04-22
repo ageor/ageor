@@ -15,7 +15,7 @@ export default class BiomeSystem {
         biome.prestiege = 0;
         biome.capital = biome.initialCapital;
 
-        _biomes.push(e);
+        _biomes.push(biome);
 
         biome.biz = [];
 

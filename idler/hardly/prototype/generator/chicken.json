@@ -6,6 +6,10 @@
             "exponent": 1.07,
             "baseRevenue": 1,
             "baseCycle": 0.6
+        },
+        "GeneratorDom": {
+            "selector": ".container .biome.west .biz .generators",
+            "klass": "generator"
         }
     }
 }

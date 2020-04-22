@@ -10,6 +10,7 @@ export default class BizSystem {
     added(e) {
         let gen, biz = e.Biz;
         biz.gen = [];
+        biz.owned = false;
 
         for (gen of biz.generators) {
             biz.gen.push(_hardly.load(gen));

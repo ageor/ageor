@@ -4,8 +4,17 @@
         "Biz": {
             "generators": [
                 "generator/chicken",
-                "generator/sheep"
+                "generator/sheep",
+                "generator/goat",
+                "generator/cow",
+                "generator/donkey",
+                "generator/horse"
             ]
+        },
+        "BizDom": {
+            "bizNameKey": "barn",
+            "selector": ".container .biome.west",
+            "klass": "biz"
         }
     }
 }

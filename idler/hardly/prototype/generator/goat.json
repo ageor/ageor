@@ -1,11 +1,11 @@
 {
-    "name": "Sheep",
+    "name": "Goat",
     "components": {
         "Generator": {
-            "baseCost": 60,
-            "exponent": 1.15,
-            "baseRevenue": 60,
-            "baseCycle": 3
+            "baseCost": 720,
+            "exponent": 1.14,
+            "baseRevenue": 540,
+            "baseCycle": 6
         },
         "GeneratorDom": {
             "selector": ".container .biome.west .biz .generators",

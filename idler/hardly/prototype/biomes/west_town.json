@@ -5,6 +5,10 @@
             "initialCapital": 10000,
             "baseBizCost": 9996,
             "bizList": ["biz/barn"]
+        },
+        "BiomeDom": {
+            "selector": ".container",
+            "klass": "biome west"
         }
     }
 }
