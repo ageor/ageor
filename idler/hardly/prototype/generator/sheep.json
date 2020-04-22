@@ -1,0 +1,11 @@
+{
+    "name": "Sheep",
+    "components": {
+        "Generator": {
+            "baseCost": 60,
+            "exponent": 1.15,
+            "baseRevenue": 60,
+            "baseCycle": 3
+        }
+    }
+}

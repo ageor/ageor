@@ -1,0 +1,11 @@
+{
+    "name": "Barn",
+    "components": {
+        "Biz": {
+            "generators": [
+                "generator/chicken",
+                "generator/sheep"
+            ]
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Chicken",
+    "components": {
+        "Generator": {
+            "baseCost": 4,
+            "exponent": 1.07,
+            "baseRevenue": 1,
+            "baseCycle": 0.6
+        }
+    }
+}

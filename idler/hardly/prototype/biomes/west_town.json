@@ -1,6 +1,10 @@
 {
     "name": "WestTown",
     "components": {
-        "Biome": { }
+        "Biome": {
+            "initialCapital": 10000,
+            "baseBizCost": 9996,
+            "bizList": ["biz/barn"]
+        }
     }
 }
