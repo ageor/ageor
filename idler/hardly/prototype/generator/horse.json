@@ -2,13 +2,14 @@
     "name": "Horse",
     "components": {
         "Generator": {
+            "biomeTag": "west",
             "baseCost": 1244160,
             "exponent": 1.11,
             "baseRevenue": 622080,
             "baseCycle": 96
         },
         "GeneratorDom": {
-            "selector": ".container .biome.west .biz .generators",
+            "selector": ".container .biome.west .biz",
             "klass": "generator"
         }
     }

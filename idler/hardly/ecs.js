@@ -326,9 +326,9 @@ class ECS {
                 s.system.entities = q.results;
             }
 
-            if (s.system.init) {
-                s.system.init();
-            }
+            if (!s.system.init) continue;
+
+            s.system.init();
         }
 
         this.updateQueries();
@@ -339,9 +339,9 @@ class ECS {
     update() {
         let s;
         for (s of this.systems) {
-            if (s.system.init) {
-                s.system.update();
-            }
+            if (!s.system.update) continue;
+
+            s.system.update();
         }
 
         this.updateQueries();

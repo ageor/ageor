@@ -2,6 +2,7 @@
     "name": "Barn",
     "components": {
         "Biz": {
+            "biomeTag": "west",
             "generators": [
                 "generator/chicken",
                 "generator/sheep",

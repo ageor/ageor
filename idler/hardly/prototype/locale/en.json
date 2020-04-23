@@ -4,7 +4,12 @@
         "TextSet": {
             "language": "en",
             "texts": {
-                "barn": "The Barn"
+                "barn": "The Barn",
+                "buy": "Buy!",
+                "million": "million",
+                "billion": "billion",
+                "trillion": "trillion",
+                "quadrillion": "quadrillion"
             }
         }
     }

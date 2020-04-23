@@ -2,13 +2,14 @@
     "name": "Chicken",
     "components": {
         "Generator": {
+            "biomeTag": "west",
             "baseCost": 4,
             "exponent": 1.07,
             "baseRevenue": 1,
             "baseCycle": 0.6
         },
         "GeneratorDom": {
-            "selector": ".container .biome.west .biz .generators",
+            "selector": ".container .biome.west .biz",
             "klass": "generator"
         }
     }

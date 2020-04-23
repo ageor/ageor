@@ -2,8 +2,10 @@
     "name": "WestTown",
     "components": {
         "Biome": {
+            "biomeTag": "west",
             "initialCapital": 10000,
             "baseBizCost": 9996,
+            "exponent": 19,
             "bizList": ["biz/barn"]
         },
         "BiomeDom": {

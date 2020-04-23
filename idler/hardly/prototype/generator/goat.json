@@ -2,13 +2,14 @@
     "name": "Goat",
     "components": {
         "Generator": {
+            "biomeTag": "west",
             "baseCost": 720,
             "exponent": 1.14,
             "baseRevenue": 540,
             "baseCycle": 6
         },
         "GeneratorDom": {
-            "selector": ".container .biome.west .biz .generators",
+            "selector": ".container .biome.west .biz",
             "klass": "generator"
         }
     }

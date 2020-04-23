@@ -2,13 +2,14 @@
     "name": "Cow",
     "components": {
         "Generator": {
+            "biomeTag": "west",
             "baseCost": 8640,
             "exponent": 1.13,
             "baseRevenue": 4320,
             "baseCycle": 12
         },
         "GeneratorDom": {
-            "selector": ".container .biome.west .biz .generators",
+            "selector": ".container .biome.west .biz",
             "klass": "generator"
         }
     }

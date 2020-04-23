@@ -2,13 +2,14 @@
     "name": "Sheep",
     "components": {
         "Generator": {
+            "biomeTag": "west",
             "baseCost": 60,
             "exponent": 1.15,
             "baseRevenue": 60,
             "baseCycle": 3
         },
         "GeneratorDom": {
-            "selector": ".container .biome.west .biz .generators",
+            "selector": ".container .biome.west .biz",
             "klass": "generator"
         }
     }

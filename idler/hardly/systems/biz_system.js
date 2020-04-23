@@ -1,3 +1,5 @@
+import { err } from "../logger.js"
+
 let _hardly;
 
 export default class BizSystem {

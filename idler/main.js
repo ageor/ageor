@@ -9,6 +9,7 @@ export default async function init() {
 
     hardly.addSystem("Time", 1);
     hardly.addSystem("Localization", 2);
+    hardly.addSystem("Event", 3);
 
     hardly.addSystem("Biome", 50);
     hardly.addSystem("Biz", 51);
