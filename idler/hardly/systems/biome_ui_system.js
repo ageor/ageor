@@ -20,6 +20,7 @@ export default class BiomeUISystem extends BaseUISystem {
         const overlay = this.div("overlay hidden");
         const managers = this.div("managers");
         const managerButton = this.div("button man");
+        const rotateBiz = this.div("button rotate");
         const runIdle = this.div("button run-idle");
 
         dom.appendChild(capitalLabel);
@@ -27,12 +28,19 @@ export default class BiomeUISystem extends BaseUISystem {
         dom.appendChild(controls);
         dom.appendChild(overlay);
         controls.appendChild(managerButton);
+        controls.appendChild(rotateBiz);
         controls.appendChild(runIdle);
         overlay.appendChild(managers);
 
         capitalLabel.innerText = this.formatNumber(biome.capital);
         
         this.renderManagers(biome, managers);
+
+        rotateBiz.onclick = function() {
+            biome.selectedBiz = (biome.selectedBiz + 1) % biome.biz.length;
+
+            _hardly.emitEvent("event_rotateBiz", biome.selectedBiz);
+        }
 
         runIdle.onclick = () => {
             if (!this.currentBiz(biome).owned) return;
@@ -75,35 +83,40 @@ export default class BiomeUISystem extends BaseUISystem {
 
         for (gen of generatorEntities) {
             let generator = gen.Generator;
-            let button = this.div("manager-buy expensive");
-
-            dom.appendChild(button);
-
-            button.innerText = this.formatNumber(generator.managerCost);
-
-            button.onclick = function(e) {
-                if (generator.managed || generator.managerCost > biome.capital) return;
-
-                this.classList.add("owned");
-
-                generator.managed = true;
-                generator.start(_hardly.Time.now);
-
-                _hardly.emitEvent("event_capitalChange", generator.biomeTag, -generator.managerCost);
-                
-                _hardly.emitEvent("event_managerHire");
-
-                e.stopPropagation();
-            }
-
-            _hardly.onEvent("event_capitalChange", function(tag) {
-                if (generator.biomeTag != tag || generator.managed) return;
-
-                button.classList.toggle("expensive", biome.capital < generator.managerCost);
-            });
+            
+            this.renderManager(biome, generator, dom);
         }
 
         dom.appendChild(overlayClose)
+    }
+
+    renderManager(biome, generator, dom) {
+        let button = this.div("manager-buy expensive");
+
+        dom.appendChild(button);
+
+        button.innerText = this.formatNumber(generator.managerCost);
+
+        button.onclick = function(e) {
+            if (generator.managed || !generator.owned || generator.managerCost > biome.capital) return;
+
+            this.classList.add("owned");
+
+            generator.managed = true;
+            generator.start(_hardly.Time.now);
+
+            _hardly.emitEvent("event_capitalChange", generator.biomeTag, -generator.managerCost);
+            
+            _hardly.emitEvent("event_managerHire");
+
+            e.stopPropagation();
+        }
+
+        _hardly.onEvent("event_capitalChange", function(tag) {
+            if (generator.biomeTag != tag || generator.managed || ! generator.owned) return;
+
+            button.classList.toggle("expensive", biome.capital < generator.managerCost);
+        });
     }
 
     currentBiz(biome) {

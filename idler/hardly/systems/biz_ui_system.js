@@ -28,12 +28,28 @@ export default class BizUISystem extends BaseUISystem {
         label.innerText = _hardly.L10N["buy"];
         price.innerText = this.formatNumber(biome.calculateCost());
 
+        dom.classList.toggle("hidden", biz.idx != biome.selectedBiz);
+
         buyButton.onclick = function() {
+            if (biome.capital < biome.calculateCost()) return;
+
             biz.owned = true;
 
             overlay.classList.add("hidden");
 
             _hardly.emitEvent("event_capitalChange", biz.biomeTag, -biome.calculateCost());
+
+            biome.owned++;
+
+            _hardly.emitEvent("event_purchaseBiz");
         }
+
+        _hardly.onEvent("event_rotateBiz", function(idx) {
+            dom.classList.toggle("hidden", biz.idx != idx);
+        });
+
+        _hardly.onEvent("event_purchaseBiz", () => {
+            price.innerText = this.formatNumber(biome.calculateCost());
+        });
     }
 };

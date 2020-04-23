@@ -12,7 +12,7 @@ export default class BiomeSystem {
     }
 
     added(e) {
-        let biz, biome = e.Biome;
+        let biz, i, bizEntity, biome = e.Biome;
 
         biome.prestiege = 0;
         biome.owned = 0;
@@ -30,11 +30,17 @@ export default class BiomeSystem {
         _hardly.onEvent("event_capitalChange", function(tag, delta) {
             if (tag != biome.biomeTag) return;
 
+            // if (delta > 0) delta *= 1000;
+
             biome.capital = Math.max(biome.capital + delta, 0);
         });
 
-        for (biz of biome.bizList) {
-            biome.biz.push(_hardly.load(biz));
+        for (i = 0; i < biome.bizList.length; i++) {
+            biz = biome.bizList[i];
+            bizEntity = _hardly.load(biz);
+            bizEntity.Biz.idx = i;
+
+            biome.biz.push(bizEntity);
         }
     }
 
