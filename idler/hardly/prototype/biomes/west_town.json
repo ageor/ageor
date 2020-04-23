@@ -6,7 +6,7 @@
             "initialCapital": 10000,
             "baseBizCost": 9996,
             "exponent": 19,
-            "bizList": ["biz/barn"]
+            "bizList": ["biz/farm", "biz/barn"]
         },
         "BiomeDom": {
             "selector": ".container",

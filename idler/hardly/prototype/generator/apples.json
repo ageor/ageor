@@ -1,5 +1,5 @@
 {
-    "name": "Goat",
+    "name": "Apples",
     "components": {
         "Generator": {
             "biomeTag": "west",
@@ -10,7 +10,7 @@
             "managerCost": 400000
         },
         "GeneratorDom": {
-            "selector": ".container .biome.west .biz .generators.barn",
+            "selector": ".container .biome.west .biz .generators.farm",
             "klass": "generator"
         }
     }

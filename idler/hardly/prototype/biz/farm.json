@@ -1,0 +1,21 @@
+{
+    "name": "Farm",
+    "components": {
+        "Biz": {
+            "biomeTag": "west",
+            "generators": [
+                "generator/carrots",
+                "generator/beets",
+                "generator/apples",
+                "generator/pears",
+                "generator/wheat",
+                "generator/corn"
+            ]
+        },
+        "BizDom": {
+            "bizNameKey": "bafarmrn",
+            "selector": ".container .biome.west .biz",
+            "klass": "generators farm"
+        }
+    }
+}
