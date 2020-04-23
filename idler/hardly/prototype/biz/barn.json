@@ -14,8 +14,8 @@
         },
         "BizDom": {
             "bizNameKey": "barn",
-            "selector": ".container .biome.west",
-            "klass": "biz"
+            "selector": ".container .biome.west .biz",
+            "klass": "generators"
         }
     }
 }

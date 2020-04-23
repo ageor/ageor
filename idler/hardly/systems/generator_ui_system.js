@@ -60,6 +60,10 @@ export default class GeneratorUISystem extends BaseUISystem {
                 dom.classList.remove("expensive");
             }
         });
+
+        _hardly.onEvent("event_managerHire", function() {
+            dom.classList.toggle("generating", gen.managed || gen.running);
+        });
     }
 
     updateCash(info, gen) {

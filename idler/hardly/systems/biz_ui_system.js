@@ -12,7 +12,7 @@ export default class BizUISystem extends BaseUISystem {
     }
 
     added(e) {
-        const dom = e.BizDom.render("generators");
+        const dom = e.BizDom.render();
         const biz = e.Biz;
         const biome = _hardly.Biomes[biz.biomeTag];
         const overlay = this.div("overlay");

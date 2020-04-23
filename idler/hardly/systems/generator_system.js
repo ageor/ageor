@@ -12,6 +12,7 @@ export default class GeneratorSystem {
         let gen = e.Generator;
 
         gen.owned = 0;
+        gen.managed = false;
     }
 
     removed(e) {
@@ -32,6 +33,8 @@ export default class GeneratorSystem {
                 gen.running = false;
 
                 _hardly.emitEvent("event_capitalChange", gen.biomeTag, gen.calculateProduction());
+
+                if (gen.managed) gen.start(_time.now);
             }
 
             gen.progress = ((_time.now - gen.startTime) / 1000) / gen.baseCycle;

@@ -6,10 +6,11 @@
             "baseCost": 8640,
             "exponent": 1.13,
             "baseRevenue": 4320,
-            "baseCycle": 12
+            "baseCycle": 12,
+            "managerCost": 1000000
         },
         "GeneratorDom": {
-            "selector": ".container .biome.west .biz",
+            "selector": ".container .biome.west .biz .generators",
             "klass": "generator"
         }
     }
