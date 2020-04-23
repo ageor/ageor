@@ -48,7 +48,6 @@ export default class GeneratorUISystem extends BaseUISystem {
 
         icon.onclick = function() {
             gen.start(_hardly.Time.now);
-            dom.classList.add("generating");
         }
 
         _hardly.onEvent("event_capitalChange", function(tag) {
@@ -85,6 +84,8 @@ export default class GeneratorUISystem extends BaseUISystem {
                 }
 
                 continue;
+            } else if (!dom.classList.contains("generating")) {
+                dom.classList.add("generating");
             }
 
             dom.style.setProperty("--progress", `${gen.progress * 100}%`);

@@ -20,20 +20,38 @@ export default class BiomeUISystem extends BaseUISystem {
         const overlay = this.div("overlay hidden");
         const managers = this.div("managers");
         const managerButton = this.div("button man");
+        const runIdle = this.div("button run-idle");
 
         dom.appendChild(capitalLabel);
         dom.appendChild(bizContainer);
         dom.appendChild(controls);
         dom.appendChild(overlay);
         controls.appendChild(managerButton);
+        controls.appendChild(runIdle);
         overlay.appendChild(managers);
 
         capitalLabel.innerText = this.formatNumber(biome.capital);
         
         this.renderManagers(biome, managers);
 
-        managerButton.onclick = () => {
+        runIdle.onclick = () => {
             if (!this.currentBiz(biome).owned) return;
+
+            let gen, generatorEntities = this.currentBiz(biome).gen;
+
+            for (gen of generatorEntities) {
+                let generator = gen.Generator;
+
+                if (generator.running || !generator.owned) continue;
+
+                generator.start(_hardly.Time.now);
+            }
+        }
+
+        managerButton.onclick = () => {
+            let biz = this.currentBiz(biome);
+
+            if (!biz.owned) return;
 
             overlay.classList.remove("hidden");
         }
@@ -52,7 +70,7 @@ export default class BiomeUISystem extends BaseUISystem {
     renderManagers(biome, dom) {
         let gen, generatorEntities = this.currentBiz(biome).gen;
 
-        for(gen of generatorEntities) {
+        for (gen of generatorEntities) {
             let generator = gen.Generator;
             let button = this.div("manager-buy expensive");
 
