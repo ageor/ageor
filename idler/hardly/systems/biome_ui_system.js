@@ -68,13 +68,18 @@ export default class BiomeUISystem extends BaseUISystem {
     }
 
     renderManagers(biome, dom) {
+        const overlayClose = this.div("close");
         let gen, generatorEntities = this.currentBiz(biome).gen;
+
+        overlayClose.innerText = "X";
 
         for (gen of generatorEntities) {
             let generator = gen.Generator;
             let button = this.div("manager-buy expensive");
 
             dom.appendChild(button);
+
+            button.innerText = this.formatNumber(generator.managerCost);
 
             button.onclick = function(e) {
                 if (generator.managed || generator.managerCost > biome.capital) return;
@@ -88,7 +93,6 @@ export default class BiomeUISystem extends BaseUISystem {
                 
                 _hardly.emitEvent("event_managerHire");
 
-                
                 e.stopPropagation();
             }
 
@@ -98,6 +102,8 @@ export default class BiomeUISystem extends BaseUISystem {
                 button.classList.toggle("expensive", biome.capital < generator.managerCost);
             });
         }
+
+        dom.appendChild(overlayClose)
     }
 
     currentBiz(biome) {
