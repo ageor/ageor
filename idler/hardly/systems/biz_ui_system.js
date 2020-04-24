@@ -51,5 +51,10 @@ export default class BizUISystem extends BaseUISystem {
         _hardly.onEvent("event_purchaseBiz", () => {
             price.innerText = this.formatNumber(biome.calculateCost());
         });
+
+        _hardly.onEvent("event_loadGame", () => {
+            overlay.classList.toggle("hidden", biz.owned);
+            price.innerText = this.formatNumber(biome.calculateCost());
+        });
     }
 };

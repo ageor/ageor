@@ -53,15 +53,19 @@ export default class GeneratorUISystem extends BaseUISystem {
         _hardly.onEvent("event_capitalChange", function(tag) {
             if (tag != gen.biomeTag) return;
 
-            if (_hardly.Biomes[tag].capital < gen.calculateCost()) {
-                dom.classList.add("expensive");
-            } else {
-                dom.classList.remove("expensive");
-            }
+            dom.classList.toggle("expensive", _hardly.Biomes[tag].capital < gen.calculateCost());
         });
 
         _hardly.onEvent("event_managerHire", function() {
             dom.classList.toggle("generating", gen.managed || gen.running);
+        });
+
+        _hardly.onEvent("event_loadGame", () => {
+            dom.classList.toggle("generating", gen.managed || gen.running);
+            dom.classList.toggle("expensive", _hardly.Biomes[gen.biomeTag].capital < gen.calculateCost());
+            dom.classList.toggle("unowned", !gen.owned);
+            dom.style.setProperty("--progress", `${gen.progress * 100}%`);
+            ownedLabel.innerText = gen.owned;
         });
     }
 

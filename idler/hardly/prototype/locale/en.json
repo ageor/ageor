@@ -5,11 +5,15 @@
             "language": "en",
             "texts": {
                 "barn": "The Barn",
+                "farm": "The Farm",
                 "buy": "Buy!",
+                "managers_title": "Managers",
+                "managers_desc": "Managers run your businesses for you while you enjoy the profits!",
                 "million": "million",
                 "billion": "billion",
                 "trillion": "trillion",
-                "quadrillion": "quadrillion"
+                "quadrillion": "quadrillion",
+                "passiveGainHTML": "Profits since your last visit:<br>"
             }
         }
     }

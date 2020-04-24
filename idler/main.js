@@ -19,16 +19,21 @@ export default async function init() {
     hardly.addSystem("BizUI", 70);
     hardly.addSystem("GeneratorUI", 70);
 
+    hardly.addSystem("Save", 100);
+
     hardly.initSystems();
 
     hardly.load("locale/en");
     hardly.load("biomes/west_town");
 
+    hardly.update();
+    hardly.loadGame();
+    
     function update() {
         hardly.update();
-
+        
         requestAnimationFrame(update);
     }
-
+    
     requestAnimationFrame(update);
 }

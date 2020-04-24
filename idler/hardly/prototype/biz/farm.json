@@ -13,7 +13,7 @@
             ]
         },
         "BizDom": {
-            "bizNameKey": "bafarmrn",
+            "bizNameKey": "farm",
             "selector": ".container .biome.west .biz",
             "klass": "generators farm"
         }

@@ -10,7 +10,7 @@ export default class TimeSystem {
     }
 
     init() {
-        _time.now = _time.delta = _time.frame = 0; 
+        _time.now = _time.delta = _time.frame = 0;
     }
 
     update() {

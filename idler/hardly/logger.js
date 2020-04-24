@@ -15,7 +15,7 @@ function log(message) {
 function warn(message) {
     if (!logging) return;
 
-    console.log(message);
+    console.warn(message);
 }
 
 export { err, warn, log }

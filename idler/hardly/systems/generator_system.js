@@ -9,10 +9,15 @@ export default class GeneratorSystem {
     }
 
     added(e) {
-        let gen = e.Generator;
+        _hardly.onEvent("event_loadGame", function(gameTime, timeSkip) {
+            const cash = e.Generator.forward(gameTime, timeSkip, _hardly.Time.now);
 
-        gen.owned = 0;
-        gen.managed = false;
+            _hardly.emitEvent(
+                "event_capitalChange",
+                e.Generator.biomeTag,
+                cash
+            );
+        });
     }
 
     removed(e) {
@@ -29,7 +34,6 @@ export default class GeneratorSystem {
 
             if (gen.progress >= 1) {
                 gen.progress = 0;
-
                 gen.running = false;
 
                 _hardly.emitEvent("event_capitalChange", gen.biomeTag, gen.calculateProduction());
