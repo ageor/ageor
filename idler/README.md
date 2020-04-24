@@ -15,7 +15,7 @@ The UI utilizes the very powerful and mature HTML+CSS combination. The reason fo
 
 The game uses a minimalistic engine/framework codenamed Hardly. The goal of the engine is to allow full development freedom, while handling commonly implemented features like object caching to avoid GC spikes. The focus of this project is not the engine, but the game itself and the challenge was to make an [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) within two to three days. Like the UI, the engine is chosen, because of the author's familiarity with it as it is the same author.
 
-All of the code relevant to the game can be found in `hardly/components` and `hardly/systems`. `hardly/prototypes` contains the prototypes from which entities are created.
+All of the code relevant to the game can be found in `index.html`, `main.js`, `hardly/components` and `hardly/systems`. `hardly/prototypes` contains the prototypes from which entities are created. The UI styling is in `style.css`.
 
 # Engine
 The engine implements a simple [ECS](https://en.wikipedia.org/wiki/Entity_component_system) architecture inspired by the [Fungi engine by SketchPunk](https://github.com/sketchpunk/Fungi).
