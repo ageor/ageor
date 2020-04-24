@@ -15,6 +15,8 @@ The UI utilizes the very powerful and mature HTML+CSS combination. The reason fo
 
 The game uses a minimalistic engine/framework codenamed Hardly. The goal of the engine is to allow full development freedom, while handling commonly implemented features like object caching to avoid GC spikes. The focus of this project is not the engine, but the game itself and the challenge was to make an [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) within two to three days. Like the UI, the engine is chosen, because of the author's familiarity with it as it is the same author.
 
+All of the code relevant to the game can be found in `hardly/components` and `hardly/systems`. `hardly/prototypes` contains the prototypes from which entities are created.
+
 # Engine
 The engine implements a simple [ECS](https://en.wikipedia.org/wiki/Entity_component_system) architecture inspired by the [Fungi engine by SketchPunk](https://github.com/sketchpunk/Fungi).
 * Components - mainly data holders. Properties are defined within them and the do the occasional transfiormation of the data they hold. (e.g. `0.1` to `10%`)
@@ -129,3 +131,9 @@ More features. The code supports multiple "biomes" with separate businesses, gen
 "Prestiege" - The ability to reset your progress for a permanent boost to profits is a core mechanic to idle games.
 
 Events - it is possible to add time limited events even in an offline game. A way to do it is to check the day of the week or month or any other easily attainable number for time and have a special "biome" during that time. This gives players a reason to keep playing past buying everything available in the base game. Rewards could be cosmetics or boots, but they should be rare and hard to mass.
+
+Localization - localization is implemented and functional, but only english is implemented. More languages can't hurt.
+
+Settings - With more languages and audio a settings menu will allow users to tweak volume and change locales.
+
+Rested rewards - upon returning to the game users can be awarded bonues for the time they've been away. This is usually where ads are implemented and gives incentives to players to take a break and avoid burnout.
