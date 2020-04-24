@@ -26,6 +26,8 @@ export default class GeneratorUISystem extends BaseUISystem {
         dom.classList.add("unowned");
         dom.classList.add("expensive");
         buyLabel.innerText = _hardly.L10N["buy"];
+        
+        icon.innerText = _hardly.L10N[genDom.nameKey];
 
         icon.appendChild(ownedLabel);
         dom.appendChild(icon);
@@ -66,6 +68,7 @@ export default class GeneratorUISystem extends BaseUISystem {
             dom.classList.toggle("unowned", !gen.owned);
             dom.style.setProperty("--progress", `${gen.progress * 100}%`);
             ownedLabel.innerText = gen.owned;
+            this.updateCash(info, gen);
         });
     }
 

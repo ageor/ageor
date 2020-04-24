@@ -11,7 +11,8 @@
         },
         "GeneratorDom": {
             "selector": ".container .biome.west .biz .generators.barn",
-            "klass": "generator"
+            "klass": "generator",
+            "nameKey": "horse"
         }
     }
 }

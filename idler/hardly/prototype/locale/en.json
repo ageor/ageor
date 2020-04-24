@@ -4,16 +4,31 @@
         "TextSet": {
             "language": "en",
             "texts": {
+                "na": "N/A",
                 "barn": "The Barn",
                 "farm": "The Farm",
                 "buy": "Buy!",
                 "managers_title": "Managers",
                 "managers_desc": "Managers run your businesses for you while you enjoy the profits!",
+                "switch": "Switch",
+                "auto": "Auto",
                 "million": "million",
                 "billion": "billion",
                 "trillion": "trillion",
                 "quadrillion": "quadrillion",
-                "passiveGainHTML": "Profits since your last visit:<br>"
+                "passiveGainHTML": "Profits since your last visit:<br>",
+                "carrots": "Carrots",
+                "beets": "Beets",
+                "corn": "Corn",
+                "wheat": "Wheat",
+                "apples": "Apples",
+                "pears": "Pears",
+                "chicken": "Chicken",
+                "sheep": "Sheep",
+                "goat": "Goat",
+                "cow": "Cow",
+                "donkey": "Donkey",
+                "horse": "Horse"
             }
         }
     }

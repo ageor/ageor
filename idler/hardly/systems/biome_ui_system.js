@@ -35,6 +35,9 @@ export default class BiomeUISystem extends BaseUISystem {
         overlay.appendChild(passiveGain);
 
         capitalLabel.innerText = this.formatNumber(biome.capital);
+        managerButton.innerText = _hardly.L10N["managers_title"].substr(0, 3);
+        rotateBiz.innerText = _hardly.L10N["switch"];
+        runIdle.innerText = _hardly.L10N["auto"];
         
         this.renderManagers(biome, managers);
 
@@ -125,18 +128,18 @@ export default class BiomeUISystem extends BaseUISystem {
         dom.appendChild(name);
 
         for (gen of generatorEntities) {
-            let generator = gen.Generator;
-            
-            this.renderManager(biome, generator, biz.Biz, dom);
+            this.renderManager(biome, gen, biz.Biz, dom);
         }
     }
 
-    renderManager(biome, generator, biz, dom) {
-        let button = this.div("manager-buy expensive");
+    renderManager(biome, genEntity, biz, dom) {
+        const button = this.div("manager-buy expensive");
+        const generator = genEntity.Generator;
+        const genDom = genEntity.GeneratorDom;
 
         dom.appendChild(button);
 
-        button.innerText = this.formatNumber(generator.managerCost);
+        button.innerHTML = `${_hardly.L10N[genDom.nameKey]}<br>${this.formatNumber(generator.managerCost)}`;
 
         button.onclick = function(e) {
             if (generator.managed || !generator.owned || generator.managerCost > biome.capital) return;

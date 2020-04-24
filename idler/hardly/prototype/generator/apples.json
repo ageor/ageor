@@ -11,7 +11,8 @@
         },
         "GeneratorDom": {
             "selector": ".container .biome.west .biz .generators.farm",
-            "klass": "generator"
+            "klass": "generator",
+            "nameKey": "apples"
         }
     }
 }
