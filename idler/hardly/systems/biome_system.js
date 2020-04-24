@@ -25,8 +25,6 @@ export default class BiomeSystem {
         _hardly.onEvent("event_capitalChange", function(tag, delta) {
             if (tag != biome.biomeTag) return;
 
-            // if (delta > 0) delta *= 1000;
-
             biome.capital = Math.max(biome.capital + delta, 0);
         });
 
