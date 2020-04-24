@@ -25,7 +25,7 @@ The engine implements a simple [ECS](https://en.wikipedia.org/wiki/Entity_compon
 
 An example of a system:
 
-```
+```javascript
 // Data only visible to the system can go here
 const _somePrivateData = {
     greeting: "Hello, World!"
@@ -76,7 +76,7 @@ The engine wraps the ECS in a much easier to use `Hardly` class. Instances of th
 
 An example initializer:
 
-```
+```javascript
 // Import the Hardly class
 import Hardly from "./hardly/hardly.js";
 
