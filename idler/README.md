@@ -137,3 +137,7 @@ Localization - localization is implemented and functional, but only english is i
 Settings - With more languages and audio a settings menu will allow users to tweak volume and change locales.
 
 Rested rewards - upon returning to the game users can be awarded bonues for the time they've been away. This is usually where ads are implemented and gives incentives to players to take a break and avoid burnout.
+
+Better desktop version - the game is primarily aimed at mobile, but works perfectly fine on desktops. However the UI is clearly designed for touchscreens and does not utilize a full keyboard and mouse.
+
+Device support - while everything should work, proper testing should be done for various devices and fixes should be implemented to support them properly.
