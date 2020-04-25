@@ -115,6 +115,12 @@ function init() {
 }
 ```
 
+# Gemeplay Technical Details
+
+Building on the engine explanation, the game itself uses a few systems to get everything going. There is a clear separation of concerns between the UI and the gameplay code. Specifically the gameplay code does not know about the UI code, but the UI code actively uses and interacts with the gameplay code. This design is chosen, because of the author's personal preference to keep the "critical" code as clean as possible and the plans to completely rework the UI.
+
+The state is as simple as possible with the main state carriers being the components. In some cases the interaction between systems is difficult due to the isolated nature of the indivitual modules. For that purpose an `EventSystem` as a means of carrying data between the systems and easily adding and removing features.
+
 # Feature Plans
 
 Adding the ability for users to transfer their save games between devices. This can be achieved with a dedicated server or possibly a login with Google or Facebook or any other platform that allows storage.
