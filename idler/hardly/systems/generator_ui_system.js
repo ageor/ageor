@@ -27,7 +27,7 @@ export default class GeneratorUISystem extends BaseUISystem {
         dom.classList.add("expensive");
         buyLabel.innerText = _hardly.L10N["buy"];
         
-        icon.innerText = _hardly.L10N[genDom.nameKey];
+        icon.classList.add(genDom.nameKey);
 
         icon.appendChild(ownedLabel);
         dom.appendChild(icon);

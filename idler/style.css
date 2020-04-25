@@ -203,7 +203,9 @@
     line-height: calc(var(--scaling) * 92px);
     text-align: center;
     color: white;
-    font-size: calc(var(--scaling) * 16pt)
+    font-size: calc(var(--scaling) * 16pt);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .container .biz .generator .image .owned {
@@ -271,4 +273,64 @@
 .container .biz .generator .info .income {
     border-radius: var(--border-radius);
     background-image: linear-gradient(to right, forestgreen var(--progress, 0%), #505050 var(--progress, 0%));
+}
+
+.generator .image.chicken {
+    background-image: url('img/chicken.png');
+    background-size: 80%;
+}
+
+.generator .image.sheep {
+    background-image: url('img/sheep.png');
+    background-size: 80%;
+}
+
+.generator .image.goat {
+    background-image: url('img/goat.png');
+    background-size: 75%;
+}
+
+.generator .image.cow {
+    background-image: url('img/cow.png');
+    background-size: 76%;
+}
+
+.generator .image.donkey {
+    background-image: url('img/donkey.png');
+    background-size: 80%;
+}
+
+.generator .image.horse {
+    background-image: url('img/horse.png');
+    background-size: 90%;
+}
+
+.generator .image.carrots {
+    background-image: url('img/carrot.png');
+    background-size: 60%;
+}
+
+.generator .image.beets {
+    background-image: url('img/beet.png');
+    background-size: 60%;
+}
+
+.generator .image.apples {
+    background-image: url('img/apple.png');
+    background-size: 60%;
+}
+
+.generator .image.pears {
+    background-image: url('img/pear.png');
+    background-size: 60%;
+}
+
+.generator .image.wheat {
+    background-image: url('img/wheat.png');
+    background-size: 60%;
+}
+
+.generator .image.corn {
+    background-image: url('img/corn.png');
+    background-size: 60%;
 }

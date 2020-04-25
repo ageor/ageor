@@ -4,6 +4,7 @@ The idler game is a game you don't need to play actively. The basic loop is spen
 
 # Resources
 * [The Math of Idle Games](https://gameanalytics.com/blog/idle-game-mathematics.html) - a brilliant article from Anthony Pecorella on the math that used in this implementation.
+* [AdVenture Capitalist Wiki](https://adventure-capitalist.fandom.com/wiki/AdVenture_Capitalist_Wiki) - a great source with math and balancing.
 
 # Implementation
 
@@ -118,7 +119,7 @@ function init() {
 
 Adding the ability for users to transfer their save games between devices. This can be achieved with a dedicated server or possibly a login with Google or Facebook or any other platform that allows storage.
 
-Visual polish. Due to time restrictions no images are used and very little time was spent on the visual quality of the game. The priority was to get it functional. A dedicated renderer can be added easily and various eye-candy can be added.
+Visual polish. Due to time restrictions few images are used with differing styles and very little time was spent on the visual quality of the game. The priority was to get it functional. A dedicated renderer can be added easily and various eye-candy can be added.
 
 Sound is always delayed to the end and often cut for MVP.
 
@@ -141,3 +142,17 @@ Rested rewards - upon returning to the game users can be awarded bonues for the 
 Better desktop version - the game is primarily aimed at mobile, but works perfectly fine on desktops. However the UI is clearly designed for touchscreens and does not utilize a full keyboard and mouse.
 
 Device support - while everything should work, proper testing should be done for various devices and fixes should be implemented to support them properly.
+
+Tutorial - the game is simple and has few buttons that users may be able to figure out by themselves, but a dedicated tutorial is always welcome.
+
+# Quick Guide
+
+At the top is your current capital. You will initially be prompted to purchase a business. There are two businesses to choose from, that are identical aside from the visuals.
+
+After purchasing a business, you can buy the various generators multiple times. Clicking on the icon of the generator will begin generation and after a short while you will receive the profits.
+
+At the bottom of the screen there are three buttons. The leftmost button opens the manager screen where you can purchase managers to automatically run your generators.
+
+The middle button will switch between the different businesses, curently "The Barn" and "The Farm".
+
+The rightmost button will start all idle generators in the selected business.
