@@ -147,7 +147,7 @@ Rested rewards - upon returning to the game users can be awarded bonues for the 
 
 Better desktop version - the game is primarily aimed at mobile, but works perfectly fine on desktops. However the UI is clearly designed for touchscreens and does not utilize a full keyboard and mouse.
 
-Device support - while everything should work, proper testing should be done for various devices and fixes should be implemented to support them properly.
+Device support - while everything should work, proper testing should be done for various devices and fixes should be implemented to support them properly. Currently the game doesn't seem to work on iDevices with Safari.
 
 Tutorial - the game is simple and has few buttons that users may be able to figure out by themselves, but a dedicated tutorial is always welcome.
 
