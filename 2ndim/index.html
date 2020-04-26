@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <style type="text/css">
+            @font-face {
+                font-family: Exo2;
+                src: url(../fonts/Exo2-VariableFont_wght.ttf);
+            }
+
+            * {
+                font-family: Exo2;
+                font-variation-settings: "wght" 200;
+                box-sizing: border-box;
+            }
+
+            body, html {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            body {
+                background-image: radial-gradient(circle at 50% 30%, orange, brown)
+            }
+
+            .player {
+                position: relative;
+                --size: 100px;
+                height: var(--size);
+                margin: 20px;
+                display: flex;
+                border-radius: calc(var(--size) / 2);
+                box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.3);
+                background-color: rgba(255, 255, 255, 0.2);
+                background-color: #cc531e;
+                background-image: linear-gradient(to right, #ef8b2a 54%, #cc531e 54%)
+            }
+
+            .player .button {
+                background-color: white;
+                width: var(--size);
+                height: var(--size);
+                border-radius: calc(var(--size) / 2);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .player .button .image {
+                border-top: 20px solid transparent;
+                border-bottom: 20px solid transparent;
+                border-left: 36px solid orangered;
+                /* border-left: 36px solid #cc531e; */
+                margin-left: 10px;
+            }
+
+            .player .spectrogram {
+                flex-grow: 1;
+                border-bottom-right-radius: calc(var(--size) / 2);
+                border-top-right-radius: calc(var(--size) / 2);
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+            }
+
+            .player::before, .zoomline::before {
+                position: absolute;
+                content: "1:13:01";
+                bottom: 2px;
+                left: 110px;
+                background-color: black;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 14pt;
+            }
+
+            .zoomline::before {
+                content: "1:10:00";
+                left: 18px;
+                bottom: 14px;
+            }
+
+            .player::after, .zoomline::after {
+                position: absolute;
+                content: "2:09:33";
+                bottom: 2px;
+                right: 40px;
+                background-color: black;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 14pt;
+            }
+
+            .zoomline::after {
+                content: "1:20:00";
+                right: 18px;
+                bottom: 14px;
+            }
+
+            .player .bar {
+                background-color: rgba(255, 255, 255, 1);
+            }
+
+            .zoomline {
+                position: relative;
+                width: 100%;
+                height: 60px;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                align-content: center;
+            }
+
+            .zoomline .block {
+                width: calc(100% - 120px);
+                background-color: white;
+                height: 100%;
+                border-radius: 6px;
+                margin-left: 10px;
+                margin-right: 10px;
+                box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.3);
+                display: flex;
+                align-items: center;
+            }
+
+            .zoomline .block:first-child {
+                background-color: #ef8b2a;
+            }
+
+            .zoomline .block:nth-child(2) {
+                background-image: linear-gradient(to right, #ef8b2a 31%, white 31%)
+            }
+
+            .zoomline .block .discussion {
+                width: 20px;
+                height: 20px;
+                border-radius: 10px;
+                background-color: black;
+            }
+
+            .conversations {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .conversations .thread {
+                width: calc(30% - 40px);
+                margin: 20px;
+            }
+
+            .conversations .thread .contents {
+                background-color: white;
+                border-radius: 4px;
+                padding: 20px;
+                box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.3);
+            }
+
+            .conversations .thread .contents .comment {
+                max-height: 100px;
+                overflow: hidden;
+            }
+
+            .conversations .thread .contents .author {
+                margin-bottom: 10px;
+                margin-top: -10px;
+                font-variation-settings: "wght" 320;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="player">
+            <div class="button">
+                <div class="image"></div>
+            </div>
+            <div class="spectrogram"></div>
+        </div>
+        <div class="zoomline">
+            <div class="block"></div>
+            <div class="block current"></div>
+            <div class="block"></div>
+        </div>
+        <div class="conversations"></div>
+    </body>
+    <script type="text/javascript">
+        const spectro = d3.select(".spectrogram");
+        let sData = [0, 0, 0, 0];
+
+        for (let i = 0; i < 400; i ++) {
+            sData.push(Math.random());
+        }
+
+        sData = sData.concat([0, 0, 0, 0, 0]);
+
+        let width = (100 / sData.length) + "%";
+
+        function drawSpectro() {
+            let y = d3.scaleLinear()
+                .range([ 2, 90 ])
+                .domain([ 0, 1 ])
+
+            let s = spectro.selectAll(".bar")
+                .data(sData);
+
+            s.enter()
+                .append("div")
+                .attr("class", "bar")
+                .style("height", function(d) { return y(d) + "%"; })
+                .style("width", width);
+        }
+
+        drawSpectro();
+    </script>
+    <script type="text/javascript">
+        const block = d3.select(".block.current");
+
+        let bData = [
+            { left: "10%" },
+            { left: "28%" },
+            { left: "4%" },
+            { left: "12%" },
+            { left: "30%" },
+        ]
+
+        function drawBlock() {
+            let d = block.selectAll(".discussion")
+                .data(bData);
+            
+            d.enter()
+                .append("div")
+                .attr("class", "discussion")
+                .style("margin-left", d => d.left);
+        }
+
+        drawBlock();
+    </script>
+    <script type="text/javascript">
+        const conv = d3.select(".conversations");
+
+        const lorem = [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        ]
+
+        let cData = [
+            {
+                author: "Larry",
+                text: lorem[0],
+            },
+            {
+                author: "Barry",
+                text: [lorem[0], lorem[1], lorem[2]].join("<br>"),
+            },
+            {
+                author: "Harry",
+                text: [lorem[0], lorem[1]].join("<br>"),
+            },
+            {
+                author: "Mary",
+                text: lorem[0]
+            },
+            {
+                author: "John",
+                text: lorem.join("\n"),
+            },
+        ];
+
+        function drawConversations() {
+            let t = conv.selectAll(".thread")
+                .data(cData);
+            
+            t.enter()
+                .append("div")
+                .attr("class", "thread")
+                .append("div")
+                .attr("class", "contents")
+                .each(function(d) {
+                    let self = d3.select(this);
+
+                    self.append("div")
+                        .attr("class", "author")
+                        .text(d.author);
+
+                    self.append("div")
+                        .attr("class", "comment")
+                        .html(d.text);
+                });
+        }
+
+        drawConversations();
+    </script>
+ </html>
