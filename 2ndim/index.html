@@ -24,7 +24,9 @@
             }
 
             body {
-                background-image: radial-gradient(circle at 50% 30%, orange, brown)
+                background-image: radial-gradient(circle at 50% 30%, orange, brown);
+                display: flex;
+                flex-direction: column;
             }
 
             .player {
@@ -145,9 +147,16 @@
             }
 
             .conversations {
+                position: relative;
+                flex-grow: 1;
                 display: flex;
                 flex-wrap: wrap;
+                align-content: flex-start;
                 justify-content: center;
+            }
+
+            .conversations.fade .thread {
+                opacity: 0.4;
             }
 
             .conversations .thread {
@@ -194,6 +203,34 @@
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
                 border-bottom: 8px solid darkslategray;
+            }
+
+            .conversations .overlay {
+                z-index: 1000;
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .conversations .overlay.open {
+                display: block;
+            }
+
+            .conversations .overlay .content {
+                background-color: white;
+                border-radius: 4px;
+                margin: 40px;
+                padding: 20px;
+                height: calc(100% - 80px);
+                box-shadow: 4px 4px 10px 2px rgba(0, 0, 0, 0.3);
+            }
+
+            .conversations .overlay .content .header {
+                margin-bottom: 10px;
+                font-variation-settings: "wght" 320;
             }
         </style>
     </head>
@@ -306,9 +343,38 @@
             },
         ];
 
-        function drawConversations() {
-            const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
+        const modal = conv.append("div")
+            .attr("class", "overlay");
+        // const backdrop = modal.append("div")
+        //     .attr("class", "backdrop");
+        const content = modal.append("div")
+            .attr("class", "content");
+        const modalHeader = content.append("div")
+            .attr("class", "header");
+        const modalBody = content.append("div")
+            .attr("class", "comment");
+        
+        const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
 
+        function openModal(d) {
+            const [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(d.date);
+
+            modalHeader.html(`${d.author} (${mo} ${da} ${ye})`);
+
+            modalBody.text(d.text);
+
+            modal.classed("open", true);
+            conv.classed("fade", true);
+        }
+
+        function closeModal() {
+            modal.classed("open", false);
+            conv.classed("fade", false);
+        }
+
+        modal.on("click", closeModal);
+
+        function drawConversations() {
             let t = conv.selectAll(".thread")
                 .data(cData);
             
@@ -330,7 +396,8 @@
                     self.append("div")
                         .attr("class", "comment")
                         .text(d.text);
-                });
+                })
+                .on("click", openModal);
         }
 
         drawConversations();
