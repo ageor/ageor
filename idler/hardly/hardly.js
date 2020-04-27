@@ -41,16 +41,26 @@ async function downloadPrototypes() {
     log("Prototype download start...");
 
     const dlStart = new Date();
-    let proto;
+    let proto, promises = [];
     
     for (proto of Prototypes) {
         log(`Downloading ${proto}`);
+        const name = proto;
 
-        await fetch(_protoPrefix + proto)
+        promises.push(fetch(_protoPrefix + proto)
             .then(response => response.json())
-            .then(data => _prototypeData[proto.substr(0, proto.length - 5)] = data)
-            .catch(err);
+            .then(data => ({
+                name: name.substr(0, name.length - 5),
+                data: data
+            }))
+            .catch(err));
     }
+
+    await Promise.all(promises).then(prototypes => {
+        for (proto of prototypes) {
+            _prototypeData[proto.name] = proto.data;
+        }
+    });
 
     log(`Prototype download done in ${new Date() - dlStart}ms`);
 }
@@ -60,7 +70,7 @@ async function downloadAssets() {
 
     const dlStart = new Date();
 
-    let importer, assetPath, asset, i;
+    let importer, assetPath, asset, i, promises = [];
     
     for (asset of Assets) {
         log(`Downloading asset ${asset}`);
@@ -77,16 +87,22 @@ async function downloadAssets() {
         }
 
         if (importer) {
-            await importer.promise(assetPath)
-                .then(data => _assetsData[asset] = data)
-                .catch(err);
+            promise.push(importer.promise(assetPath)
+                .then(data => ({ name: asset, data: data }))
+                .catch(err));
         } else {
-            await fetch(assetPath)
+            promise.push(fetch(assetPath)
                 .then(response => response.text())
-                .then(data => _assetsData[asset] = data)
-                .catch(err);
+                .then(data => ({ name: asset, data: data }))
+                .catch(err));
         }
     }
+
+    await Promise.all(promises).then(prototypes => {
+        for (proto of prototypes) {
+            _assetsData[proto.name] = proto.data;
+        }
+    });
 
     log(`Asset download done in ${new Date() - dlStart}ms`);
 }
