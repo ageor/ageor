@@ -44,11 +44,19 @@ export default class BiomeUISystem extends BaseUISystem {
         rotateBiz.onclick = function() {
             biome.selectedBiz = (biome.selectedBiz + 1) % biome.bizEntities.length;
 
+            gsap.timeline({ defaults: { duration: 0.1 }})
+                .to(rotateBiz, { scale: 1.1, ease: "power2.out" })
+                .to(rotateBiz, { scale: 1, ease: "power2.in" })
+
             _hardly.emitEvent("event_rotateBiz", biome.selectedBiz);
         }
 
         runIdle.onclick = () => {
             if (!this.currentBiz(biome).owned) return;
+
+            gsap.timeline({ defaults: { duration: 0.1 }})
+                .to(runIdle, { scale: 1.1, ease: "power2.out" })
+                .to(runIdle, { scale: 1, ease: "power2.in" })
 
             let gen, generatorEntities = this.currentBiz(biome).genEntities;
 
@@ -145,6 +153,10 @@ export default class BiomeUISystem extends BaseUISystem {
             if (generator.managed || !generator.owned || generator.managerCost > biome.capital) return;
 
             this.classList.add("owned");
+
+            gsap.timeline({ defaults: { duration: 0.1 }})
+                .to(this, { scale: 1.1, ease: "power2.out" })
+                .to(this, { scale: 1, ease: "power2.in" })
 
             generator.managed = true;
             generator.start(_hardly.Time.now);

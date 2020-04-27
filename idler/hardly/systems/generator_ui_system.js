@@ -36,12 +36,16 @@ export default class GeneratorUISystem extends BaseUISystem {
         info.appendChild(buyButton);
         buyButton.appendChild(buyCost);
         buyButton.appendChild(buyLabel);
-        
+
         this.updateCash(info, gen);
         buyButton.onclick = () => {
             _hardly.emitEvent("event_capitalChange", gen.biomeTag, -gen.calculateCost());
 
             gen.owned = ownedLabel.innerText = gen.owned + 1;
+
+            gsap.timeline({ defaults: { duration: 0.1 }})
+                .to(buyButton, { scale: 1.02, ease: "power2.out" })
+                .to(buyButton, { scale: 1, ease: "power2.in" })
 
             dom.classList.remove("unowned");
 
