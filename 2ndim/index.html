@@ -93,6 +93,7 @@
                 padding: 4px 8px;
                 border-radius: 4px;
                 font-size: 14pt;
+                z-index: 1;
             }
 
             .zoomline::before {
@@ -111,6 +112,7 @@
                 padding: 4px 8px;
                 border-radius: 4px;
                 font-size: 14pt;
+                z-index: 1;
             }
 
             .zoomline::after {
@@ -120,7 +122,8 @@
             }
 
             .player .bar {
-                background-color: rgba(255, 255, 255, 1);
+                background-color: white;
+                opacity: 0.5;
             }
 
             .zoomline {
@@ -257,6 +260,37 @@
                 margin-bottom: 10px;
                 font-variation-settings: "wght" 320;
             }
+
+            /* Ultra fake heatmap */
+            .player .bar:nth-child(80) { opacity: 0.8; }
+            .player .bar:nth-child(81) { opacity: 1; }
+            .player .bar:nth-child(82) { opacity: 1; }
+            .player .bar:nth-child(83) { opacity: 1; }
+            .player .bar:nth-child(84) { opacity: 0.8; }
+            .player .bar:nth-child(85) { opacity: 0.65; }
+
+            .player .bar:nth-child(111) { opacity: 0.8; }
+            .player .bar:nth-child(112) { opacity: 1; }
+            .player .bar:nth-child(113) { opacity: 1; }
+            .player .bar:nth-child(114) { opacity: 0.8; }
+            .player .bar:nth-child(115) { opacity: 0.6; }
+            .player .bar:nth-child(116) { opacity: 0.8; }
+            .player .bar:nth-child(117) { opacity: 1; }
+            .player .bar:nth-child(118) { opacity: 0.8; }
+
+            .player .bar:nth-child(219) { opacity: 0.7; }
+            .player .bar:nth-child(220) { opacity: 1; }
+            .player .bar:nth-child(221) { opacity: 0.8; }
+
+            .player .bar:nth-child(255) { opacity: 1; }
+            .player .bar:nth-child(256) { opacity: 0.8; }
+            .player .bar:nth-child(257) { opacity: 0.7; }
+            .player .bar:nth-child(258) { opacity: 0.8; }
+
+            .player .bar:nth-child(361) { opacity: 0.8; }
+            .player .bar:nth-child(362) { opacity: 1; }
+            .player .bar:nth-child(363) { opacity: 1; }
+            .player .bar:nth-child(364) { opacity: 0.8; }
         </style>
     </head>
     <body>
