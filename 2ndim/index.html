@@ -9,6 +9,11 @@
                 src: url(../fonts/Exo2-VariableFont_wght.ttf);
             }
 
+            @font-face {
+                font-family: FontAwesome;
+                src: url(../fonts/fa-regular-400.ttf);
+            }
+
             * {
                 font-family: Exo2;
                 font-variation-settings: "wght" 200;
@@ -27,6 +32,15 @@
                 background-image: radial-gradient(circle at 50% 30%, orange, brown);
                 display: flex;
                 flex-direction: column;
+            }
+
+            .fa-comment::before {
+                font-family: FontAwesome;
+                content: '\f27a';
+                margin-right: 4px;
+                position: relative;
+                top: 1px;
+                color: #666
             }
 
             .player {
@@ -182,15 +196,22 @@
             }
 
             .conversations .thread .contents .header {
-                margin-bottom: 10px;
                 font-variation-settings: "wght" 320;
+                margin-bottom: 4px;
+                padding-bottom: 6px;
+                border-bottom: 1px solid #aaa;
+                display: flex;
+            }
+
+            .conversations .thread:nth-child(odd) .contents .header {
+                border: none;
             }
 
             .conversations .thread .contents .header .rating {
                 position: relative;
                 color: darkslategray;
-                margin-right: 16px;
-                margin-left: 4px;
+                margin-right: 18px;
+                margin-left: 6px;
                 font-variation-settings: "wght" 320;
             }
 
@@ -203,6 +224,10 @@
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
                 border-bottom: 8px solid darkslategray;
+            }
+
+            .conversations .thread .contents .header .comments {
+                margin-left: auto;
             }
 
             .conversations .overlay {
@@ -389,9 +414,18 @@
                     // Holy mother of API dude...
                     const [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(d.date);
 
-                    self.append("div")
-                        .attr("class", "header")
-                        .html(`${d.author}, <span class="rating">${d.rating}</span> (${mo} ${da} ${ye})`);
+                    const header = self.append("div")
+                        .attr("class", "header");
+
+                    header.append("span").text(d.author);
+                    header.append("span")
+                        .attr("class", "rating")
+                        .text(d.rating);
+                    header.append("span").text(`(${mo} ${da} ${ye})`);
+
+                    header.append("span")
+                        .attr("class", "comments fa-comment")
+                        .text(17);
 
                     self.append("div")
                         .attr("class", "comment")
