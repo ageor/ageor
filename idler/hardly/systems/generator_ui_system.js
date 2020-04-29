@@ -1,9 +1,10 @@
 import BaseUISystem from "./base_ui_system.js"
 
+const _query = ["Generator", "GeneratorDom"];
 let _hardly;
 
 export default class GeneratorUISystem extends BaseUISystem {
-    static entityQuery = ["Generator", "GeneratorDom"];
+    static get entityQuery() { return _query; }
 
     constructor(hardly) {
         super(hardly);

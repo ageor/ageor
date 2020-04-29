@@ -1,10 +1,11 @@
 import { err } from "../logger.js"
 
+const _query = ["Biome"];
 const _biomes = {};
 let _hardly;
 
 export default class BiomeSystem {
-    static entityQuery = ["Biome"];
+    static get entityQuery() { return _query; }
 
     constructor(hardly) {
         _hardly = hardly;

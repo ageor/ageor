@@ -1,14 +1,16 @@
 export default class Biome {
-    biomeTag;
-    initialCapital;
-    baseBizCost;
-    exponent;
-    bizList;
-
-    capital = 0;
-    owned = 0;
-    selectedBiz = 0;
-    bizEntities = [];
+    constructor() {
+        this.biomeTag;
+        this.initialCapital;
+        this.baseBizCost;
+        this.exponent;
+        this.bizList;
+    
+        this.capital = 0;
+        this.owned = 0;
+        this.selectedBiz = 0;
+        this.bizEntities = [];
+    }
 
     calculateCost() {
         return Math.floor(this.baseBizCost * Math.pow(this.exponent, this.owned));

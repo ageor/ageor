@@ -1,7 +1,9 @@
 let _time, _hardly;
 
+const _query = ["Generator"];
+
 export default class GeneratorSystem {
-    static entityQuery = ["Generator"];
+    static get entityQuery() { return _query; }
 
     constructor(hardly) {
         _hardly = hardly;

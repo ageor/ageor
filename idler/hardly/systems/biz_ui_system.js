@@ -1,9 +1,10 @@
 import BaseUISystem from "./base_ui_system.js";
 
+const _query = ["Biz", "BizDom"];
 let _hardly;
 
 export default class BizUISystem extends BaseUISystem {
-    static entityQuery = ["Biz", "BizDom"];
+    static get entityQuery() { return _query; }
 
     constructor(hardly) {
         super(hardly);

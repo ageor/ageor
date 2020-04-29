@@ -1,11 +1,12 @@
 import { err } from "../logger.js"
 
+const _query = ["TextSet"];
 let _hardly;
 let _currentLanguage;
 const _localizations = [];
 
 export default class LocalizationSystem {
-    static entityQuery = ["TextSet"];
+    static get entityQuery() { return _query; }
 
     constructor(hardly) {
         _hardly = hardly;

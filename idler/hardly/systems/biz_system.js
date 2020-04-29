@@ -1,9 +1,10 @@
 import { err } from "../logger.js"
 
+const _query = ["Biz"];
 let _hardly;
 
 export default class BizSystem {
-    static entityQuery = ["Biz"];
+    static get entityQuery() { return _query; }
 
     constructor(hardly) {
         _hardly = hardly;

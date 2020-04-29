@@ -1,4 +1,6 @@
 export default class TextSet {
-    language;
-    texts;
+    constructor() {
+        this.language;
+        this.texts;
+    }
 };

@@ -1,16 +1,18 @@
 export default class Generator {
-    biomeTag;
-    baseCost;
-    exponent;
-    baseRevenue;
-    baseCycle;
-    managerCost;
-
-    owned = 0;
-    managed = false;
-    progress = 0;
-    running = false;
-    startTime = 0;
+    constructor() {
+        this.biomeTag;
+        this.baseCost;
+        this.exponent;
+        this.baseRevenue;
+        this.baseCycle;
+        this.managerCost;
+    
+        this.owned = 0;
+        this.managed = false;
+        this.progress = 0;
+        this.running = false;
+        this.startTime = 0;
+    }
 
     calculateCost() {
         return Math.floor(this.baseCost * Math.pow(this.exponent, this.owned));

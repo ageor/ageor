@@ -1,6 +1,8 @@
 export default class BaseDOM {
-    selector;
-    klass;
+    constructor() {
+        this.selector;
+        this.klass;
+    }
 
     render() {
         let parent = document.querySelector(this.selector);

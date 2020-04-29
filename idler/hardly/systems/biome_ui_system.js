@@ -1,9 +1,10 @@
 import BaseUISystem from "./base_ui_system.js"
 
+const _query = ["Biome", "BiomeDom"];
 let _hardly;
 
 export default class BiomeUISystem extends BaseUISystem {
-    static entityQuery = ["Biome", "BiomeDom"];
+    static get entityQuery() { return _query; }
 
     constructor(hardly) {
         super(hardly);
