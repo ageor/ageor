@@ -46,6 +46,28 @@
     margin-left: auto;
 }
 
+.container .biome .controls .button.run-idle {
+    position: relative;
+}
+
+.container .biome .controls .button.run-idle[data-idle="0"]::after {
+    display: none;
+}
+
+.container .biome .controls .button.run-idle::after {
+    content: attr(data-idle);
+    position: absolute;
+    top: calc(var(--scaling) * -4px);
+    right: calc(var(--scaling) * -4px);
+    width: calc(var(--scaling) * 24px);
+    height: calc(var(--scaling) * 24px);
+    line-height: calc(var(--scaling) * 24px);
+    background-color: darkgreen;
+    color: white;
+    border: calc(var(--scaling) * 2px) solid white;
+    border-radius: calc(var(--scaling) * 20px);
+}
+
 .container .biome .passive-gain {
     text-align: center;
     color: darkgreen;
@@ -193,6 +215,7 @@
 }
 
 .container .biz .generator .image {
+    box-shadow: 0 0 calc(var(--scaling) * 30px) rgba(0, 0, 0, 0.6) inset;
     position: relative;
     background-color: orange;
     border-radius: calc(var(--scaling) * 46px);
@@ -225,6 +248,10 @@
 .container .biz .generator.generating .image {
     background-color: brown;
     pointer-events: none;
+}
+
+.container .biz .generator.managed .image {
+    background-color: yellowgreen;
 }
 
 .container .biz .generator.unowned .image {

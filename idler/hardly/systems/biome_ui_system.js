@@ -42,7 +42,7 @@ export default class BiomeUISystem extends BaseUISystem {
         
         this.renderManagers(biome, managers);
 
-        rotateBiz.onclick = function() {
+        rotateBiz.onclick = () => {
             biome.selectedBiz = (biome.selectedBiz + 1) % biome.bizEntities.length;
 
             gsap.timeline({ defaults: { duration: 0.1 }})
@@ -50,10 +50,14 @@ export default class BiomeUISystem extends BaseUISystem {
                 .to(rotateBiz, { scale: 1, ease: "power2.in" })
 
             _hardly.emitEvent("event_rotateBiz", biome.selectedBiz);
+
+            runIdle.dataset.idle = this.idleCount(biome);
         }
 
         runIdle.onclick = () => {
             if (!this.currentBiz(biome).owned) return;
+
+            runIdle.dataset.idle = 0;
 
             gsap.timeline({ defaults: { duration: 0.1 }})
                 .to(runIdle, { scale: 1.1, ease: "power2.out" })
@@ -88,10 +92,13 @@ export default class BiomeUISystem extends BaseUISystem {
             if (tag != biome.biomeTag) return;
 
             capitalLabel.innerText = this.formatNumber(biome.capital);
+
+            runIdle.dataset.idle = this.idleCount(biome);
         });
 
         _hardly.onEvent("event_loadGame", () => {
             capitalLabel.innerText = this.formatNumber(biome.capital);
+            runIdle.dataset.idle = this.idleCount(biome);
 
             const gain = biome.capital - biome.preLoadCapital;
 
@@ -184,6 +191,20 @@ export default class BiomeUISystem extends BaseUISystem {
                 button.classList.toggle("expensive", biome.capital < generator.managerCost);
             }
         });
+    }
+
+    idleCount(biome) {
+        let gen, idle = 0, generatorEntities = this.currentBiz(biome).genEntities;
+
+        for (gen of generatorEntities) {
+            let generator = gen.Generator;
+
+            if (generator.running || !generator.owned || generator.managed) continue;
+
+            idle++;
+        }
+
+        return idle;
     }
 
     currentBiz(biome) {

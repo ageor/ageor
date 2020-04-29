@@ -40,9 +40,9 @@ export default class GeneratorUISystem extends BaseUISystem {
 
         this.updateCash(info, gen);
         buyButton.onclick = () => {
-            _hardly.emitEvent("event_capitalChange", gen.biomeTag, -gen.calculateCost());
-
             gen.owned = ownedLabel.innerText = gen.owned + 1;
+
+            _hardly.emitEvent("event_capitalChange", gen.biomeTag, -gen.calculateCost());
 
             gsap.timeline({ defaults: { duration: 0.1 }})
                 .to(buyButton, { scale: 1.02, ease: "power2.out" })
@@ -65,10 +65,12 @@ export default class GeneratorUISystem extends BaseUISystem {
 
         _hardly.onEvent("event_managerHire", function() {
             dom.classList.toggle("generating", gen.managed || gen.running);
+            dom.classList.toggle("managed", gen.managed);
         });
 
         _hardly.onEvent("event_loadGame", () => {
             dom.classList.toggle("generating", gen.managed || gen.running);
+            dom.classList.toggle("managed", gen.managed);
             dom.classList.toggle("expensive", _hardly.Biomes[gen.biomeTag].capital < gen.calculateCost());
             dom.classList.toggle("unowned", !gen.owned);
             dom.style.setProperty("--progress", `${gen.progress * 100}%`);
