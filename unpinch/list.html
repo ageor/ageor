@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title></title>
+        <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,200;1,400&display=swap" rel="stylesheet">
+        <style type="text/css">
+            * {
+                box-sizing: border-box;
+                color: white;
+                font-family: "Exo";
+            }
+
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .container {
+                background: #5488b6;
+                background: radial-gradient(circle, #6fc6ff 0%, #009bff 100%);
+                background: radial-gradient(circle, #689e9f 0%, #3b626d 100%);
+                background: radial-gradient(circle at 60% 50%, #5488b6 0%, #2a577e 100%);
+                width: 100%;
+                height: 100%;
+                display: flex;
+            }
+
+            .podcast-info {
+                width: 400px;
+                padding: 40px;
+                padding-top: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                background-color: rgba(0, 0, 0, 0.2);
+                height: 100%;
+            }
+
+            .image-frame {
+                padding: 10px;
+                background-color: rgba(0, 0, 0, 0.2);
+                width: 220px;
+                height: 220px;
+            }
+
+            .description {
+                font-size: 16px;
+                margin-top: 20px;
+            }
+
+            .title {
+                font-size: 26px;
+                margin-top: 30px;
+                text-align: center;
+            }
+
+            .episode {
+                font-size: 22px;
+                padding: 10px 0px;
+                padding-left: 60px;
+                cursor: pointer;
+                position: relative;
+            }
+
+            .episode:hover {
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+
+            .episode-list {
+                flex-grow: 1;
+            }
+
+            .episode.seen::before {
+                position: absolute;
+                content: ' ';
+                display: block;
+                width: 22px;
+                height: 10px;
+                left: 20px;
+                top: 12px;
+                transform: rotate(-45deg);
+                border-left: 2px solid white;
+                border-bottom: 2px solid white;
+            }
+
+            .episode.partial::before {
+                position: absolute;
+                content: ' ';
+                display: block;
+                border-radius: 10px;
+                left: 22px;
+                top: 13px;
+                border-left: 10px solid white;
+                border-bottom: 10px solid white;
+                border-top: 10px solid transparent;
+                border-right: 10px solid transparent;
+            }
+
+            .episode.partial::after {
+                position: absolute;
+                content: ' ';
+                display: block;
+                border-radius: 10px;
+                left: 22px;
+                top: 13px;
+                transform: rotate(-135deg);
+                border-left: 10px solid white;
+                border-bottom: 10px solid white;
+                border-top: 10px solid transparent;
+                border-right: 10px solid transparent;
+            }
+
+            .logo {
+                position: relative;
+                height: 60px;
+            }
+
+            .logo .a {
+                transform: rotate(-45deg);
+                position: absolute;
+                top: 20px;
+            }
+
+            .logo .b {
+                transform: rotate(45deg);
+                position: absolute;
+                top: 30px;
+            }
+
+            .logo .c {
+                transform: rotate(45deg);
+                position: absolute;
+                top: 20px;
+                left: 10px;
+            }
+
+            .logo .d {
+                transform: rotate(-45deg);
+                position: absolute;
+                top: 30px;
+                left: 10px;
+            }
+
+            .logo .a, .logo .b, .logo .c, .logo .d {
+                width: 20px;
+                height: 6px;
+                border-radius: 3px;
+            }
+
+            .logo .a, .logo .b {
+                background-color: #5488b6;
+            }
+
+            .logo .c, .logo .d {
+                background-color: white;
+            }
+
+            .logo .text {
+                line-height: 60px;
+                margin-left: 38px;
+                font-size: 24px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="podcast-info">
+                <div class="logo">
+                    <div class="a"></div>
+                    <div class="b"></div>
+                    <div class="c"></div>
+                    <div class="d"></div>
+                    <div class="text">UNPINCH</div>
+                </div>
+                <div class="image-frame">
+                    <img src="portal.jpg" width=200>
+                </div>
+                <div class="title">The Portal</div>
+                <div class="description">
+                    The Portal is an exploration into discovery, including conversations with thought leaders. Host Eric Weinstein, Managing Director of Thiel Capital, brings his unique expertise and diverse roster of guests for a wide range of discussions, including science, culture, business, and capitalism. The show will feature people whose lives demonstrate that portals into what we would normally consider impossible, are indeed possible.  Guests include presidential candidate Andrew Yang, NY Times bestselling author Sam Harris, and retired Navy Seal and creator of the hit business podcast Jocko Willink.
+                </div>
+            </div>
+            <div class="episode-list">
+                <div class="episode seen">40: Introducing The Portal Essay Club - What if everyone is simply insane?</div>
+                <div class="episode">39: Admission To Sugar Baby U.</div>
+                <div class="episode">38: Mass Media, Markets, and Human Malware: A Portal Q&A</div>
+                <div class="episode partial">37: Andrew Marantz - Surfing the Wake of The Woke</div>
+                <div class="episode">36: Dark Matter, Black Matters and All That Jazz</div>
+                <div class="episode">35: Balaji Srinivasan - The Heretic & The Virus</div>
+            </div>
+        </div>
+    </body>
+</html>

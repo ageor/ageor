@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title></title>
+        <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,200;1,400&display=swap" rel="stylesheet">
+        <style type="text/css">
+            * {
+                box-sizing: border-box;
+                font-family: "Exo";
+            }
+
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .container {
+                padding-left: 60px;
+                padding-right: 60px;
+                padding-top: 20px;
+                background: #5488b6;
+                background: radial-gradient(circle, #6fc6ff 0%, #009bff 100%);
+                background: radial-gradient(circle, #689e9f 0%, #3b626d 100%);
+                background: radial-gradient(circle, #5488b6 0%, #2a577e 100%);
+                width: 100%;
+                height: 100%;
+            }
+
+            .progress {
+                margin-top: 20px;
+                position: relative;
+                height: 6px;
+                border-radius: 5px;
+                background-color: white;
+            }
+
+            .progress::before {
+                color: white;
+                content: '0:12:34';
+                position: absolute;
+                top: 12px;
+                font-size: 20px;
+            }
+
+            .progress::after {
+                color: white;
+                content: '1:01:22';
+                position: absolute;
+                top: 12px;
+                font-size: 20px;
+                right: 0;
+            }
+
+            .progress .bar {
+                height: 100%;
+                width: 50%;
+                background-color: #1f3447;
+                background-color: #5488b6;
+            }
+
+            .knob {
+                position: absolute;
+                left: 20.5%;
+                width: 14px;
+                height: 14px;
+                background-color: #333;
+                border-radius: 10px;
+                top: -4px;
+            }
+
+            .expand {
+                width: 100%;
+                height: 100px;
+            }
+
+            .header {
+                color: white;
+                display: flex;
+            }
+
+            .text-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .header .title {
+                font-size: 26px;
+            }
+
+            .header .episode {
+                font-size: 36px;
+            }
+
+            .header img {
+                margin-right: 30px;
+            }
+
+            .annotation {
+                position: absolute;
+                background-color: #333;
+                width: 3px;
+                height: 6px;
+                top: 0;
+            }
+
+            .discussions {
+                margin-top: 60px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .discussions .list {
+                width: 60%;
+                background-color: white;
+            }
+
+            .discussions .list .discussion:first-child {
+                border: 0;
+            }
+
+            .discussion {
+                border-top: 1px solid #2a577e;
+            }
+
+            .discussion .comment-info {
+                margin-top: 6px;
+                display: flex;
+                align-items: center;
+            }
+
+            .discussion .votes {
+                position: relative;
+                margin: 10px;
+                width: 40px;
+                height: 46px;
+                font-size: 20px;
+                line-height: 46px;
+                text-align: center;
+            }
+
+            .discussion .votes::before {
+                content: ' ';
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                border-top: 4px solid #2a577e;
+                border-right: 4px solid #2a577e;
+                transform: rotate(-45deg);
+                top: 0;
+                left: 12px;
+            }
+
+            .discussion .votes::after {
+                content: ' ';
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                border-bottom: 4px solid #2a577e;
+                border-right: 4px solid #2a577e;
+                transform: rotate(45deg);
+                bottom: 4px;
+                left: 12px;
+            }
+
+            .discussion .timestamp {
+                margin-right: 6px;
+                color: #2a577e;
+                cursor: pointer;
+            }
+
+            .discussion .user {
+                margin-right: 4px;
+            }
+
+            .discussion .date {
+                color: #999;
+            }
+
+            .line-break {
+                width: 100%;
+            }
+
+            .time-info {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .discussion .comment {
+                margin-top: 10px;
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .discussion .controls {
+                display: flex;
+                padding: 14px 30px;
+            }
+
+            .discussion .controls .reply {
+                margin-left: auto;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <img src="portal.jpg" width=100 height=100>
+                <div class="text-container">
+                    <div class="episode">40: Introducing The Portal Essay Club - What if everyone is simply insane?</div>
+                    <div class="title">The Portal</div>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="bar"></div>
+                <div class="annotations"></div>
+                <!-- <div class="knob"></div> -->
+            </div>
+            <div class="discussions">
+                <div class="list">
+                    <div class="discussion">
+                        <div class="comment-info">
+                            <div class="votes">142</div>
+                            <div class="time-info">
+                                <div class="timestamp">13:24</div>
+                                <div class="user">- Viktor</div>
+                                <div class="line-break"></div>
+                                <div class="date">12/12/2020</div>
+                            </div>
+                        </div>
+                        <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                        <div class="controls">
+                            <div class="comments">8 replies</div>
+                            <div class="reply">Reply</div>
+                        </div>
+                    </div>
+                    <div class="discussion">
+                        <div class="comment-info">
+                            <div class="votes">16</div>
+                            <div class="time-info">
+                                <div class="timestamp">27:12</div>
+                                <div class="user">- Kirilov</div>
+                                <div class="line-break"></div>
+                                <div class="date">06/12/2020</div>
+                            </div>
+                        </div>
+                        <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                        <div class="controls">
+                            <div class="comments">8 replies</div>
+                            <div class="reply">Reply</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        const annotations = document.querySelector(".progress .annotations");
+
+        function createAnnotation(x, w, marginalize = true) {
+            const a = document.createElement("div");
+            a.classList.add("annotation");
+            a.style.left = x + "%";
+            if (marginalize) {
+                a.style.width = `calc(${w}% - 2px)`;    
+            } else {
+                a.style.width = w + "%";
+            }
+            
+            annotations.appendChild(a);
+        }
+
+        // createAnnotation(0, 11);
+        // createAnnotation(11, 13);
+        // createAnnotation(24, 22);
+        // createAnnotation(46, 46);
+        // createAnnotation(92, 8, false);
+    </script>
+</html>
