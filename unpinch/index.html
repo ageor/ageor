@@ -20,20 +20,29 @@
                 padding-left: 60px;
                 padding-right: 60px;
                 padding-top: 20px;
+                padding-bottom: 20px;
                 background: #5488b6;
                 background: radial-gradient(circle, #6fc6ff 0%, #009bff 100%);
                 background: radial-gradient(circle, #689e9f 0%, #3b626d 100%);
                 background: radial-gradient(circle, #5488b6 0%, #2a577e 100%);
                 width: 100%;
                 height: 100%;
+                overflow: auto;
             }
 
+            .controls {
+                display: flex;
+            }
+
+
             .progress {
+                flex-grow: 1;
                 margin-top: 20px;
                 position: relative;
                 height: 6px;
                 border-radius: 5px;
                 background-color: white;
+                box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
             }
 
             .progress::before {
@@ -58,6 +67,8 @@
                 width: 50%;
                 background-color: #1f3447;
                 background-color: #5488b6;
+                border-bottom-left-radius: 3px;
+                border-top-left-radius: 3px;
             }
 
             .knob {
@@ -107,7 +118,7 @@
             }
 
             .discussions {
-                margin-top: 60px;
+                margin-top: 20px;
                 width: 100%;
                 display: flex;
                 justify-content: center;
@@ -118,12 +129,16 @@
                 background-color: white;
             }
 
-            .discussions .list .discussion:first-child {
+            .discussions .list > .discussion:first-child::before {
                 border: 0;
             }
 
-            .discussion {
-                border-top: 1px solid #2a577e;
+            .list > .discussion::before {
+                content: ' ';
+                display: block;
+                width: calc(100% - 40px);
+                margin: auto;
+                border-top: 1px solid #5488b6;
             }
 
             .discussion .comment-info {
@@ -168,7 +183,7 @@
 
             .discussion .timestamp {
                 margin-right: 6px;
-                color: #2a577e;
+                color: #5488b6;
                 cursor: pointer;
             }
 
@@ -187,6 +202,30 @@
             .time-info {
                 display: flex;
                 flex-wrap: wrap;
+            }
+
+            .discussion .replies {
+                margin-left: 32px;
+                margin-bottom: 20px;
+                position: relative;
+                display: none;
+            }
+
+            .discussion.open > .replies {
+                display: block;
+            }
+
+            .discussion .replies::before {
+                position: absolute;
+                content: ' ';
+                display: block;
+                height: calc(100% - 20px);
+                top: 0px;
+                border-left: 1px solid #5488b6;
+            }
+
+            .discussion .comments {
+                cursor: pointer;
             }
 
             .discussion .comment {
@@ -215,10 +254,13 @@
                     <div class="title">The Portal</div>
                 </div>
             </div>
-            <div class="progress">
-                <div class="bar"></div>
-                <div class="annotations"></div>
-                <!-- <div class="knob"></div> -->
+            <div class="controls">
+                <div class="play"></div>
+                <div class="progress">
+                    <div class="bar"></div>
+                    <div class="annotations"></div>
+                    <!-- <div class="knob"></div> -->
+                </div>
             </div>
             <div class="discussions">
                 <div class="list">
@@ -234,7 +276,7 @@
                         </div>
                         <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
                         <div class="controls">
-                            <div class="comments">8 replies</div>
+                            <div class="comments">0 replies</div>
                             <div class="reply">Reply</div>
                         </div>
                     </div>
@@ -250,8 +292,57 @@
                         </div>
                         <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
                         <div class="controls">
-                            <div class="comments">8 replies</div>
+                            <div class="comments">2 replies</div>
                             <div class="reply">Reply</div>
+                        </div>
+                        <div class="replies">
+                            <div class="discussion">
+                                <div class="comment-info">
+                                    <div class="votes">1</div>
+                                    <div class="time-info">
+                                        <div class="user">Viktor</div>
+                                        <div class="line-break"></div>
+                                        <div class="date">12/12/2020</div>
+                                    </div>
+                                </div>
+                                <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                                <div class="controls">
+                                    <div class="comments">0 replies</div>
+                                    <div class="reply">Reply</div>
+                                </div>
+                            </div>
+                            <div class="discussion">
+                                <div class="comment-info">
+                                    <div class="votes">6</div>
+                                    <div class="time-info">
+                                        <div class="user">Kirilov</div>
+                                        <div class="line-break"></div>
+                                        <div class="date">12/12/2020</div>
+                                    </div>
+                                </div>
+                                <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                                <div class="controls">
+                                    <div class="comments">1 reply</div>
+                                    <div class="reply">Reply</div>
+                                </div>
+                                <div class="replies">
+                                    <div class="discussion">
+                                        <div class="comment-info">
+                                            <div class="votes">1</div>
+                                            <div class="time-info">
+                                                <div class="user">- Viktor</div>
+                                                <div class="line-break"></div>
+                                                <div class="date">12/12/2020</div>
+                                            </div>
+                                        </div>
+                                        <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                                        <div class="controls">
+                                            <div class="comments">0 replies</div>
+                                            <div class="reply">Reply</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -279,5 +370,14 @@
         // createAnnotation(24, 22);
         // createAnnotation(46, 46);
         // createAnnotation(92, 8, false);
+    </script>
+    <script type="text/javascript">
+        const comments = document.querySelectorAll(".comments");
+
+        for (let c of comments) {
+            c.onclick = () => {
+                c.closest(".discussion").classList.toggle("open");
+            }
+        }
     </script>
 </html>
