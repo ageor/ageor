@@ -22,10 +22,6 @@ function walkSync(dir, filelist = []) {
     return filelist;
 }
 
-const prototypes = walkSync("prototype").map(p => `"${p.substr(10)}"`);
-const assets = walkSync("assets").map(a => `"${a.substr(7)}"`);
-
-// Flexperiment
 function buildExport(dir) {
     const files = walkSync(dir).map(p => {
         const filePathArr = `${p.substr(dir.length + 1)}`.split('/');
@@ -50,11 +46,25 @@ function buildExport(dir) {
 fs.writeFileSync('component_imports.js', buildExport('components'));
 fs.writeFileSync('system_imports.js', buildExport('systems'));
 fs.writeFileSync('importer_imports.js', buildExport('importers'));
-//
 
-let dataTemplate = fs.readFileSync('data.template').toString();
+const proto = walkSync("prototype");
+let protoBuild = "const prototypes = {};\n\n";
 
-dataTemplate = dataTemplate.replace("<prototypes>", prototypes);
-dataTemplate = dataTemplate.replace("<assets>", assets);
+for (let p of proto) {
+    const fileData = fs.readFileSync(p).toString();
+    const prototypeName = p.split('.')[0].slice(p.indexOf('/') + 1);
 
-fs.writeFileSync("data.js", dataTemplate);
+    protoBuild += `prototypes["${prototypeName}"] = ${fileData};\n\n`;
+}
+
+protoBuild += "Object.freeze(prototypes);\n\nexport default prototypes;\n";
+
+fs.writeFileSync('prototypes_build.js', protoBuild);
+
+const assets = walkSync("assets").map(a => `"${a.substr(7)}"`);
+
+let dataFile = "";
+dataFile += `const Assets = Object.freeze([${assets}]);\n\n`;
+dataFile += "export { Assets };\n";
+
+fs.writeFileSync("data.js", dataFile);

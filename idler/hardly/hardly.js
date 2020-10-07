@@ -1,9 +1,10 @@
 import { log, err } from "./logger.js"
 import { ECS, registerComponent } from "./ecs.js";
-import { Prototypes, Assets } from "./data.js";
+import { Assets } from "./data.js";
 import * as Components from "./component_imports.js";
 import * as Systems from "./system_imports.js";
 import * as Importers from "./importer_imports.js";
+import _prototypeData from "./prototypes_build.js";
 
 const _protoPrefix = "hardly/prototype/";
 const _assetsPrefix = "hardly/assets/";
@@ -14,7 +15,6 @@ const _debug = true;
 const _systems = {};
 const _importers = [];
 
-let _prototypeData = {};
 let _assetsData = {};
 
 async function importComponents() {
@@ -29,34 +29,6 @@ async function importComponents() {
     }
     
     log(`Component import done in ${new Date() - compImportStart}ms`);
-}
-
-async function downloadPrototypes() {
-    log("Prototype download start...");
-
-    const dlStart = new Date();
-    let proto, promises = [];
-    
-    for (proto of Prototypes) {
-        log(`Downloading ${proto}`);
-        const name = proto;
-
-        promises.push(fetch(_protoPrefix + proto)
-            .then(response => response.json())
-            .then(data => ({
-                name: name.substr(0, name.length - 5),
-                data: data
-            }))
-            .catch(err));
-    }
-
-    await Promise.all(promises).then(prototypes => {
-        for (proto of prototypes) {
-            _prototypeData[proto.name] = proto.data;
-        }
-    });
-
-    log(`Prototype download done in ${new Date() - dlStart}ms`);
 }
 
 async function downloadAssets() {
@@ -111,6 +83,8 @@ async function importSystems() {
 
     for (system of systemNames) {
         _systems[system.substr(0, system.length - 6)] = Systems[system];
+
+        log(`Registered ${system}`);
     }
     
     log(`System import done in ${new Date() - sysImportStart}ms`);
@@ -139,7 +113,6 @@ export default class Hardly {
         await Promise.all([
             importComponents(),
             importSystems(),
-            downloadPrototypes(),
             downloadAssets(),
         ]);
 

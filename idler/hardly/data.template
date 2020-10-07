@@ -1,5 +1,0 @@
-const Prototypes = [<prototypes>];
-
-const Assets = [<assets>];
-
-export { Prototypes, Assets };
