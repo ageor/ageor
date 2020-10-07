@@ -1,10 +1,10 @@
 import { log, err } from "./logger.js"
 import { ECS, registerComponent } from "./ecs.js";
-import { Components, Systems, Prototypes, Assets, Importers } from "./data.js";
+import { Prototypes, Assets } from "./data.js";
+import * as Components from "./component_imports.js";
+import * as Systems from "./system_imports.js";
+import * as Importers from "./importer_imports.js";
 
-// Components and Systems are imports and need ./ prefixed
-const _componentsPrefix = "./components/";
-const _systemsPrefix = "./systems/";
 const _protoPrefix = "hardly/prototype/";
 const _assetsPrefix = "hardly/assets/";
 
@@ -21,18 +21,12 @@ async function importComponents() {
     log("Component import start...");
 
     const compImportStart = new Date();
-    let component, promises = [];
+    const componentNames = Object.keys(Components);
+    let component;
 
-    for (component of Components) {
-        promises.push(import(_componentsPrefix + component));
+    for (component of componentNames) {
+        registerComponent(Components[component]);
     }
-
-    await Promise.all(promises).then(function(componentImports) {
-        let comp;
-        for (comp of componentImports) {
-            registerComponent(comp.default);
-        }
-    });
     
     log(`Component import done in ${new Date() - compImportStart}ms`);
 }
@@ -87,22 +81,23 @@ async function downloadAssets() {
         }
 
         if (importer) {
-            promise.push(importer.promise(assetPath)
+            promises.push(importer.promise(assetPath)
                 .then(data => ({ name: asset, data: data }))
                 .catch(err));
         } else {
-            promise.push(fetch(assetPath)
+            promises.push(fetch(assetPath)
                 .then(response => response.text())
                 .then(data => ({ name: asset, data: data }))
                 .catch(err));
         }
     }
 
-    await Promise.all(promises).then(prototypes => {
-        for (proto of prototypes) {
+    await Promise.all(promises).then(assets => {
+        for (proto of assets) {
             _assetsData[proto.name] = proto.data;
         }
     });
+
 
     log(`Asset download done in ${new Date() - dlStart}ms`);
 }
@@ -111,22 +106,12 @@ async function importSystems() {
     log("System import start...");
     
     const sysImportStart = new Date();
-    let system, promises = [];
-    
-    for (system of Systems) {
-        promises.push(import(_systemsPrefix + system));
+    const systemNames = Object.keys(Systems);
+    let system;
+
+    for (system of systemNames) {
+        _systems[system.substr(0, system.length - 6)] = Systems[system];
     }
-
-    await Promise.all(promises).then(function(systemImports) {
-        let sys, sysClass;
-        for (sys of systemImports) {
-            sysClass = sys.default;
-
-            _systems[sysClass.name.substr(0, sysClass.name.length - 6)] = sysClass;
-
-            log(`Registered ${sysClass.name}`);
-        }
-    });
     
     log(`System import done in ${new Date() - sysImportStart}ms`);
 }
@@ -144,11 +129,11 @@ export default class Hardly {
         log("Init start...");
 
         const initStart = new Date();
-        let importer, i;
+        const importerNames = Object.keys(Importers);
+        let importer;
 
-        for (importer of Importers) {
-            i = await import('./' + importer);
-            _importers.push(i.default);
+        for (importer of importerNames) {
+            _importers.push(Importers[importer]);
         }
 
         await Promise.all([

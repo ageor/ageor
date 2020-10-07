@@ -3,7 +3,7 @@ const _scaleKeys = ["million", "billion", "trillion", "quadrillion"]
 const _step = 1000;
 const _threshold = 1000000;
 
-export default class BaseUISystem {
+export default class BaseUiSystem {
     constructor(hardly) {
         _hardly = hardly;
     }

@@ -15,9 +15,9 @@ export default async function init() {
     hardly.addSystem("Biz", 51);
     hardly.addSystem("Generator", 52);
 
-    hardly.addSystem("BiomeUI", 70);
-    hardly.addSystem("BizUI", 70);
-    hardly.addSystem("GeneratorUI", 70);
+    hardly.addSystem("BiomeUi", 70);
+    hardly.addSystem("BizUi", 70);
+    hardly.addSystem("GeneratorUi", 70);
 
     hardly.addSystem("Save", 100);
 

@@ -1,11 +1,5 @@
-const Components = [<components>];
-
-const Systems = [<systems>];
-
 const Prototypes = [<prototypes>];
 
 const Assets = [<assets>];
 
-const Importers = [<importers>];
-
-export { Components, Systems, Prototypes, Assets, Importers };
+export { Prototypes, Assets };

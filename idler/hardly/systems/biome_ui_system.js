@@ -1,9 +1,9 @@
-import BaseUISystem from "./base_ui_system.js"
+import BaseUiSystem from "./base_ui_system.js"
 
 const _query = ["Biome", "BiomeDom"];
 let _hardly;
 
-export default class BiomeUISystem extends BaseUISystem {
+export default class BiomeUiSystem extends BaseUiSystem {
     static get entityQuery() { return _query; }
 
     constructor(hardly) {
