@@ -32,17 +32,101 @@
 
             .controls {
                 display: flex;
+                margin-top: 20px;
             }
 
+            .controls .toggle {
+                width: 54px;
+                height: 54px;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.2);
+                border-radius: 6px;
+            }
+
+            .controls .volume {
+                position: relative;
+                width: 54px;
+                height: 54px;
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.2);
+                border-radius: 6px;
+            }
+
+            .controls .volume::before {
+                content: " ";
+                display: block;
+                width: 15px;
+                height: 15px;
+                background-color: white;
+                border-radius: 2px;
+                margin-left: -2px;
+            }
+
+            .controls .volume::after {
+                content: " ";
+                display: block;
+                border-top: 15px solid transparent;
+                border-bottom: 15px solid transparent;
+                border-right: 25px solid white;
+                margin-left: -16px;
+            }
+
+            .controls .toggle .play {
+                display: inline-block;
+                height: 30px;
+                border-top: 15px solid transparent;
+                border-bottom: 15px solid transparent;
+                border-left: 25px solid white;
+                margin-left: 2px;
+            }
+
+            .timeline {
+                flex-grow: 1;
+            }
+
+            .timeline .annotations {
+                display: flex;
+                justify-content: space-around;
+                height: 30px;
+            }
+
+            .annotation {
+                background-color: rgba(0, 0, 0, 0.2);
+                height: 100%;
+                display: flex;
+                align-items: flex-end;
+                overflow: hidden;
+            }
+
+            .annotation .heat {
+                background-color: rgba(0, 0, 0, 0.2);
+                flex-grow: 1;
+            }
+
+            .timeline .annotations .annotation:first-child {
+                border-top-left-radius: 6px;
+                border-bottom-left-radius: 6px;
+            }
+
+            .timeline .annotations .annotation:last-child {
+                border-top-right-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }
 
             .progress {
-                flex-grow: 1;
-                margin-top: 20px;
                 position: relative;
                 height: 6px;
-                border-radius: 5px;
+                border-radius: 3px;
                 background-color: white;
-                box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+                width: calc(100% - 10px);
+                margin-left: 5px;
+                margin-top: -10px;
             }
 
             .progress::before {
@@ -71,16 +155,6 @@
                 border-top-left-radius: 3px;
             }
 
-            .knob {
-                position: absolute;
-                left: 20.5%;
-                width: 14px;
-                height: 14px;
-                background-color: #333;
-                border-radius: 10px;
-                top: -4px;
-            }
-
             .expand {
                 width: 100%;
                 height: 100px;
@@ -91,7 +165,12 @@
                 display: flex;
             }
 
-            .text-container {
+            .header img {
+                background-color: rgba(0, 0, 0, 0.2);
+                padding: 6px;
+            }
+
+            .header .text-container {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -107,14 +186,6 @@
 
             .header img {
                 margin-right: 30px;
-            }
-
-            .annotation {
-                position: absolute;
-                background-color: #333;
-                width: 3px;
-                height: 6px;
-                top: 0;
             }
 
             .discussions {
@@ -255,121 +326,202 @@
                 </div>
             </div>
             <div class="controls">
-                <div class="play"></div>
-                <div class="progress">
-                    <div class="bar"></div>
-                    <div class="annotations"></div>
-                    <!-- <div class="knob"></div> -->
+                <div class="toggle">
+                    <div class="play"></div>
+                    <div class="pause"></div>
                 </div>
+                <div class="timeline">
+                    <div class="annotations"></div>
+                    <div class="progress">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="volume"></div>
             </div>
             <div class="discussions">
-                <div class="list">
-                    <div class="discussion">
-                        <div class="comment-info">
-                            <div class="votes">142</div>
-                            <div class="time-info">
-                                <div class="timestamp">13:24</div>
-                                <div class="user">- Viktor</div>
-                                <div class="line-break"></div>
-                                <div class="date">12/12/2020</div>
-                            </div>
-                        </div>
-                        <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                        <div class="controls">
-                            <div class="comments">0 replies</div>
-                            <div class="reply">Reply</div>
-                        </div>
-                    </div>
-                    <div class="discussion">
-                        <div class="comment-info">
-                            <div class="votes">16</div>
-                            <div class="time-info">
-                                <div class="timestamp">27:12</div>
-                                <div class="user">- Kirilov</div>
-                                <div class="line-break"></div>
-                                <div class="date">06/12/2020</div>
-                            </div>
-                        </div>
-                        <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                        <div class="controls">
-                            <div class="comments">2 replies</div>
-                            <div class="reply">Reply</div>
-                        </div>
-                        <div class="replies">
-                            <div class="discussion">
-                                <div class="comment-info">
-                                    <div class="votes">1</div>
-                                    <div class="time-info">
-                                        <div class="user">Viktor</div>
-                                        <div class="line-break"></div>
-                                        <div class="date">12/12/2020</div>
-                                    </div>
-                                </div>
-                                <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="controls">
-                                    <div class="comments">0 replies</div>
-                                    <div class="reply">Reply</div>
-                                </div>
-                            </div>
-                            <div class="discussion">
-                                <div class="comment-info">
-                                    <div class="votes">6</div>
-                                    <div class="time-info">
-                                        <div class="user">Kirilov</div>
-                                        <div class="line-break"></div>
-                                        <div class="date">12/12/2020</div>
-                                    </div>
-                                </div>
-                                <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="controls">
-                                    <div class="comments">1 reply</div>
-                                    <div class="reply">Reply</div>
-                                </div>
-                                <div class="replies">
-                                    <div class="discussion">
-                                        <div class="comment-info">
-                                            <div class="votes">1</div>
-                                            <div class="time-info">
-                                                <div class="user">- Viktor</div>
-                                                <div class="line-break"></div>
-                                                <div class="date">12/12/2020</div>
-                                            </div>
-                                        </div>
-                                        <div class="comment">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                        <div class="controls">
-                                            <div class="comments">0 replies</div>
-                                            <div class="reply">Reply</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="list"></div>
             </div>
         </div>
     </body>
     <script type="text/javascript">
-        const annotations = document.querySelector(".progress .annotations");
+        const annotations = document.querySelector(".timeline .annotations");
 
-        function createAnnotation(x, w, marginalize = true) {
+        function createAnnotation(w) {
             const a = document.createElement("div");
             a.classList.add("annotation");
-            a.style.left = x + "%";
-            if (marginalize) {
-                a.style.width = `calc(${w}% - 2px)`;    
-            } else {
-                a.style.width = w + "%";
+            a.style.width = `calc(${w}% - 2px)`;
+
+            for (let i = 0; i < w; i++) {
+                const d = document.createElement("div");
+                d.style.height = `${Math.random() * 55 + 45}%`;
+                d.classList.add("heat");
+
+                a.appendChild(d);
             }
             
             annotations.appendChild(a);
         }
 
-        // createAnnotation(0, 11);
-        // createAnnotation(11, 13);
-        // createAnnotation(24, 22);
-        // createAnnotation(46, 46);
-        // createAnnotation(92, 8, false);
+        createAnnotation(3);
+        createAnnotation(8);
+        createAnnotation(13);
+        createAnnotation(22);
+        createAnnotation(10);
+        createAnnotation(36);
+        createAnnotation(6);
+        createAnnotation(2);
+    </script>
+    <script type="text/javascript">
+        const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+        const users = ["Viktor", "Kirilov"];
+
+        const discussions = [
+            {
+                id: 0,
+                parent: null,
+                user: 0,
+                votes: 142,
+                timestamp: "13:24",
+                date: "12/12/2020",
+                comment: text,
+            },
+            {
+                id: 1,
+                parent: null,
+                user: 1,
+                votes: 16,
+                timestamp: "27:12",
+                date: "06/12/2020",
+                comment: text,
+            },
+            {
+                id: 2,
+                parent: 1,
+                user: 0,
+                votes: 1,
+                date: "07/12/2020",
+                comment: text,
+            },
+            {
+                id: 3,
+                parent: 1,
+                user: 1,
+                votes: 6,
+                date: "07/12/2020",
+                comment: text,
+            },
+            {
+                id: 4,
+                parent: 2,
+                user: 1,
+                votes: -5,
+                date: "08/12/2020",
+                comment: text,
+            },
+            {
+                id: 5,
+                parent: 3,
+                user: 0,
+                votes: 2,
+                date: "09/12/2020",
+                comment: text,
+            },
+            {
+                id: 6,
+                parent: 4,
+                user: 0,
+                votes: 44,
+                date: "09/12/2020",
+                comment: text,
+            },
+        ];
+
+        const list = document.querySelector(".discussions .list");
+
+        function buildDiscussion(d, domParent) {
+            const subDiscussions = discussions.filter(s => s.parent === d.id);
+            const discussion = document.createElement("DIV");
+            discussion.classList.add("discussion");
+
+            const commentInfo = document.createElement("DIV");
+            commentInfo.classList.add("comment-info");
+
+            const votes = document.createElement("DIV");
+            votes.innerText = d.votes;
+            votes.classList.add("votes");
+
+            commentInfo.appendChild(votes);
+
+            const timeInfo = document.createElement("DIV");
+            timeInfo.classList.add("time-info");
+
+            if (d.timestamp) {
+                const timestamp = document.createElement("DIV");
+                timestamp.innerText = d.timestamp;
+                timestamp.classList.add("timestamp");
+
+                timeInfo.appendChild(timestamp);
+            }
+
+            const user = document.createElement("DIV");
+            user.innerText = (d.timestamp ? '- ' : '') + users[d.user];
+            user.classList.add("user");
+
+            const lineBreak = document.createElement("DIV");
+            lineBreak.classList.add("line-break");
+
+            const date = document.createElement("DIV");
+            date.innerText = d.date;
+            date.classList.add("date");
+
+            timeInfo.appendChild(user);
+            timeInfo.appendChild(lineBreak);
+            timeInfo.appendChild(date);
+
+            commentInfo.appendChild(timeInfo);
+
+            const comment = document.createElement("DIV");
+            comment.innerText = d.comment;
+            comment.classList.add("comment");
+
+            discussion.appendChild(commentInfo);
+            discussion.appendChild(comment);
+
+            const controls = document.createElement("DIV");
+            controls.classList.add("controls");
+
+            const comments = document.createElement("DIV");
+            comments.innerText = subDiscussions.length + " replies";
+            comments.classList.add("comments");
+
+            const reply = document.createElement("DIV");
+            reply.innerText = "Reply";
+            reply.classList.add("reply");
+
+            controls.appendChild(comments);
+            controls.appendChild(reply);
+
+            discussion.appendChild(controls);
+
+            domParent.appendChild(discussion);
+
+            if (subDiscussions.length === 0) return;
+
+            const replies = document.createElement("DIV");
+            replies.classList.add("replies");
+
+            for (const dis of subDiscussions) {
+                buildDiscussion(dis, replies);
+            }
+
+            discussion.appendChild(replies);
+        }
+
+        const rootDiscussions = discussions.filter(d => d.parent === null);
+        for (let discussion of rootDiscussions) {
+            buildDiscussion(discussion, list);
+        }
     </script>
     <script type="text/javascript">
         const comments = document.querySelectorAll(".comments");
