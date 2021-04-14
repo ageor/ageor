@@ -232,6 +232,11 @@
                 justify-content: center;
             }
 
+            .leftify .discussion.right::before {
+                right: 0;
+                left: -80px;
+            }
+
             .discussion .comment-container {
                 background-color: white;
                 border-radius: 6px;
@@ -314,6 +319,11 @@
                 margin-left: 80px;
             }
 
+            .leftify .discussion.left > .replies {
+                margin-right: 0;
+                margin-left: 80px;
+            }
+
             .discussion.open > .replies {
                 display: block;
             }
@@ -361,7 +371,7 @@
                 </div>
                 <div class="volume"></div>
             </div>
-            <div class="discussions">
+            <div class="discussions leftify">
                 <div class="list"></div>
             </div>
         </div>
@@ -552,6 +562,11 @@
             c.onclick = () => {
                 c.closest(".discussion").classList.toggle("open");
             }
+        }
+    </script>
+    <script type="text/javascript">
+        function leftify() {
+            document.querySelector(".discussions").classList.toggle("leftify");
         }
     </script>
 </html>
