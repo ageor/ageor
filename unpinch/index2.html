@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title></title>
+        <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,200;1,400&display=swap" rel="stylesheet">
+        <style type="text/css">
+            * {
+                box-sizing: border-box;
+                font-family: "Exo";
+            }
+
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .container {
+                padding-left: 60px;
+                padding-right: 60px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                background: #5488b6;
+                background: radial-gradient(circle, #6fc6ff 0%, #009bff 100%);
+                background: radial-gradient(circle, #689e9f 0%, #3b626d 100%);
+                background: radial-gradient(circle, #5488b6 0%, #2a577e 100%);
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+            }
+
+            .controls {
+                display: flex;
+                margin-top: 20px;
+            }
+
+            .controls .toggle {
+                width: 54px;
+                height: 54px;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.2);
+                border-radius: 6px;
+            }
+
+            .controls .volume {
+                position: relative;
+                width: 54px;
+                height: 54px;
+                margin-left: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.2);
+                border-radius: 6px;
+            }
+
+            .controls .volume::before {
+                content: " ";
+                display: block;
+                width: 15px;
+                height: 15px;
+                background-color: white;
+                border-radius: 2px;
+                margin-left: -2px;
+            }
+
+            .controls .volume::after {
+                content: " ";
+                display: block;
+                border-top: 15px solid transparent;
+                border-bottom: 15px solid transparent;
+                border-right: 25px solid white;
+                margin-left: -16px;
+            }
+
+            .controls .toggle .play {
+                display: inline-block;
+                height: 30px;
+                border-top: 15px solid transparent;
+                border-bottom: 15px solid transparent;
+                border-left: 25px solid white;
+                margin-left: 2px;
+            }
+
+            .timeline {
+                flex-grow: 1;
+            }
+
+            .timeline .annotations {
+                display: flex;
+                justify-content: space-around;
+                height: 30px;
+            }
+
+            .annotation {
+                background-color: rgba(0, 0, 0, 0.2);
+                height: 100%;
+                display: flex;
+                align-items: flex-end;
+                overflow: hidden;
+            }
+
+            .annotation .heat {
+                background-color: rgba(0, 0, 0, 0.2);
+                flex-grow: 1;
+            }
+
+            .timeline .annotations .annotation:first-child {
+                border-top-left-radius: 6px;
+                border-bottom-left-radius: 6px;
+            }
+
+            .timeline .annotations .annotation:last-child {
+                border-top-right-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }
+
+            .progress {
+                position: relative;
+                height: 6px;
+                border-radius: 3px;
+                background-color: white;
+                width: calc(100% - 10px);
+                margin-left: 5px;
+                margin-top: -10px;
+            }
+
+            .progress::before {
+                color: white;
+                content: '0:12:34';
+                position: absolute;
+                top: 12px;
+                font-size: 20px;
+            }
+
+            .progress::after {
+                color: white;
+                content: '1:01:22';
+                position: absolute;
+                top: 12px;
+                font-size: 20px;
+                right: 0;
+            }
+
+            .progress .bar {
+                height: 100%;
+                width: 50%;
+                background-color: #1f3447;
+                background-color: #5488b6;
+                border-bottom-left-radius: 3px;
+                border-top-left-radius: 3px;
+            }
+
+            .expand {
+                width: 100%;
+                height: 100px;
+            }
+
+            .header {
+                color: white;
+                display: flex;
+            }
+
+            .header img {
+                background-color: rgba(0, 0, 0, 0.2);
+                padding: 6px;
+            }
+
+            .header .text-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .header .title {
+                font-size: 26px;
+            }
+
+            .header .episode {
+                font-size: 36px;
+            }
+
+            .header img {
+                margin-right: 30px;
+            }
+
+            .discussions {
+                margin-top: 20px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .discussions .list {
+                width: 60%;
+            }
+
+            .discussion {
+                position: relative;
+                margin-bottom: 20px;
+            }
+
+            .discussion.left::before {
+                content: attr(user);
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                left: -80px;
+                background-color: white;
+                border-radius: 6px;
+                font-size: 31px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .discussion.right::before {
+                content: attr(user);
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                right: -80px;
+                background-color: white;
+                border-radius: 6px;
+                font-size: 31px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .discussion .comment-container {
+                background-color: white;
+                border-radius: 6px;
+            }
+
+            .discussion .comment-info {
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+            }
+
+            .discussion .votes {
+                position: relative;
+                margin: 10px;
+                width: 40px;
+                height: 46px;
+                font-size: 20px;
+                line-height: 46px;
+                text-align: center;
+            }
+
+            .discussion .votes::before {
+                content: ' ';
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                border-top: 4px solid #2a577e;
+                border-right: 4px solid #2a577e;
+                transform: rotate(-45deg);
+                top: 0;
+                left: 12px;
+            }
+
+            .discussion .votes::after {
+                content: ' ';
+                position: absolute;
+                width: 12px;
+                height: 12px;
+                border-bottom: 4px solid #2a577e;
+                border-right: 4px solid #2a577e;
+                transform: rotate(45deg);
+                bottom: 4px;
+                left: 12px;
+            }
+
+            .discussion .timestamp {
+                margin-right: 6px;
+                color: #5488b6;
+                cursor: pointer;
+            }
+
+            .discussion .user {
+                margin-right: 4px;
+            }
+
+            .discussion .date {
+                color: #999;
+            }
+
+            .line-break {
+                width: 100%;
+            }
+
+            .time-info {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .discussion .replies {
+                margin-bottom: 20px;
+                position: relative;
+                display: none;
+            }
+
+            .discussion.left > .replies {
+                margin-right: 80px;
+            }
+
+            .discussion.right > .replies {
+                margin-left: 80px;
+            }
+
+            .discussion.open > .replies {
+                display: block;
+            }
+
+            .discussion .comments {
+                cursor: pointer;
+            }
+
+            .discussion .comment {
+                margin-top: 10px;
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .discussion .controls {
+                display: flex;
+                padding: 14px 30px;
+            }
+
+            .discussion .controls .reply {
+                margin-left: auto;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <img src="portal.jpg" width=100 height=100>
+                <div class="text-container">
+                    <div class="episode">40: Introducing The Portal Essay Club - What if everyone is simply insane?</div>
+                    <div class="title">The Portal</div>
+                </div>
+            </div>
+            <div class="controls">
+                <div class="toggle">
+                    <div class="play"></div>
+                    <div class="pause"></div>
+                </div>
+                <div class="timeline">
+                    <div class="annotations"></div>
+                    <div class="progress">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div class="volume"></div>
+            </div>
+            <div class="discussions">
+                <div class="list"></div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        const annotations = document.querySelector(".timeline .annotations");
+
+        function createAnnotation(w) {
+            const a = document.createElement("div");
+            a.classList.add("annotation");
+            a.style.width = `calc(${w}% - 2px)`;
+
+            for (let i = 0; i < w; i++) {
+                const d = document.createElement("div");
+                d.style.height = `${Math.random() * 55 + 45}%`;
+                d.classList.add("heat");
+
+                a.appendChild(d);
+            }
+            
+            annotations.appendChild(a);
+        }
+
+        createAnnotation(3);
+        createAnnotation(8);
+        createAnnotation(13);
+        createAnnotation(22);
+        createAnnotation(10);
+        createAnnotation(36);
+        createAnnotation(6);
+        createAnnotation(2);
+    </script>
+    <script type="text/javascript">
+        const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+        const users = ["Viktor", "Kirilov"];
+
+        const discussions = [
+            {
+                id: 0,
+                parent: null,
+                user: 0,
+                votes: 142,
+                timestamp: "13:24",
+                date: "12/12/2020",
+                comment: text,
+            },
+            {
+                id: 1,
+                parent: null,
+                user: 1,
+                votes: 16,
+                timestamp: "27:12",
+                date: "06/12/2020",
+                comment: text,
+            },
+            {
+                id: 2,
+                parent: 1,
+                user: 0,
+                votes: 1,
+                date: "07/12/2020",
+                comment: text,
+            },
+            {
+                id: 3,
+                parent: 1,
+                user: 1,
+                votes: 6,
+                date: "07/12/2020",
+                comment: text,
+            },
+            {
+                id: 4,
+                parent: 2,
+                user: 1,
+                votes: -5,
+                date: "08/12/2020",
+                comment: text,
+            },
+            {
+                id: 5,
+                parent: 3,
+                user: 0,
+                votes: 2,
+                date: "09/12/2020",
+                comment: text,
+            },
+            {
+                id: 6,
+                parent: 4,
+                user: 0,
+                votes: 44,
+                date: "09/12/2020",
+                comment: text,
+            },
+        ];
+
+        const list = document.querySelector(".discussions .list");
+
+        function div(...classes) {
+            const d = document.createElement("DIV");
+
+            for (let c of classes) {
+                d.classList.add(c);
+            }
+
+            return d;
+        }
+
+        function buildDiscussion(d, domParent) {
+            const subDiscussions = discussions.filter(s => s.parent === d.id);
+            const side = domParent.classList.contains("left") ? "right" : "left";
+            const discussion = div("discussion", side);
+            const container = div("comment-container");
+
+            const commentInfo = div("comment-info");
+
+            const votes = div("votes");
+            votes.innerText = d.votes;
+
+            commentInfo.appendChild(votes);
+
+            const timeInfo = div("time-info");
+
+            if (d.timestamp) {
+                const timestamp = div("timestamp");
+                timestamp.innerText = d.timestamp;
+
+                timeInfo.appendChild(timestamp);
+            }
+
+            const lineBreak = div("line-break");
+
+            const date = div("date");
+            date.innerText = d.date;
+
+            timeInfo.appendChild(lineBreak);
+            timeInfo.appendChild(date);
+
+            commentInfo.appendChild(timeInfo);
+
+            const comment = div("comment");
+            comment.innerText = d.comment;
+
+            container.appendChild(commentInfo);
+            container.appendChild(comment);
+
+            const controls = div("controls");
+
+            const comments = div("comments");
+            comments.innerText = subDiscussions.length + " replies";
+
+            const reply = div("reply");
+            reply.innerText = "Reply";
+
+            controls.appendChild(comments);
+            controls.appendChild(reply);
+
+            container.appendChild(controls);
+
+            discussion.appendChild(container);
+
+            discussion.setAttribute('user', users[d.user][0].toUpperCase())
+
+            domParent.appendChild(discussion);
+
+            if (subDiscussions.length === 0) return;
+
+            const replies = div("replies", side);
+
+            for (const dis of subDiscussions) {
+                buildDiscussion(dis, replies);
+            }
+
+            discussion.appendChild(replies);
+        }
+
+        const rootDiscussions = discussions.filter(d => d.parent === null);
+        for (let discussion of rootDiscussions) {
+            buildDiscussion(discussion, list);
+        }
+    </script>
+    <script type="text/javascript">
+        const comments = document.querySelectorAll(".comments");
+
+        for (let c of comments) {
+            c.onclick = () => {
+                c.closest(".discussion").classList.toggle("open");
+            }
+        }
+    </script>
+</html>
