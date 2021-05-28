@@ -1,0 +1,8 @@
+{
+  "name": "Grid",
+  "components": {
+    "Grid": {
+      "gridSize": { "x": 6, "y": 6 }
+    }
+  }
+}

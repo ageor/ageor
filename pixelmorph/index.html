@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <style type="text/css">
+            * {
+                box-sizing: border-box;
+            }
+
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                font-size: 12px;
+            }
+
+            .container {
+                width: 100%;
+                height: 100%;
+            }
+
+            .flex {
+                display: flex;
+            }
+
+            .flex.wrap {
+                flex-wrap: wrap;
+            }
+
+            .flex.col {
+                flex-direction: column;
+            }
+
+            .header {
+                height: 8rem;
+                width: 100%;
+            }
+
+            .header .menubar {
+                height: 50%;
+                width: 100%;
+                background-color: #445;
+            }
+
+            .header .toolbar {
+                height: 50%;
+                width: 100%;
+                background-color: #334;
+            }
+
+            .toolSwitch {
+                flex-shrink: 0;
+                height: 100%;
+                width: 6rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #334;
+            }
+
+            .toolSwitch .tool {
+                width: 6rem;
+                height: 6rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .toolSwitch .tool.active {
+                cursor: default;
+            }
+
+            .toolSwitch .tool .button {
+                width: 4rem;
+                height: 4rem;
+                border-radius: 2rem;
+                background-color: #aab;
+                box-shadow: 3px 3px 0 black;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 2rem;
+                transform: translateX(0px);
+                transition: all 0.1s;
+            }
+
+            .toolSwitch .tool:hover:not(.active) .button {
+                transform: translateX(3px);
+                background-color: #ccd;
+                box-shadow: 4px 4px 0 black;
+            }
+
+            .toolSwitch .tool.active .button {
+                background-color: white;
+            }
+
+            .drawarea {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                background: #191926;
+            }
+
+            .drawarea canvas {
+                image-rendering: pixelated;
+                -ms-interpolation-mode: nearest-neighbor;
+                image-rendering: crisp-edges;
+                transform: scale(8);
+                box-shadow: 1px 1px 0 black;
+                background-color: #aac;
+                background-image:
+                    linear-gradient(to right, transparent 50%, rgba(0, 0, 30, 0.05) 50%),
+                    linear-gradient(to bottom, rgba(0, 0, 50, 0.03) 50%, transparent 50%);
+                background-size: 2px 2px;
+            }
+
+            .drawarea .overlay {
+                position: absolute;
+                display: none;
+            }
+
+            canvas.smoothScale {
+                transition: transform 0.1s;
+            }
+
+            .config {
+                height: 100%;
+                width: 24rem;
+                background-color: #666684;
+            }
+
+            .config .drawMode {
+                width: 100%;
+                height: 4rem;
+                background-color: #334;
+            }
+
+            .config .palette {
+                height: 24rem;
+                width: 24rem;
+                background-color: #55556F;
+                display: grid;
+                padding: 3px;
+            }
+
+            .config .palette .col {
+                width: 100%;
+                height: 100%;
+                padding: 3px;
+                cursor: pointer;
+            }
+
+            .config .palette .button {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background-color: #334;
+                border-radius: 20%;
+                box-shadow: 2px 2px 0 black;
+                border: 2px dotted;
+                border-color: rgba(255, 160, 0, 0);
+                transition: border 0.1s;
+            }
+
+            .config .palette .button.active::after {
+                content: ' ';
+                display: block;
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                left: 0;
+                top: 0;
+                border-radius: 3px;
+                background-color: white;
+                border: 1px solid black;
+                box-sizing: border-box;
+            }
+
+            .config .palette .button.manual {
+                border-style: solid;
+            }
+
+            .config .palette .button.auto {
+                border-style: dashed;
+            }
+
+            .config .palette .col:hover .button {
+                border-color: rgba(255, 160, 0, 1);
+            }
+
+            .config .imageConfig {
+                width: 100%;
+                height: 6rem;
+                margin-top: auto;
+                background-color: #445;
+            }
+
+            .config .imageConfig .zoom {
+                display: flex;
+                align-items: center;
+            }
+
+            .config .zoom .label {
+                text-align: left;
+                padding-left: 0.4rem;
+                color: white;
+            }
+
+            .dbg {
+                background-color: #d1c4e9;
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container flex">
+            <div class="container flex col">
+                <div class="header flex col">
+                    <div class="menubar"></div>
+                    <div class="toolbar"></div>
+                </div>
+                <div class="container flex">
+                    <div class="toolSwitch">
+                        <div class="tool active">
+                            <div class="button">T</div>
+                        </div>
+                        <div class="tool">
+                            <div class="button">D</div>
+                        </div>
+                        <div class="tool">
+                            <div class="button">E</div>
+                        </div>
+                    </div>
+                    <div class="drawarea container">
+                        <canvas width=32 height=32></canvas>
+                        <canvas class="overlay"></canvas>
+                        <!-- <canvas width=32 height=32></canvas> -->
+                    </div>
+                </div>
+            </div>
+            <div class="config flex col">
+                <div class="drawMode"></div>
+                <div class="palette"></div>
+                <div class="imageConfig">
+                    <div class="zoom">
+                        <input type="range" min="0" max="11" value="6" class="slider">
+                        <span class="label"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script type="module">
+        import initDrag from '/src/draw_area.js';
+        import initPalette from '/src/palette.js';
+
+        initDrag();
+        initPalette();
+    </script>
+
+    <script type="module">
+        // Virtual pixels
+        const palette = [
+            "transparent",
+            "black",
+            "steelblue",
+            "white",
+        ];
+
+        let pixels = [];
+
+        const canvas = document.querySelector(".drawarea canvas");
+        const ctx = canvas.getContext("2d");
+
+        const w = canvas.width;
+        const h = canvas.height;
+
+        for (let i = 0; i < w * h; i++) {
+            pixels[i] = 0;
+        }
+
+        pixels[3 + 4 * w] = 1;
+        pixels[4 + 4 * w] = 2;
+        pixels[5 + 4 * w] = 1;
+        pixels[3 + 5 * w] = 3;
+        pixels[4 + 5 * w] = 1;
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.filter = "none";
+
+        for (let i = 0; i < pixels.length; i++) {
+            if (pixels[i] === 0) continue;
+
+            ctx.fillStyle = palette[pixels[i]];
+
+            ctx.fillRect(i % w, (i / h) | 0, 1, 1);
+        }
+    </script>
+
+    <script type="module">
+        import { morphScale } from '/src/canvas_morph.js';
+
+        const steps = [
+            0.12,
+            0.25,
+            0.5,
+            1,
+            2,
+            4,
+            8,
+            16,
+            32,
+            64,
+            128,
+            256,
+        ];
+
+        const slider = document.querySelector(".config .imageConfig .zoom .slider");
+        const output = document.querySelector(".config .imageConfig .zoom .label");
+        const canvas = document.querySelector(".drawarea canvas");
+        output.innerHTML = "x" + steps[slider.value]; // Display the default slider value
+
+        slider.onmouseover = function() {
+            canvas.classList.toggle('smoothScale', true);
+        }
+
+        slider.onmouseout = function() {
+            canvas.classList.toggle('smoothScale', false);
+        }
+
+        slider.oninput = function() {
+            const value = steps[this.value];
+            output.innerHTML = "x" + value;
+            
+            morphScale(value);
+        }
+    </script>
+</html>

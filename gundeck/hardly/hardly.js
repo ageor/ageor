@@ -177,7 +177,6 @@ export default async function init() {
     }
 
     hardly.update();
-    hardly.loadGame();
     
     function update() {
         hardly.update();

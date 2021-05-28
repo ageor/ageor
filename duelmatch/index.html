@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style type="text/css">
+      @font-face {
+        font-family: Exo2;
+        src: url(../fonts/Exo2-VariableFont_wght.ttf);
+      }
+
+      * {
+        font-family: Exo2;
+        font-variation-settings: "wght" 300;
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+
+        --scaling: 2;
+      }
+
+      body {
+        background-color: firebrick;
+        background-image: radial-gradient(
+          circle farthest-side at center,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.4)
+          );
+      }
+
+      .container {
+        overflow: hidden;
+        width: 356px;
+        height: 356px;
+        padding: 10px;
+        margin: auto;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 6px;
+        position: relative;
+        margin-top: 200px;
+      }
+
+      .container > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .container.anim * {
+        /*transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);*/
+      }
+
+      .attack, .heal, .shield, .poison, .clense, .stun {
+        width: var(--tile);
+        height: var(--tile);
+        transform-origin: 50% 50%;
+        transform: scale(0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image:
+        linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.1) 15%,
+          rgba(255, 255, 255, 0) 15%
+          ),
+        linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.25) 15%,
+          rgba(0, 0, 0, 0) 15%
+          ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.15) 15%,
+          rgba(255, 255, 255, 0) 15%
+          ),
+        linear-gradient(
+          -90deg,
+          rgba(0, 0, 0, 0.2) 15%,
+          rgba(0, 0, 0, 0) 15%
+          );
+      }
+
+      .selected {
+        transform: scale(1.1);
+        box-shadow: 6px 6px rgba(0, 0, 0, 0.4);
+      }
+
+      .top {
+        z-index: 1;
+      }
+
+      /*.attack, .poison, .stun {
+        box-shadow:
+          6px 6px rgba(255, 255, 255, 0.2) inset,
+          -6px -6px rgba(0, 0, 0, 0.2) inset;
+      }
+
+      .heal, .shield, .clense {
+        box-shadow:
+          6px 6px 12px rgba(255, 255, 255, 0.4) inset,
+          -6px -6px 12px rgba(0, 0, 0, 0.3) inset;
+          }*/
+
+      .attack {
+        background-color: red;
+      }
+
+      .attack::after {
+        display: block;
+        content: ' ';
+        width: 60%;
+        height: 60%;
+        background-color: darkred;
+        mix-blend-mode: multiply;
+        clip-path: polygon(
+          35% 20%,
+          50% 0%, /* blade tip */
+          65% 20%,
+          60% 70%, /* guard start */
+          70% 70%,
+          70% 80%,
+          55% 80%, /* grip start */
+          55% 100%,
+          45% 100%,
+          45% 80%,
+          30% 80%,
+          30% 70%,
+          40% 70%);
+      }
+
+      .poison {
+        background-color: #d93df5;
+      }
+
+      .poison::after {
+        display: block;
+        content: ' ';
+        width: 60%;
+        height: 60%;
+        margin-top: -5%;
+        mix-blend-mode: multiply;
+        background-image:
+        radial-gradient(circle at 35% 50%, white 15%, transparent 15%),
+        radial-gradient(circle at 65% 50%, white 15%, transparent 15%),
+        radial-gradient(circle at 50% 70%, white 8%, transparent 8%),
+        radial-gradient(circle at 50% 50%, purple 50%, transparent 50%),
+        linear-gradient(180deg, white 30%, transparent 30% 90%, white 90%),
+        linear-gradient(90deg, transparent 30%, purple 30% 70%, transparent 70%);
+      }
+
+      .heal {
+        background-color: limegreen;
+      }
+
+      .heal::after {
+        display: block;
+        content: ' ';
+        margin-top: 12.5%;
+        width: 50%;
+        height: 50%;
+        background-color: white;
+        mix-blend-mode: overlay;
+        clip-path: polygon(25% 0%, 50% 25%, 75% 0%, 100% 25%, 50% 75%, 0% 25%);
+      }
+
+      .clense {
+        background-color: gold;
+      }
+
+      .clense::after {
+        display: block;
+        content: ' ';
+        margin-top: -12.5%;
+        width: 50%;
+        height: 50%;
+        background-color: white;
+        mix-blend-mode: screen;
+        clip-path: polygon(20% 40%, 40% 20%, 40% 0%, 60% 0%, 60% 20%, 80% 40%, 80% 100%, 20% 100%);
+        background-image:
+        linear-gradient(180deg, white 40%, transparent 40% 85%, white 85%),
+        linear-gradient(90deg, white 35%, transparent 35% 45%, black 45% 55%, transparent 55% 65%, white 65%),
+        linear-gradient(180deg, transparent 55%, black 55% 65%, transparent 65%);
+      }
+
+      .stun {
+        background-color: #ff780a;
+      }
+
+      .stun::after {
+        display: block;
+        content: ' ';
+        width: 50%;
+        height: 50%;
+        background-color: brown;
+        mix-blend-mode: multiply;
+        clip-path: polygon(20% 0%, 80% 0%, 80% 35%, 55% 35%, 55% 100%, 45% 100%, 45% 35%, 20% 35%);
+      }
+
+      .shield {
+        background-color: deepskyblue;
+      }
+
+      .shield::after {
+        display: block;
+        content: ' ';
+        width: 50%;
+        height: 50%;
+        background-color: white;
+        mix-blend-mode: overlay;
+        clip-path: polygon(20% 0%, 80% 0%, 100% 30%, 50% 100%, 0% 30%);
+      }
+
+      /*.attack {
+        --step: 0.09;
+
+        background-color: red;
+        border-radius: 10%;
+        background-image:
+        linear-gradient(135deg,
+          rgba(0, 0, 0, 0) 20%,
+          rgba(0, 0, 0, calc(var(--step))) 20% 40%,
+          rgba(0, 0, 0, calc(var(--step) * 2)) 40% 60%,
+          rgba(0, 0, 0, calc(var(--step) * 3)) 60% 80%,
+          rgba(0, 0, 0, calc(var(--step) * 4)) 80%),
+        linear-gradient(-135deg,
+          rgba(0, 0, 0, 0) 20%,
+          rgba(0, 0, 0, calc(var(--step))) 20% 40%,
+          rgba(0, 0, 0, calc(var(--step) * 2)) 40% 60%,
+          rgba(0, 0, 0, calc(var(--step) * 3)) 60% 80%,
+          rgba(0, 0, 0, calc(var(--step) * 4)) 80%);
+      }
+
+      .heal {
+        --lite: 0.1;
+        --hard: 0.4;
+        background-color: green;
+        border-radius: 50%;
+        background-image:
+        linear-gradient(0deg,
+          rgba(255, 255, 255, 0) 20%,
+          rgba(255, 255, 255, var(--lite)) 20% 40%,
+          rgba(255, 255, 255, var(--hard)) 40% 60%,
+          rgba(255, 255, 255, var(--lite)) 60% 80%,
+          rgba(255, 255, 255, 0) 80%),
+        linear-gradient(90deg,
+          rgba(255, 255, 255, 0) 20%,
+          rgba(255, 255, 255, var(--lite)) 20% 40%,
+          rgba(255, 255, 255, var(--hard)) 40% 60%,
+          rgba(255, 255, 255, var(--lite)) 60% 80%,
+          rgba(255, 255, 255, 0) 80%);
+      }
+
+      .shield {
+        --step: 0.12;
+
+        background-color: mediumblue;
+        border-radius: 50%;
+        background-image:
+        radial-gradient(circle at 10% 0%,
+          rgba(255, 255, 255, calc(var(--step) * 4)) 20%,
+          rgba(255, 255, 255, calc(var(--step) * 3)) 20% 40%,
+          rgba(255, 255, 255, calc(var(--step) * 2)) 40% 60%,
+          rgba(255, 255, 255, calc(var(--step))) 60% 80%,
+          rgba(255, 255, 255, 0.0) 80%),
+        radial-gradient(circle at 90% 0%,
+          rgba(255, 255, 255, calc(var(--step) * 4)) 20%,
+          rgba(255, 255, 255, calc(var(--step) * 3)) 20% 40%,
+          rgba(255, 255, 255, calc(var(--step) * 2)) 40% 60%,
+          rgba(255, 255, 255, calc(var(--step))) 60% 80%,
+          rgba(255, 255, 255, 0.0) 80%);
+      }
+
+      .poison {
+        --step: 0.1;
+
+        background-color: magenta;
+        border-radius: 10%;
+        background-image:
+        radial-gradient(circle at 50% 100%,
+          rgba(0, 0, 0, 0.0) 20%,
+          rgba(0, 0, 0, calc(var(--step))) 20% 40%,
+          rgba(0, 0, 0, calc(var(--step) * 2)) 40% 60%,
+          rgba(0, 0, 0, calc(var(--step) * 3)) 60% 80%,
+          rgba(0, 0, 0, calc(var(--step) * 4)) 80%),
+        linear-gradient(60deg,
+          rgba(0, 0, 0, calc(var(--step) * 3)) 30%,
+          rgba(0, 0, 0, 0) 30%),
+        linear-gradient(-60deg,
+          rgba(0, 0, 0, calc(var(--step) * 3)) 30%,
+          rgba(0, 0, 0, 0) 30%);
+      }
+
+      .clense {
+        --step: 0.15;
+
+        background-color: orange;
+        border-radius: 50%;
+        background-image:
+        radial-gradient(circle at 50% 0%,
+          rgba(255, 255, 255, calc(var(--step) * 4)) 20%,
+          rgba(255, 255, 255, calc(var(--step) * 3)) 20% 40%,
+          rgba(255, 255, 255, calc(var(--step) * 2)) 40% 60%,
+          rgba(255, 255, 255, calc(var(--step))) 60% 80%,
+          rgba(255, 255, 255, 0.0) 80%);
+      }
+
+      .stun {
+        --step: 0.12;
+        background-color: coral;
+        border-radius: 10%;
+        background-image:
+        linear-gradient(90deg,
+          rgba(0, 0, 0, calc(var(--step) * 2)) 20%,
+          rgba(0, 0, 0, calc(var(--step))) 20% 40%,
+          rgba(0, 0, 0, 0) 40% 60%,
+          rgba(0, 0, 0, calc(var(--step))) 60%, 80%,
+          rgba(0, 0, 0, calc(var(--step) * 2)) 80%),
+        linear-gradient(0deg,
+          rgba(0, 0, 0, calc(var(--step) * 4)) 20%,
+          rgba(0, 0, 0, calc(var(--step) * 3)) 20% 40%,
+          rgba(0, 0, 0, calc(var(--step) * 2)) 40% 60%,
+          rgba(0, 0, 0, calc(var(--step))) 60% 80%,
+          rgba(0, 0, 0, 0.0) 80%);
+          }*/
+    </style>
+  </head>
+  <body>
+    <div class="container"></div>
+  </body>
+  <script type="module">
+    import init from "./hardly/hardly.js";
+
+    init();
+  </script>
+</html>

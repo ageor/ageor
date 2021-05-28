@@ -12,7 +12,6 @@ function ensureDir(dir) {
 ["components", "systems", "prototype", "assets", "importers"].forEach(ensureDir);
 
 function walkSync(dir, filelist = []) {
-
     fs.readdirSync(dir).forEach(function(file) {
         filelist = fs.statSync(path.join(dir, file)).isDirectory()
             ? walkSync(path.join(dir, file), filelist)
@@ -29,8 +28,7 @@ function buildExport(dir) {
     });
 
     const names = files.map(f => {
-        const name = f.split('.')[0].split('_').map(s => s[0].toUpperCase() + s.slice(1)).join('');
-        return name;
+        return f.split('.')[0].split('_').map(s => s[0].toUpperCase() + s.slice(1)).join('');
     });
 
     const paths = walkSync(dir).map(c => `"./${dir}/${c.substr(dir.length + 1)}"`);

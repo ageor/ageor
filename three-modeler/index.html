@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js" crossorigin="anonymous"></script>
+    <style type="text/css">
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+
+      .storage {
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        display: flex;
+      }
+
+      .storage * {
+        width: 80px;
+        height: 30px;
+        color: white;
+        display: inline-block;
+        text-align: center;
+        line-height: 30px;
+        background-color: #062e3b;
+        cursor: pointer;
+      }
+
+      .storage *:hover {
+        background-color: #084051;
+      }
+
+      .save {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        border-right: 1px solid #021116;
+      }
+
+      .load {
+        border-right: 1px solid #021116;
+      }
+
+      .download {
+        border-right: 1px solid #021116;
+      }
+
+      .upload {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="storage">
+      <div class="save">Save</div>
+      <div class="load">Load</div>
+      <div class="download">Export</div>
+      <div class="upload">Import</div>
+    </div>
+  </body>
+  <script type="module">
+    import * as Scene from './scene.js';
+    import * as GUI from './gui.js';
+    import * as Popup from './popup.js';
+    import * as Builder from './builder.js';
+
+    Scene.init();
+
+    document.querySelector('.save').onclick = () => {
+      const data = GUI.exportData();
+
+      // localStorage.setItem('model', JSON.stringify(data));
+      Popup.saveModel(data);
+    }
+
+    document.querySelector('.load').onclick = () => {
+      Popup.loadModel(GUI.importData);
+      // GUI.importData(JSON.parse(localStorage.getItem('model')));
+      // GUI.importData({
+      //   gIdx: 13,
+      //   colors: {
+      //     'Default': '#FFFFFF',
+      //     'Red': '#FF0000',
+      //   },
+      //   geometries: {
+      //     Extrude0: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       Steps: 1,
+      //       Depth: 1,
+      //       Bevel: false,
+      //       BevelThickness: 1,
+      //       BevelSize: 1,
+      //       BevelOffset: 0,
+      //       BevelSegments: 1,
+      //       type: 'extrude',
+      //       points: [
+      //         [0.1, 1],
+      //         [0.1, 0.4],
+      //         [0.2, 0.15],
+      //         [0.4, 0],
+      //         [0.6, 0],
+      //         [0.8, 0.15],
+      //         [0.9, 0.4],
+      //         [0.9, 1],
+      //       ],
+      //       x: 0,
+      //       y: 1,
+      //       z: 0,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1,
+      //       sy: 1,
+      //       sz: 2.5,
+      //     },
+      //     Extrude1: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       Steps: 1,
+      //       Depth: 1,
+      //       Bevel: false,
+      //       BevelThickness: 1,
+      //       BevelSize: 1,
+      //       BevelOffset: 0,
+      //       BevelSegments: 1,
+      //       type: 'extrude',
+      //       points: [
+      //         [0.1, 1],
+      //         [0.1, 0.4],
+      //         [0.2, 0.2],
+      //         [0.4, 0.05],
+      //         [0.6, 0.05],
+      //         [0.8, 0.2],
+      //         [0.9, 0.4],
+      //         [0.9, 1],
+      //       ],
+      //       x: 0,
+      //       y: 1.05,
+      //       z: 0.1,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1.1,
+      //       sy: 1.1,
+      //       sz: 0.1,
+      //     },
+      //     Extrude2: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       Steps: 1,
+      //       Depth: 1,
+      //       Bevel: false,
+      //       BevelThickness: 1,
+      //       BevelSize: 1,
+      //       BevelOffset: 0,
+      //       BevelSegments: 1,
+      //       type: 'extrude',
+      //       points: [
+      //         [0.1, 1],
+      //         [0.1, 0.4],
+      //         [0.2, 0.2],
+      //         [0.4, 0.05],
+      //         [0.6, 0.05],
+      //         [0.8, 0.2],
+      //         [0.9, 0.4],
+      //         [0.9, 1],
+      //       ],
+      //       x: 0,
+      //       y: 1.05,
+      //       z: 1.2,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1.1,
+      //       sy: 1.1,
+      //       sz: 0.1,
+      //     },
+      //     Extrude3: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       Steps: 1,
+      //       Depth: 1,
+      //       Bevel: false,
+      //       BevelThickness: 1,
+      //       BevelSize: 1,
+      //       BevelOffset: 0,
+      //       BevelSegments: 1,
+      //       type: 'extrude',
+      //       points: [
+      //         [0.1, 1],
+      //         [0.1, 0.4],
+      //         [0.2, 0.2],
+      //         [0.4, 0.05],
+      //         [0.6, 0.05],
+      //         [0.8, 0.2],
+      //         [0.9, 0.4],
+      //         [0.9, 1],
+      //       ],
+      //       x: 0,
+      //       y: 1.05,
+      //       z: 2.3,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1.1,
+      //       sy: 1.1,
+      //       sz: 0.1,
+      //     },
+      //     Box5: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       type: 'box',
+      //       x: 0,
+      //       y: 0.6,
+      //       z: 1.8,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 0.9,
+      //       sy: 0.4,
+      //       sz: 1,
+      //     },
+      //     Cylinder6: {
+      //       Color: 'Default',
+      //       MirrorX: true,
+      //       type: 'cylinder',
+      //       RadiusTop: 0.1,
+      //       RadiusBottom: 0.1,
+      //       RadialSegments: 6,
+      //       x: 0.52,
+      //       y: 0.7,
+      //       z: 0.5,
+      //       rx: 1.57,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1,
+      //       sy: 1,
+      //       sz: 1,
+      //     },
+      //     Cylinder7: {
+      //       Color: 'Default',
+      //       MirrorX: true,
+      //       type: 'cylinder',
+      //       RadiusTop: 0.2,
+      //       RadiusBottom: 0.2,
+      //       RadialSegments: 6,
+      //       x: 0.6,
+      //       y: 0.46,
+      //       z: 0.25,
+      //       rx: 1.57,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1,
+      //       sy: 0.5,
+      //       sz: 1,
+      //     },
+      //     Cylinder8: {
+      //       Color: 'Default',
+      //       MirrorX: true,
+      //       type: 'cylinder',
+      //       RadiusTop: 0.2,
+      //       RadiusBottom: 0.2,
+      //       RadialSegments: 6,
+      //       x: 0.54,
+      //       y: 0.44,
+      //       z: 0.73,
+      //       rx: 1.57,
+      //       ry: 0,
+      //       rz: 1.57,
+      //       sx: 1,
+      //       sy: 0.1,
+      //       sz: 1,
+      //     },
+      //     Extrude9: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       Steps: 1,
+      //       Depth: 1,
+      //       Bevel: false,
+      //       BevelThickness: 1,
+      //       BevelSize: 1,
+      //       BevelOffset: 0,
+      //       BevelSegments: 1,
+      //       type: 'extrude',
+      //       points: [
+      //         [0.1, 1],
+      //         [0.1, 0.2],
+      //         [0.2, 0.05],
+      //         [0.4, 0],
+      //         [0.6, 0],
+      //         [0.8, 0.05],
+      //         [0.9, 0.2],
+      //         [0.9, 1],
+      //       ],
+      //       x: 0,
+      //       y: 1.1,
+      //       z: -1.2,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1.4,
+      //       sy: 1.1,
+      //       sz: 1.2,
+      //     },
+      //     Box10: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       type: 'box',
+      //       x: 0,
+      //       y: 1.02,
+      //       z: 1.2,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 0.9,
+      //       sy: 0.1,
+      //       sz: 2.4,
+      //     },
+      //     Box11: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       type: 'box',
+      //       x: 0,
+      //       y: 0.44,
+      //       z: -0.6,
+      //       rx: 0,
+      //       ry: 0,
+      //       rz: 0,
+      //       sx: 1.3,
+      //       sy: 0.3,
+      //       sz: 1.2,
+      //     },
+      //     Extrude12: {
+      //       Color: 'Default',
+      //       MirrorX: false,
+      //       Steps: 1,
+      //       Depth: 1,
+      //       Bevel: false,
+      //       BevelThickness: 1,
+      //       BevelSize: 1,
+      //       BevelOffset: 0,
+      //       BevelSegments: 1,
+      //       type: 'extrude',
+      //       points: [
+      //         [0, 1],
+      //         [0.8, 1],
+      //         [0.5, 0],
+      //         [0, 0],
+      //       ],
+      //       x: 0.5,
+      //       y: 0.4,
+      //       z: 2.5,
+      //       rx: 0,
+      //       ry: -1.57,
+      //       rz: 0,
+      //       sx: 0.4,
+      //       sy: 0.2,
+      //       sz: 1,
+      //     },
+      //   },
+      // });
+    }
+
+    document.querySelector('.download').onclick = () => {
+      const data = GUI.exportData();
+      console.log(JSON.stringify(data, null, '  '));
+      // Scene.addModel(Builder.buildModel(data));
+    };
+  </script>
+</html>
