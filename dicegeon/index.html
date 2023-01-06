@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <style type="text/css">
+      html, body {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { settings, SCALE_MODES, Application, Loader, Spritesheet, Sprite, Container, utils } from '/src/lib/pixi.min.js';
+      import * as Assets from '/src/assets.js';
+      import * as Utils from '/src/utils.js';
+      import { createCharacterAvatar, randomiseAvatar } from '/src/character.js';
+
+      utils.skipHello();
+
+      settings.SCALE_MODE = SCALE_MODES.NEAREST;
+      settings.ROUND_PIXELS = true;
+
+      const app = new Application({
+        width: 800, height: 600, backgroundColor: 0x000000, resolution: window.devicePixelRatio || 1,
+      });
+
+      document.body.appendChild(app.view);
+
+      Assets.load(() => {
+        const container = new Container();
+        app.stage.addChild(container);
+        container.x = 150;
+        container.y = 150;
+        container.pivot.set(8);
+        container.scale.set(2);
+        // container.scale.x = -2;
+
+        const spritesCharacter = Assets.Atlas.character;
+
+        const human = Sprite.from(spritesCharacter[Assets.HumanID.human1]);
+        const top = Sprite.from(spritesCharacter[Assets.ChestID.top120]);
+        const bottom = Sprite.from(spritesCharacter[Assets.BottomID.bottom1]);
+        const shoes = Sprite.from(spritesCharacter[Assets.ShoeID.shoes1]);
+        const hair = Sprite.from(spritesCharacter[Assets.HairID.hair60]);
+        const beard = Sprite.from(spritesCharacter[Assets.BeardID.beard20]);
+        const helm = Sprite.from(spritesCharacter[Assets.HelmID.helm36]);
+        const shield = Sprite.from(spritesCharacter[Assets.ShieldID.shield60]);
+        const staff = Sprite.from(spritesCharacter[Assets.StaffID.staff20]);
+        const mace = Sprite.from(spritesCharacter[Assets.MaceID.mace6]);
+        const flail = Sprite.from(spritesCharacter[Assets.FlailID.flail6]);
+        const bow = Sprite.from(spritesCharacter[Assets.BowID.bow10]);
+        const axe = Sprite.from(spritesCharacter[Assets.AxeID.axe6]);
+        const pole = Sprite.from(spritesCharacter[Assets.PoleID.pole12]);
+        const hatchet = Sprite.from(spritesCharacter[Assets.HatchetID.hatchet6]);
+        const hammer = Sprite.from(spritesCharacter[Assets.HammerID.hammer6]);
+        const scythe = Sprite.from(spritesCharacter[Assets.ScytheID.scythe6]);
+        const axeOffhand = Sprite.from(spritesCharacter[Assets.AxeID.axe1]);
+        const blade = Sprite.from(spritesCharacter[Assets.BladeID.blade4]);
+        const spear = Sprite.from(spritesCharacter[Assets.SpearID.spear2]);
+
+        // staff.x = -1
+        // top.x = 16;
+        // top.scale.set(2);
+        mace.x = -1;
+        axe.x = 4;
+        axe.y = 1;
+        axe.scale.x = -1;
+        flail.x = -2;
+        bow.y = 1;
+        bow.x = 17;
+        bow.scale.x = -1;
+        // pole.scale.x = -1,
+        // pole.x = 3;
+        hammer.x = -1;
+        hammer.y = 1;
+
+        hatchet.scale.x = -1;
+        hatchet.y = 1;
+        hatchet.x = 3;
+
+        // scythe.scale.x = -1;
+        // scythe.x = 3;
+
+        blade.x = -1;
+
+        axeOffhand.y = 1;
+        axeOffhand.x = 12;
+
+        // pole/scythe/pike/spear 2h
+        // pole.x = 13;
+
+        container.addChild(human);
+        container.addChild(bottom);
+        container.addChild(shoes);
+        container.addChild(top);
+        container.addChild(hair);
+        container.addChild(beard);
+        container.addChild(helm);
+        container.addChild(shield);
+        container.addChild(blade);
+        // container.addChild(spear);
+        // container.addChild(staff);
+        // container.addChild(pole);
+        // container.addChild(mace);
+        // container.addChild(flail);
+        // container.addChild(bow);
+        // container.addChild(axe);
+        // container.addChild(axeOffhand);
+        // container.addChild(hammer);
+        // container.addChild(hatchet);
+        // container.addChild(scythe);
+
+        const avatar = createCharacterAvatar();
+        avatar.pos.x = 200;
+        avatar.pos.y = 200;
+        avatar.pivot.set(8);
+        avatar.scale.set(2);
+        // avatar.beard = Assets.BeardID.beard1;
+        avatar.mainHand = Assets.BladeID.blade3;
+        app.stage.addChild(avatar.root);
+
+        randomiseAvatar(avatar);
+
+        // avatar.helmet = '';
+        // avatar.hair = '';
+        // avatar.offHand = '';
+      });
+    </script>
+  </body>
+</html>

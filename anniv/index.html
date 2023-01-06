@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@200&family=Yanone+Kaffeesatz:wght@300&display=swap" rel="stylesheet">
+    <style type="text/css">
+      /*@media print {
+        * {
+          color: white;
+        }
+      }*/
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        width: 100%;
+        height: 100%;
+
+        font-family: 'Yanone Kaffeesatz', sans-serif;
+      }
+
+      .lyr {
+        position: absolute;
+        white-space: pre;
+        text-align: center;
+        width: 100%;
+        font-size: 42px;
+        margin-top: 20px;
+      }
+
+      .lyr > div {
+        text-align: right;
+        width: 80%;
+        font-size: 36px;
+        margin-top: 20px;
+      }
+
+      .lyr > b {
+        font-size: 46px;
+      }
+
+      .all {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        width: 100%;
+        height: 100%;
+        margin-left: -12px;
+        background:
+          radial-gradient(circle at 40% 33%, rgba(152, 191, 100, 0.2) 4%, transparent 4%),
+          radial-gradient(circle at 38% 38%, rgba(152, 191, 100, 0.2) 3%, transparent 3%);
+      }
+
+      .fg {
+        pointer-events: none;
+        background: radial-gradient(circle at 20% 50%, rgba(152, 191, 100, 0.4), transparent 14%);
+        /*background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.7), transparent 14%);*/
+        position: absolute;
+        width: 1600px;
+        height: 600px;
+        top: -200px;
+        left: -200px;
+        margin-left: 13px;
+        display: none;
+      }
+
+      .bg {
+        position: absolute;
+        width: 1600px;
+        height: 800px;
+        top: -300px;
+        left: -200px;
+        /*display: none;*/
+      }
+
+      .container {
+        margin: auto;
+        position: relative;
+        width: 1200px;
+        height: 200px;
+      }
+
+      .canvas, .text {
+        position: absolute;
+        width: 1200px;
+        height: 200px;
+        margin-left: 13px;
+        margin-top: -3px;
+      }
+
+      .text {
+        line-height: 200px;
+        text-align: center;
+        pointer-events: none;
+        color: white !important;
+        font-size: 52px;
+        font-size: 42px;
+        top: 6px;
+        left: -80px;
+        left: 371px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="all">
+      <div class="lyr">
+        Well, you done done me and you bet I felt it
+        I tried to be chill, but you're so hot that I melted
+        I fell right through the cracks
+        Now I'm trying to get back
+        Before the cool done run out
+        I'll be giving it my bestest
+        And nothing's gonna stop me but divine intervention
+        I reckon it's again my turn
+        To win some or learn some
+        But I won't hesitate no more
+        It cannot wait, <b>I'm yours</b>
+        <div>August 9th<br>2020</div>
+      </div>
+      <div class="container">
+        <canvas class="bg"></canvas>
+        <canvas class="canvas"></canvas>
+        <div class="text">I'M YOURS</div>
+        <div class="fg"></div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioContext = null;
+    let currentBuffer = null;
+
+    // const filterData = audioBuffer => {
+    //   const rawData = audioBuffer.getChannelData(0); // We only need to work with one channel of data
+    //   const samples = 70; // Number of samples we want to have in our final data set
+    //   const blockSize = Math.floor(rawData.length / samples); // Number of samples in each subdivision
+    //   const filteredData = [];
+    //   for (let i = 0; i < samples; i++) {
+    //     filteredData.push(rawData[i * blockSize]); 
+    //   }
+    //   return filteredData;
+    // }
+
+    const drawAudio = url => {
+      fetch(url)
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+        .then(audioBuffer => {
+          // draw(normalizeData(filterData(audioBuffer, 91)));
+          // draw(normalizeData(filterData(audioBuffer, 93)));
+          draw(normalizeData(filterData(audioBuffer, 81)), '#32612d', 7, 1.7);
+          draw(normalizeData(filterData(audioBuffer, 131)), '#679267', 5, 1.2);
+          draw(normalizeData(filterData(audioBuffer, 173)), '#98bf64', 3, 0.7);
+          // draw(normalizeData(filterData(audioBuffer, 365)), 'rgba(0, 0, 0, 0.5)', 1);
+        });;
+    };
+
+    const filterData = (audioBuffer, samples) => {
+      const rawData = audioBuffer.getChannelData(0); // We only need to work with one channel of data
+      // const samples = 120; // Number of samples we want to have in our final data set
+      const blockSize = Math.floor(rawData.length / samples); // the number of samples in each subdivision
+      const filteredData = [];
+      for (let i = 0; i < samples; i++) {
+        let blockStart = blockSize * i; // the location of the first sample in the block
+        let sum = 0;
+
+        for (let j = 0; j < blockSize; j++) {
+          sum = sum + Math.abs(rawData[blockStart + j]); // find the sum of all the samples in the block
+        }
+
+        filteredData.push(sum / blockSize); // divide the sum by the block size to get the average
+      }
+
+      return filteredData;
+    }
+
+    const normalizeData = filteredData => {
+      const multiplier = Math.pow(Math.max(...filteredData), -1);
+      
+      return filteredData;//.map(n => n * multiplier);
+    }
+
+    const draw = (normalizedData, fill, radius, scale) => {
+      // set up the canvas
+      const canvas = document.querySelector(".canvas");
+      const dpr = window.devicePixelRatio || 1;
+      const padding = 0;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = fill; // what color our line is
+
+      // draw the line segments
+      const width = canvas.offsetWidth / normalizedData.length;
+      for (let i = 0; i < normalizedData.length; i++) {
+        const x = width * i;
+        let height = normalizedData[i] * canvas.offsetHeight * scale - padding;
+        // if (height < 0) {
+        //     height = 0;
+        // } else if (height > canvas.offsetHeight / 2) {
+        //     height = height > canvas.offsetHeight / 2;
+        // }
+
+        // drawLineSegment(ctx, x, height, width, (i + 1) % 2);
+        drawLine(ctx, x, height, width, radius);
+      }
+    };
+
+    const draw2 = (normalizedData, fill, radius, scale) => {
+      // set up the canvas
+      const canvas = document.querySelector(".canvas");
+      const newCanvas = document.createElement('canvas');
+      newCanvas.width = canvas.width;
+      newCanvas.height = canvas.height;
+      const dpr = window.devicePixelRatio || 1;
+      const padding = 0;
+      const ctx = newCanvas.getContext("2d");
+      ctx.fillStyle = fill; // what color our line is
+
+      // draw the line segments
+      const width = canvas.offsetWidth / normalizedData.length;
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      let i = 0;
+      for (i = 1; i < normalizedData.length - 2; i ++) {
+        let xc = (width * i + width * (i + 1)) / 2;
+        let yc = (normalizedData[i] * canvas.offsetHeight * scale + normalizedData[i + 1] * canvas.offsetHeight * scale) / 2;
+        ctx.quadraticCurveTo(
+          width * i,
+          normalizedData[i] * canvas.offsetHeight * scale,
+          xc,
+          yc
+        );
+      }
+      // curve through the last two points
+      ctx.quadraticCurveTo(
+        width * i,
+        normalizedData[i] * canvas.offsetHeight * scale,
+        width * (i + 1),
+        normalizedData[i + 1] * canvas.offsetHeight * scale
+      );
+
+      ctx.fill();
+
+      const ctx2 = canvas.getContext('2d');
+      ctx2.drawImage(newCanvas, 0, 0);
+      ctx2.scale(1, -1);
+      ctx2.drawImage(newCanvas, 0, 0);
+    };
+
+    const drawLineSegment = (ctx, x, height, width, isEven) => {
+      ctx.lineWidth = 1; // how thick the line is
+      ctx.strokeStyle = "#000"; // what color our line is
+      ctx.beginPath();
+      height = isEven ? height : -height;
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.arc(x + width / 2, height, width / 2, Math.PI, 0, isEven);
+      ctx.lineTo(x + width, 0);
+      ctx.stroke();
+    };
+
+    const drawLine = (ctx, x, height, width, radius) => {
+      // ctx.lineWidth = 1; // how thick the line is
+      // ctx.beginPath();
+      // height = isEven ? height : -height;
+      ctx.moveTo(x, 0);
+      // ctx.lineTo(x, height);
+      // ctx.arc(x + width / 2, height, width / 2, Math.PI, 0, isEven);
+      // ctx.lineTo(x + width, 0);
+      // ctx.stroke();
+      // ctx.fillRect(x, -height, width, height * 2);
+      height = Math.max(height, radius);
+      roundRect(ctx, x + 1, -height, width - 1, height * 2, radius, true);
+    };
+
+    // drawAudio('yours.mp3');
+
+    const c = document.querySelector(".canvas");
+
+    function fillBg() {
+      const canvas = document.querySelector('.bg');
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = (canvas.offsetWidth) * dpr;
+      canvas.height = (canvas.offsetHeight) * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      ctx.fillStyle = '#98bf64';
+      const nx = 70;
+      const ny = 36;
+      const dx = Math.floor(canvas.width / nx);
+      const dy = Math.floor(canvas.height / ny);
+
+      for (let x = 1; x < nx - 1; x++) {
+        for (let y = 1; y < ny - 18; y++) {
+          // ctx.fillRect(x * dx, y * dy, 3, 3);
+          roundRect(ctx, x * dx, y * dy -1, 4, 4, 2, true);
+        }
+      }
+    }
+
+    c.onclick = () => {
+      fillBg();
+      const dpr = window.devicePixelRatio || 1;
+      c.width = c.offsetWidth * dpr;
+      c.height = (c.offsetHeight) * dpr;
+
+      const ctx = c.getContext("2d");
+      ctx.scale(dpr, dpr);
+      ctx.fillStyle = '#98bf64';
+      ctx.translate(0, c.offsetHeight / 2); // set Y = 0 to be in the middle of the canvas      
+
+      audioContext = audioContext || new AudioContext();
+      drawAudio('yours.mp3');
+
+      document.querySelector('.lyr').style.display = 'none';
+    }
+
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      if (typeof stroke === 'undefined') {
+        stroke = false;
+      }
+      if (typeof radius === 'undefined') {
+        radius = 5;
+      }
+      if (typeof radius === 'number') {
+        radius = {tl: radius, tr: radius, br: radius, bl: radius};
+      } else {
+        var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+        for (var side in defaultRadius) {
+          radius[side] = radius[side] || defaultRadius[side];
+        }
+      }
+      ctx.beginPath();
+      ctx.moveTo(x + radius.tl, y);
+      ctx.lineTo(x + width - radius.tr, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+      ctx.lineTo(x + width, y + height - radius.br);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+      ctx.lineTo(x + radius.bl, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+      ctx.lineTo(x, y + radius.tl);
+      ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+      ctx.closePath();
+      if (fill) {
+        ctx.fill();
+      }
+      if (stroke) {
+        ctx.stroke();
+      }
+
+    }
+  </script>
+</html>
